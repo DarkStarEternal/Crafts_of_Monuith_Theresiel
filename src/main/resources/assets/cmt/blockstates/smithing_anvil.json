@@ -1,14 +1,19 @@
 {
   "variants": {
-    "part=top_left,filled=false":   { "model": "cmt:block/blacksmith_furnace_top_left" },
-    "part=top_right,filled=false":  { "model": "cmt:block/blacksmith_furnace_top_right" },
-    "part=bottom_left,filled=false": { "model": "cmt:block/blacksmith_furnace_bottom_left" },
-    "part=bottom_right,filled=false": { "model": "cmt:block/blacksmith_furnace_bottom_right" },
-    "part=individual,filled=false": { "model": "cmt:block/blacksmith_furnace_base" },
-    "part=individual,filled=true": { "model": "cmt:block/blacksmith_furnace_base" },
-    "part=top_left,filled=true":   { "model": "cmt:block/blacksmith_furnace_top_left_filled" },
-    "part=top_right,filled=true":  { "model": "cmt:block/blacksmith_furnace_top_right_filled" },
-    "part=bottom_left,filled=true": { "model": "cmt:block/blacksmith_furnace_bottom_left_filled" },
-    "part=bottom_right,filled=true": { "model": "cmt:block/blacksmith_furnace_bottom_right_filled" }
+    "facing=north": {
+      "model": "cmt:block/smithing_anvil"
+    },
+    "facing=east": {
+      "model": "cmt:block/smithing_anvil",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "cmt:block/smithing_anvil",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cmt:block/smithing_anvil",
+      "y": 270
+    }
   }
 }

@@ -1,4 +1,4 @@
-package com.dark.cmt.block.caststone;
+package com.dark.cmt.block.caststone.tiles;
 
 import net.minecraft.block.Block;
 

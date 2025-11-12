@@ -1,9 +1,9 @@
-package com.dark.cmt.item.crudeiron;
+package com.dark.cmt.item.tin;
 
 import net.minecraft.item.Item;
 
-public class CrudeIronIngot extends Item {
-    public CrudeIronIngot() {
+public class TinIngot extends Item {
+    public TinIngot() {
         super(new Settings());
     }
 }

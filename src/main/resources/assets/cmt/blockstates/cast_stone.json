@@ -1,5 +1,21 @@
 {
   "variants": {
-    "": { "model": "cmt:block/cast_stone_bricks" }
+    "": [
+      {
+        "model": "cmt:block/cast_stone"
+      },
+      {
+        "model": "cmt:block/cast_stone_2"
+      },
+      {
+        "model": "cmt:block/cast_stone_flipped"
+      },
+      {
+        "model": "cmt:block/cast_stone_2"
+      },
+      {
+        "model": "cmt:block/cast_stone_3"
+      }
+    ]
   }
 }

@@ -1,8 +1,6 @@
-package com.dark.cmt.item;
+package com.dark.cmt.registry;
 
 import com.dark.cmt.CMT;
-import com.dark.cmt.registry.CMTBlocks;
-import com.dark.cmt.registry.CMTItems;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -29,9 +27,6 @@ public class CMTItemGroups {
                 entries.add(CMTItems.CRUDEIRONSHOVEL);
                 entries.add(CMTItems.CRUDEIRONHOE);
 
-                entries.add(CMTItems.SULFUR);
-                entries.add(CMTItems.SULFURICCOMPOUND);
-
                 entries.add(CMTBlocks.CASTSTONE);
                 entries.add(CMTBlocks.CASTSTONEBRICKS);
                 entries.add(CMTBlocks.CASTSTONETILES);
@@ -40,6 +35,27 @@ public class CMTItemGroups {
                 entries.add(CMTBlocks.BLACKSMITHFURNACEBASE);
 
                 entries.add(CMTBlocks.SMITHINGANVIL);
+
+                entries.add(CMTBlocks.LEADORE);
+                entries.add(CMTBlocks.SULFURICORE);
+                entries.add(CMTBlocks.SULFURICDEEPSLATEORE);
+                entries.add(CMTBlocks.SULFURICNETHERORE);
+                entries.add(CMTBlocks.TINORE);
+                entries.add(CMTBlocks.SILVERORE);
+                entries.add(CMTBlocks.SILVERDEEPSLATEORE);
+                entries.add(CMTBlocks.SILVERBLOCK);
+
+                entries.add(CMTItems.LEADINGOT);
+
+                entries.add(CMTItems.SULFUR);
+                entries.add(CMTItems.SULFURICCOMPOUND);
+
+                entries.add(CMTItems.TININGOT);
+
+                entries.add(CMTItems.SILVERINGOT);
+                entries.add(CMTItems.RAWSILVER);
+
+                entries.add(CMTItems.SMITHINGMANUAL);
             }))
             .build());
 

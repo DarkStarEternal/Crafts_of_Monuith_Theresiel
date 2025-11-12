@@ -3,8 +3,8 @@ package com.dark.cmt.block.ore.sulfur;
 import net.minecraft.block.ExperienceDroppingBlock;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 
-public class SulfuricDeepslateOre extends ExperienceDroppingBlock {
-    public SulfuricDeepslateOre() {
-        super(UniformIntProvider.create(6,19), Settings.create().requiresTool());
+public class SulfuricNetherOre extends ExperienceDroppingBlock {
+    public SulfuricNetherOre() {
+        super(UniformIntProvider.create(11,29), Settings.create().requiresTool());
     }
 }

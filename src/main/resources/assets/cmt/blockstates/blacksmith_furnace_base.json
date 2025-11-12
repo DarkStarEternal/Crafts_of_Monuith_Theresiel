@@ -1,21 +1,14 @@
 {
   "variants": {
-    "": [
-      {
-        "model": "cmt:block/cast_stone"
-      },
-      {
-        "model": "cmt:block/cast_stone_2"
-      },
-      {
-        "model": "cmt:block/cast_stone_flipped"
-      },
-      {
-        "model": "cmt:block/cast_stone_2"
-      },
-      {
-        "model": "cmt:block/cast_stone_3"
-      }
-    ]
+    "part=top_left,filled=false":   { "model": "cmt:block/blacksmith_furnace_top_left" },
+    "part=top_right,filled=false":  { "model": "cmt:block/blacksmith_furnace_top_right" },
+    "part=bottom_left,filled=false": { "model": "cmt:block/blacksmith_furnace_bottom_left" },
+    "part=bottom_right,filled=false": { "model": "cmt:block/blacksmith_furnace_bottom_right" },
+    "part=individual,filled=false": { "model": "cmt:block/blacksmith_furnace_base" },
+    "part=individual,filled=true": { "model": "cmt:block/blacksmith_furnace_base" },
+    "part=top_left,filled=true":   { "model": "cmt:block/blacksmith_furnace_top_left_filled" },
+    "part=top_right,filled=true":  { "model": "cmt:block/blacksmith_furnace_top_right_filled" },
+    "part=bottom_left,filled=true": { "model": "cmt:block/blacksmith_furnace_bottom_left_filled" },
+    "part=bottom_right,filled=true": { "model": "cmt:block/blacksmith_furnace_bottom_right_filled" }
   }
 }

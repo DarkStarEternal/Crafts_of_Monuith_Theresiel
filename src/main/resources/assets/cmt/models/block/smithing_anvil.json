@@ -1,0 +1,9 @@
+{
+  "parent": "cmt:custom/smithing_anvil",
+  "textures": {
+    "all": "cmt:block/smithing_anvil",
+    "particle": "cmt:block/smithing_anvil",
+    "0": "cmt:block/smithing_anvil"
+  },
+  "render_type": "solid"
+}

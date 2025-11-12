@@ -1,9 +1,9 @@
-package com.dark.cmt.item.lead;
+package com.dark.cmt.item.silver;
 
 import net.minecraft.item.Item;
 
-public class LeadIngot extends Item {
-    public LeadIngot() {
+public class RawSilver extends Item {
+    public RawSilver() {
         super(new Settings());
     }
 }

@@ -1,4 +1,4 @@
-package com.dark.cmt.block.ore;
+package com.dark.cmt.block.ore.sulfur;
 
 import net.minecraft.block.ExperienceDroppingBlock;
 import net.minecraft.util.math.intprovider.UniformIntProvider;

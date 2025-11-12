@@ -1,19 +1,12 @@
-package com.dark.cmt.network;
+package com.dark.cmt.networking;
+
 
 import com.dark.cmt.CMT;
-import com.dark.cmt.block.smithinganvil.SmithingAnvilBlockEntity;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.impl.networking.CustomPayloadTypeProvider;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
 
 public class CMTNetworking {
-
-    public static void registerC2SPackets() {
-        ServerPlayNetworking.registerGlobalReceiver(TransformItemC2SPacket.ID, TransformItemC2SPacket::receive);
-    }
 }

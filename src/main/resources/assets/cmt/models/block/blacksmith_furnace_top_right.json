@@ -2,7 +2,7 @@
   "parent": "block/cube_bottom_top",
   "textures": {
     "side": "cmt:block/cast_stone_tiles",
-    "top": "cmt:block/cast_heater_top_left_empty",
+    "top": "cmt:block/cast_heater_top_right_empty",
     "bottom": "cmt:block/cast_stone_tiles"
   }
 }

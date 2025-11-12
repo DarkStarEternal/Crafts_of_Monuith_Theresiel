@@ -1,12 +1,16 @@
-package com.dark.cmt.block.blacksmithfurnace;
+package com.dark.cmt.block.smithinganvil;
 
+import com.dark.cmt.item.smitheditems.UnfinishedSmithedItem;
 import com.dark.cmt.registry.CMTBlockEntities;
-import com.dark.cmt.registry.CMTBlocks;
+import com.dark.cmt.screen.smithinganvil.SmithingAnvilScreenHandler;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -15,17 +19,22 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class BlacksmithFurnaceBlockEntity extends BlockEntity {
+public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, Inventory {
 
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
-    private BlockPos controllerPos = null;
+    private static final int CRAFTSLOT = 1;
+
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
     private final RegistryWrapper.WrapperLookup registries = new RegistryWrapper.WrapperLookup() {
         @Override
         public Stream<RegistryKey<? extends Registry<?>>> streamAllRegistryKeys() {
@@ -38,54 +47,21 @@ public class BlacksmithFurnaceBlockEntity extends BlockEntity {
         }
     };
 
-    public boolean addItem(ItemStack stack, int slot) {
-        if (slot < 0 || slot >= 2) return false;
-
-        if (inventory.get(slot).isEmpty() && !stack.isEmpty()) {
-            inventory.set(slot, stack.copyWithCount(1)); // Only allow one item
-            markDirty();
-            if (world != null) {
-                world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
-            }
-            return true;
-        }
-
-        return false;
-    }
-
+    public int size() { return inventory.size(); }
+    public boolean isEmpty() { return inventory.stream().allMatch(ItemStack::isEmpty); }
+    public ItemStack getStack(int slot) { return inventory.get(slot); }
+    public ItemStack removeStack(int slot, int count) { return Inventories.splitStack(inventory, slot, count); }
+    public ItemStack removeStack(int slot) { return Inventories.removeStack(inventory, slot); }
+    public void setStack(int slot, ItemStack stack) { inventory.set(slot, stack); }
+    public boolean canPlayerUse(PlayerEntity player) { return true; }
+    public void clear() { inventory.clear(); }
 
     public DefaultedList<ItemStack> getInventory() {
         return inventory;
     }
 
-    public BlacksmithFurnaceBlockEntity(BlockPos pos, BlockState state) {
-        super(CMTBlockEntities.BLACKSMITHFURNACEBLOCKENTITY, pos, state);
-    }
-
-    public ItemStack getItem(int Index) {
-        return inventory.get(Index);
-    }
-
-    public void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, inventory, registries);
-        if (controllerPos != null) {
-            nbt.putLong("Controller", controllerPos.asLong());
-        }
-
-        super.writeNbt(nbt,registries);
-    }
-
-    public void readNbt(NbtCompound nbt) {
-        Inventories.readNbt(nbt, inventory,registries);
-        if (nbt.contains("Controller")) {
-            controllerPos = BlockPos.fromLong(nbt.getLong("Controller"));
-        }
-
-        super.readNbt(nbt,registries);
-    }
-
-    public void setController(BlockPos controllerPos) {
-        this.controllerPos = controllerPos;
+    public SmithingAnvilBlockEntity(BlockPos pos, BlockState state) {
+        super(CMTBlockEntities.SMITHINGANVILBLOCKENTITY, pos, state);
     }
 
     @Override
@@ -106,5 +82,29 @@ public class BlacksmithFurnaceBlockEntity extends BlockEntity {
     @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
         return createNbt(registryLookup);
+    }
+
+    @Override
+    public BlockPos getScreenOpeningData(ServerPlayerEntity serverPlayerEntity) {
+        return this.pos;
+    }
+
+    @Override
+    public Text getDisplayName() {
+        return Text.literal("Smithing Anvil");
+    }
+
+    @Override
+    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        return new SmithingAnvilScreenHandler(syncId, playerInventory, this);
+    }
+
+    public static void tick(World world, BlockPos pos, BlockState state, SmithingAnvilBlockEntity be) {
+        if (world.isClient) return;
+
+        ItemStack stack = be.inventory.get(0);
+        if (stack.getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem && unfinishedSmithedItem.isTransformStateMet(stack)) {
+            be.inventory.set(0, unfinishedSmithedItem.finishedItem);
+        }
     }
 }

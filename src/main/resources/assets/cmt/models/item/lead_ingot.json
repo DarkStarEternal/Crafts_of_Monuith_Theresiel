@@ -1,8 +1,8 @@
 {
   "parent": "cmt:custom/ingot",
   "textures": {
-    "all": "cmt:item/crude_iron_ingot",
-    "particle": "cmt:item/crude_iron_ingot",
-    "0": "cmt:item/crude_iron_ingot"
+    "all": "cmt:item/lead_ingot",
+    "particle": "cmt:item/lead_ingot",
+    "0": "cmt:item/lead_ingot"
   }
 }
