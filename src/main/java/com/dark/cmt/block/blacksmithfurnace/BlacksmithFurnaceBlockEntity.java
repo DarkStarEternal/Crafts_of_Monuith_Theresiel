@@ -84,6 +84,8 @@ public class BlacksmithFurnaceBlockEntity extends BlockEntity {
         super.readNbt(nbt,registries);
     }
 
+
+
     public void setController(BlockPos controllerPos) {
         this.controllerPos = controllerPos;
     }

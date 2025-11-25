@@ -77,21 +77,21 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 93, y + 35, () -> handler.transformItem(getUnfinishedItemFromRecipeEntry(page, 1, handler.getSlot(0).getStack()), 0),
+                        x + 93, y + 35, () -> handler.transformItem(getUnfinishedItemFromRecipeEntry(page, 1, handler.getSlot(0).getStack()), 0, 1, page),
                         () -> getFinalItemFromRecipeEntry(page, 1)
                 )
         );
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 117, y + 35, () -> handler.transformItem(getUnfinishedItemFromRecipeEntry(page, 2, handler.getSlot(0).getStack()), 0),
+                        x + 117, y + 35, () -> handler.transformItem(getUnfinishedItemFromRecipeEntry(page, 2, handler.getSlot(0).getStack()), 0, 2, page),
                         () -> getFinalItemFromRecipeEntry(page, 2)
                 )
         );
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 141, y + 35, () -> handler.transformItem(getUnfinishedItemFromRecipeEntry(page, 3, handler.getSlot(0).getStack()), 0),
+                        x + 141, y + 35, () -> handler.transformItem(getUnfinishedItemFromRecipeEntry(page, 3, handler.getSlot(0).getStack()), 0,3, page),
                         () -> getFinalItemFromRecipeEntry(page, 3)
                 )
         );

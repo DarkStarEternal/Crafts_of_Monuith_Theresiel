@@ -1,26 +1,31 @@
 package com.dark.cmt.screen.smithinganvil;
 
 import com.dark.cmt.block.smithinganvil.SmithingAnvilBlockEntity;
-import com.dark.cmt.item.SmithingManual;
-import com.dark.cmt.recipe.SmithingManualRecipe;
+import com.dark.cmt.networking.C2SSmithingAnvilUpdatePacket;
+import com.dark.cmt.networking.CMTNetwork;
 import com.dark.cmt.registry.CMTScreenHandlers;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.List;
+
 
 public class SmithingAnvilScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
     private final BlockPos blockPos;
+    private final BlockEntity blockEntity;
 
 
 
@@ -32,6 +37,7 @@ public class SmithingAnvilScreenHandler extends ScreenHandler {
         super(CMTScreenHandlers.SMITHING_ANVIL_SCREEN_HANDLER_TYPE, syncId);
         this.inventory = ((Inventory) blockEntity);
         this.blockPos = blockEntity.getPos();
+        this.blockEntity = blockEntity;
 
         this.addSlot(new Slot(inventory, 0, 7, 35) {
             @Override
@@ -64,12 +70,27 @@ public class SmithingAnvilScreenHandler extends ScreenHandler {
         return blockPos;
     }
 
-    public void transformItem(ItemStack stack, int slotID) {
+    public void transformItem(ItemStack stack, int slotID, int RecipeID, int RecipePage) {
         Slot slot = this.getSlot(slotID);
         slot.setStack(stack);
-        this.updateToClient();
-        this.sendContentUpdates();
-        this.onContentChanged(slot.inventory);
+
+        if (this.blockEntity instanceof SmithingAnvilBlockEntity smithingBE) {
+            sendUpdatePacket(RecipeID, RecipePage, this.getBlockPos());
+        }
+
+    }
+
+    public void sendUpdatePacket(int RecipeID, int RecipePage, BlockPos pos) {
+        C2SSmithingAnvilUpdatePacket packet = new C2SSmithingAnvilUpdatePacket(
+                RecipeID,
+                RecipePage,
+                pos
+        );
+
+        PacketByteBuf buf = PacketByteBufs.create();
+        packet.write(buf);
+
+        CMTNetwork.send(packet);
     }
 
     @Override
