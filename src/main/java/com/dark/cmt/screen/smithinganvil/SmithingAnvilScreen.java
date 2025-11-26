@@ -2,11 +2,15 @@ package com.dark.cmt.screen.smithinganvil;
 
 
 import com.dark.cmt.CMT;
+import com.dark.cmt.block.smithinganvil.SmithingAnvilBlockEntity;
 import com.dark.cmt.item.SmithingManual;
 import com.dark.cmt.item.smitheditems.UnfinishedSmithedItem;
+import com.dark.cmt.networking.C2SSmithingAnvilUpdatePayload;
 import com.dark.cmt.recipe.SmithingManualRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -15,8 +19,10 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.Collections;
 import java.util.List;
@@ -77,21 +83,21 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 93, y + 35, () -> handler.transformItem(getUnfinishedItemFromRecipeEntry(page, 1, handler.getSlot(0).getStack()), 0, 1, page),
+                        x + 93, y + 35, () -> transformItem(1, page),
                         () -> getFinalItemFromRecipeEntry(page, 1)
                 )
         );
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 117, y + 35, () -> handler.transformItem(getUnfinishedItemFromRecipeEntry(page, 2, handler.getSlot(0).getStack()), 0, 2, page),
+                        x + 117, y + 35, () -> transformItem(2, page),
                         () -> getFinalItemFromRecipeEntry(page, 2)
                 )
         );
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 141, y + 35, () -> handler.transformItem(getUnfinishedItemFromRecipeEntry(page, 3, handler.getSlot(0).getStack()), 0,3, page),
+                        x + 141, y + 35, () -> transformItem(3, page),
                         () -> getFinalItemFromRecipeEntry(page, 3)
                 )
         );
@@ -111,6 +117,18 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
         ));
 
         updateButtons();
+    }
+
+    public void transformItem(int RecipeID, int RecipePage) {
+        if (handler.getBlockEntity() instanceof SmithingAnvilBlockEntity smithingBE) {
+            sendUpdatePacket(RecipeID, RecipePage, handler.getBlockPos());
+        }
+
+    }
+
+    public void sendUpdatePacket(int RecipeID, int RecipePage, BlockPos pos) {
+        C2SSmithingAnvilUpdatePayload payload = new C2SSmithingAnvilUpdatePayload(RecipeID, RecipePage, pos.getX(), pos.getY(), pos.getZ());
+        ClientPlayNetworking.send(payload);
     }
 
     public ItemStack getFinalItemFromRecipeEntry(int page, int entry){

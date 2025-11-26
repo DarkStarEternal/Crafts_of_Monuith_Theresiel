@@ -4,6 +4,7 @@ import com.dark.cmt.networking.CMTNetwork;
 import com.dark.cmt.registry.*;
 import com.dark.cmt.world.gen.CMTWorldGeneration;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.network.packet.CustomPayload;
 
 public class CMT implements ModInitializer {
 

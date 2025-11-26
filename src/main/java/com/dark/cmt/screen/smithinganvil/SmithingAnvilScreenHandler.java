@@ -1,7 +1,7 @@
 package com.dark.cmt.screen.smithinganvil;
 
 import com.dark.cmt.block.smithinganvil.SmithingAnvilBlockEntity;
-import com.dark.cmt.networking.C2SSmithingAnvilUpdatePacket;
+import com.dark.cmt.networking.C2SSmithingAnvilUpdatePayload;
 import com.dark.cmt.networking.CMTNetwork;
 import com.dark.cmt.registry.CMTScreenHandlers;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -23,9 +23,9 @@ import net.minecraft.util.math.BlockPos;
 
 public class SmithingAnvilScreenHandler extends ScreenHandler {
 
-    private final Inventory inventory;
-    private final BlockPos blockPos;
-    private final BlockEntity blockEntity;
+    private Inventory inventory;
+    private BlockPos blockPos;
+    private BlockEntity blockEntity;
 
 
 
@@ -35,7 +35,10 @@ public class SmithingAnvilScreenHandler extends ScreenHandler {
 
     public SmithingAnvilScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity) {
         super(CMTScreenHandlers.SMITHING_ANVIL_SCREEN_HANDLER_TYPE, syncId);
-        this.inventory = ((Inventory) blockEntity);
+        if (!(blockEntity instanceof SmithingAnvilBlockEntity smithingBE))
+            throw new IllegalStateException("BlockEntity is not a SmithingAnvilBlockEntity!");
+
+        this.inventory = smithingBE;
         this.blockPos = blockEntity.getPos();
         this.blockEntity = blockEntity;
 
@@ -70,27 +73,8 @@ public class SmithingAnvilScreenHandler extends ScreenHandler {
         return blockPos;
     }
 
-    public void transformItem(ItemStack stack, int slotID, int RecipeID, int RecipePage) {
-        Slot slot = this.getSlot(slotID);
-        slot.setStack(stack);
-
-        if (this.blockEntity instanceof SmithingAnvilBlockEntity smithingBE) {
-            sendUpdatePacket(RecipeID, RecipePage, this.getBlockPos());
-        }
-
-    }
-
-    public void sendUpdatePacket(int RecipeID, int RecipePage, BlockPos pos) {
-        C2SSmithingAnvilUpdatePacket packet = new C2SSmithingAnvilUpdatePacket(
-                RecipeID,
-                RecipePage,
-                pos
-        );
-
-        PacketByteBuf buf = PacketByteBufs.create();
-        packet.write(buf);
-
-        CMTNetwork.send(packet);
+    public BlockEntity getBlockEntity() {
+        return blockEntity;
     }
 
     @Override

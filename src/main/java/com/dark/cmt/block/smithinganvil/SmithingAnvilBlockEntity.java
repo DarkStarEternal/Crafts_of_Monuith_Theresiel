@@ -23,8 +23,10 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -36,37 +38,79 @@ import java.util.List;
 
 public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, Inventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
-    public int size() { return inventory.size(); }
-    public boolean isEmpty() { return inventory.stream().allMatch(ItemStack::isEmpty); }
-    public ItemStack getStack(int slot) { return inventory.get(slot); }
-    public ItemStack removeStack(int slot, int count) { return Inventories.splitStack(inventory, slot, count); }
-    public ItemStack removeStack(int slot) { return Inventories.removeStack(inventory, slot); }
-    public void setStack(int slot, ItemStack stack) { inventory.set(slot, stack); }
-    public boolean canPlayerUse(PlayerEntity player) { return true; }
-    public void clear() { inventory.clear(); }
 
-    public DefaultedList<ItemStack> getInventory() {
-        return inventory;
+    @Override
+    public int size() {
+        return inventory.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        for (ItemStack stack : inventory) {
+            if (!stack.isEmpty()) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public ItemStack getStack(int slot) {
+        return inventory.get(slot);
+    }
+
+    @Override
+    public ItemStack removeStack(int slot, int amount) {
+        ItemStack result = Inventories.splitStack(inventory, slot, amount);
+        if (!result.isEmpty()) markDirty();
+        return result;
+    }
+
+    @Override
+    public ItemStack removeStack(int slot) {
+        return Inventories.removeStack(inventory, slot);
+    }
+
+    @Override
+    public void setStack(int slot, ItemStack stack) {
+        inventory.set(slot, stack);
+        if (stack.getCount() > getMaxCountPerStack()) {
+            stack.setCount(getMaxCountPerStack());
+        }
+        markDirty();
+    }
+
+    @Override
+    public boolean canPlayerUse(PlayerEntity player) {
+        return player.squaredDistanceTo(
+                pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5
+        ) <= 64.0;
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
     }
 
     public SmithingAnvilBlockEntity(BlockPos pos, BlockState state) {
         super(CMTBlockEntities.SMITHINGANVILBLOCKENTITY, pos, state);
     }
 
-    public void updateInventory(int slotID, ItemStack stack) {
-        this.inventory.set(slotID, stack);
-        markDirty();
-        toUpdatePacket();
-    }
-
     @Override
     public void markDirty() {
         super.markDirty();
-        if (world != null) {
-            BlockState state = getCachedState();
-            world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
+        if (!world.isClient) {
+            sync();
         }
     }
+
+
+    public void sync() {
+        if (world instanceof ServerWorld serverWorld) {
+            BlockEntityUpdateS2CPacket packet = BlockEntityUpdateS2CPacket.create(this);
+            serverWorld.getPlayers(p -> p.squaredDistanceTo(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5) < 64)
+                    .forEach(player -> player.networkHandler.sendPacket(packet));
+        }
+    }
+
 
     @Nullable
     @Override
@@ -94,6 +138,35 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
         return new SmithingAnvilScreenHandler(syncId, playerInventory, this);
     }
 
+    @Override
+    public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.writeNbt(nbt, registryLookup);
+        Inventories.writeNbt(nbt, inventory, registryLookup);
+    }
+
+    @Override
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
+        Inventories.readNbt(nbt, inventory, registryLookup);
+    }
+
+    public void transformCraftItem(int recipeID, int recipePage, ServerPlayerEntity player) {
+        if (isCorrectInput(recipePage, recipeID, inventory.get(0))) {
+            ItemStack newStack = getUnfinishedItemFromRecipeEntry(recipePage, recipeID);
+            if (!newStack.isEmpty()) {
+                // Replace the stack fully in the inventory
+                inventory.set(0, newStack.copy());
+                markDirty();
+
+                // Update the player's open screen if applicable
+                if (player.currentScreenHandler instanceof SmithingAnvilScreenHandler handler) {
+                    handler.slots.get(0).setStack(newStack.copy()); // avoid sharing same reference
+                    handler.sendContentUpdates();
+                }
+            }
+        }
+    }
+
     public static void tick(World world, BlockPos pos, BlockState state, SmithingAnvilBlockEntity be) {
         if (world.isClient) return;
 
@@ -103,25 +176,20 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
         }
     }
 
-    public void transformCraftItem(int RecipeID, int RecipePage) {
-
-    }
-
-    public ItemStack getUnfinishedItemFromRecipeEntry(int page, int entry, ItemStack input){
-        Item slot2 = inventory.get(2).getItem();
-        if (slot2 instanceof SmithingManual manual) {
-            if (getRecipeEntry(page, entry) != null) {
-                if (input.isIn(getRecipeEntry(page, entry).getInput())) {
-                    ItemStack stack = getRecipeEntry(page, entry).getUnfinishedOutput();
-                    return stack;
-                }
-            }
-            else {
-                ItemStack stack = new ItemStack(Blocks.BARRIER.asItem());
-                return stack;
-            }
+    public ItemStack getUnfinishedItemFromRecipeEntry(int page, int entry){
+        if (getRecipeEntry(page, entry) != null) {
+            ItemStack stack = getRecipeEntry(page, entry).getUnfinishedOutput();
+            return stack;
         }
         return new ItemStack(Blocks.AIR.asItem());
+    }
+
+    public TagKey getInputItemFromRecipeEntry(int page, int entry){
+        if (getRecipeEntry(page, entry) != null) {
+            TagKey tag = getRecipeEntry(page, entry).getInput();
+            return tag;
+        }
+        return null;
     }
 
     public SmithingManualRecipe getRecipeEntry(int page, int entry){
@@ -146,5 +214,12 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
 
         int end = Math.min((start + itemsPerPage), list.size());
         return list.subList(start, end);
+    }
+
+    public boolean isCorrectInput(int page, int recipeindex, ItemStack input) {
+        if (input.isIn(getInputItemFromRecipeEntry(page, recipeindex))) {
+            return true;
+        }
+        return false;
     }
 }
