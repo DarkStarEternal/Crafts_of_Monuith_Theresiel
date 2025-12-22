@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -150,17 +151,43 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
         Inventories.readNbt(nbt, inventory, registryLookup);
     }
 
-    public void transformCraftItem(int recipeID, int recipePage, ServerPlayerEntity player) {
-        if (isCorrectInput(recipePage, recipeID, inventory.get(0))) {
-            ItemStack newStack = getUnfinishedItemFromRecipeEntry(recipePage, recipeID);
-            if (!newStack.isEmpty()) {
-                // Replace the stack fully in the inventory
-                inventory.set(0, newStack.copy());
+    public void transformCraftItem(int recipeID, int recipePage, ServerPlayerEntity player, String material) {
+        if (!isCorrectInput(recipePage, recipeID, inventory.get(0))) return;
+
+        ItemStack recipeStack = getUnfinishedItemFromRecipeEntry(recipePage, recipeID, material);
+        if (recipeStack.isEmpty()) return;
+
+        if (recipeStack.get(DataComponentTypes.CUSTOM_DATA) == null) {
+            if (recipeStack.getItem() instanceof UnfinishedSmithedItem u) {
+                recipeStack = u.createNewStack(material);
+            }
+        }
+
+        inventory.set(0, recipeStack.copy());
+        markDirty();
+
+        if (player.currentScreenHandler instanceof SmithingAnvilScreenHandler handler) {
+            handler.slots.get(0).setStack(recipeStack.copy()); // avoid sharing same ref
+            handler.sendContentUpdates();
+        }
+    }
+
+
+    public void applyCraftCommand(String craftStep, ServerPlayerEntity player) {
+        ItemStack originalStack = inventory.get(0);
+
+        if (!originalStack.isEmpty() && validateCraftStep(craftStep, originalStack)) {
+            if (originalStack.getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+                int idx = unfinishedSmithedItem.getIndex(originalStack);
+                unfinishedSmithedItem.setStringListEntry(originalStack, "CompletedCommands", craftStep, idx);
+                unfinishedSmithedItem.setIndex(originalStack, idx + 1);
+
+                ItemStack updated = originalStack.copy();
+                inventory.set(0, updated);
                 markDirty();
 
-                // Update the player's open screen if applicable
                 if (player.currentScreenHandler instanceof SmithingAnvilScreenHandler handler) {
-                    handler.slots.get(0).setStack(newStack.copy()); // avoid sharing same reference
+                    handler.slots.get(0).setStack(updated.copy());
                     handler.sendContentUpdates();
                 }
             }
@@ -172,16 +199,38 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
 
         ItemStack stack = be.inventory.get(0);
         if (stack.getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem && unfinishedSmithedItem.isTransformStateMet(stack)) {
-            be.inventory.set(0, unfinishedSmithedItem.finishedItem);
+            be.inventory.set(0, unfinishedSmithedItem.finishedItem.copy());
         }
+
     }
 
-    public ItemStack getUnfinishedItemFromRecipeEntry(int page, int entry){
-        if (getRecipeEntry(page, entry) != null) {
-            ItemStack stack = getRecipeEntry(page, entry).getUnfinishedOutput();
-            return stack;
+    public ItemStack getUnfinishedItemFromRecipeEntry(int page, int entry, String material){
+        SmithingManualRecipe recipe = getRecipeEntry(page, entry);
+        if (recipe == null) return ItemStack.EMPTY;
+
+        ItemStack stack = recipe.getUnfinishedOutput();
+        if (stack.isEmpty()) return ItemStack.EMPTY;
+
+        if (stack.get(DataComponentTypes.CUSTOM_DATA) == null) {
+            Item item = stack.getItem();
+            if (item instanceof UnfinishedSmithedItem unfinished) {
+                return unfinished.createNewStack(material);
+            }
         }
-        return new ItemStack(Blocks.AIR.asItem());
+
+        return stack;
+    }
+
+
+    public boolean validateCraftStep(String craftStep, ItemStack input) {
+        if (input.getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+            if (unfinishedSmithedItem.getStringListEntry(input, "Commands",
+                    unfinishedSmithedItem.getIndex(input)).equals(craftStep)) {
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 
     public TagKey getInputItemFromRecipeEntry(int page, int entry){
@@ -195,11 +244,10 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
     public SmithingManualRecipe getRecipeEntry(int page, int entry){
         Item slot2 = inventory.get(2).getItem();
         if (slot2 instanceof SmithingManual manual) {
-            if (getPageEntries(manual.getRecipeList(), page, 3).get(entry-1) != null) {
-                return getPageEntries(manual.getRecipeList(), page, 3).get(entry-1);
-            }
-            else {
-                return null;
+            List<SmithingManualRecipe> pageEntries = getPageEntries(manual.getRecipeList(), page, 3);
+            int idx = entry - 1;
+            if (idx >= 0 && idx < pageEntries.size()) {
+                return pageEntries.get(idx);
             }
         }
         return null;

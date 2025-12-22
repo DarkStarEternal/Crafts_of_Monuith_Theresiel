@@ -3,13 +3,10 @@ package com.dark.cmt.datagen;
 import com.dark.cmt.registry.CMTItems;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 
-import com.dark.cmt.registry.CMTBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 
@@ -38,6 +35,12 @@ public class CMTItemTagProvider extends FabricTagProvider.ItemTagProvider {
             net.minecraft.registry.RegistryKeys.ITEM,
             Identifier.of("c", "silver_ingots")
     );
+
+    public static final TagKey<Item> INGOTS = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of("c", "ingots")
+    );
+
     public CMTItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
     }
@@ -55,5 +58,16 @@ public class CMTItemTagProvider extends FabricTagProvider.ItemTagProvider {
                 .add(CMTItems.STEELINGOT);
         getOrCreateTagBuilder(SILVER_INGOTS)
                 .add(CMTItems.SILVERINGOT);
+
+        getOrCreateTagBuilder(INGOTS)
+                .add(CMTItems.SILVERINGOT)
+                .add(CMTItems.TININGOT)
+                .add(CMTItems.BRONZEINGOT)
+                .add(CMTItems.STEELINGOT)
+                .add(Items.COPPER_INGOT)
+                .add(Items.IRON_INGOT)
+                .add(Items.GOLD_INGOT)
+                .add(Items.NETHERITE_INGOT)
+                .add(CMTItems.LEADINGOT);
     }
 }

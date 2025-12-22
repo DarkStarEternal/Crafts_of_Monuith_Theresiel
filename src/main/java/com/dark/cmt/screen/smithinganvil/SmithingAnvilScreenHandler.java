@@ -1,20 +1,12 @@
 package com.dark.cmt.screen.smithinganvil;
 
 import com.dark.cmt.block.smithinganvil.SmithingAnvilBlockEntity;
-import com.dark.cmt.networking.C2SSmithingAnvilUpdatePayload;
-import com.dark.cmt.networking.CMTNetwork;
 import com.dark.cmt.registry.CMTScreenHandlers;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;

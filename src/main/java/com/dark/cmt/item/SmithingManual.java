@@ -12,13 +12,8 @@ public class SmithingManual extends Item {
 
     public List<SmithingManualRecipe> recipeList = new ArrayList<>();
 
-    public SmithingManual() {
-        super(new Settings().maxCount(1).rarity(Rarity.RARE));
-
-        addToRecipeList(CMTSmithingManualRecipes.LEADHOOK);
-
-        addToRecipeList(CMTSmithingManualRecipes.STEELBLADE);
-        addToRecipeList(CMTSmithingManualRecipes.STEELARMGUARD);
+    public SmithingManual(Settings settings) {
+        super(settings);
     }
 
     public List<SmithingManualRecipe> getRecipeList() {

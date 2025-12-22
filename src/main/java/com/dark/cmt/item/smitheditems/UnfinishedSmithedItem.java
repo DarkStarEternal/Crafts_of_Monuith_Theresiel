@@ -1,8 +1,5 @@
 package com.dark.cmt.item.smitheditems;
 
-import com.dark.cmt.registry.CMTItems;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.Entity;
@@ -11,26 +8,32 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
+import net.minecraft.text.Style;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ActionResult;
+import net.minecraft.text.Text;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UnfinishedSmithedItem extends Item {
 
     public List<String> commands;
-    public List<String> completedCommands;
-    public int currentCommandIndex = 0;
     public ItemStack finishedItem;
     public float temperature = 300;
 
-    private static final String COMMANDS_KEY = "Commands";
-    private static final String COMPLETED_KEY = "CompletedCommands";
-    private static final String CURRENT_INDEX_KEY = "CurrentIndex";
-    private static final String TEMPERATURE_KEY = "Temperature";
+    public static final String COMMANDS_KEY = "Commands";
+    public static final String COMPLETED_KEY = "CompletedCommands";
+    public static final String CURRENT_INDEX_KEY = "CurrentIndex";
+    public static final String TEMPERATURE_KEY = "Temperature";
+    public static final String MATERIAL_KEY = "Material";
 
     public UnfinishedSmithedItem(Settings settings, List<String> givenCommands, Item finishedItem) {
         super(settings);
@@ -38,109 +41,90 @@ public class UnfinishedSmithedItem extends Item {
         this.finishedItem = new ItemStack(finishedItem);
     }
 
-    private String getStringListEntry(ItemStack stack, String key, int index) {
+    private NbtCompound getOrCreateData(ItemStack stack) {
         NbtComponent comp = stack.get(DataComponentTypes.CUSTOM_DATA);
-
-        if (comp != null) {
-            var nbt = comp.copyNbt();
-            if (nbt.contains(key)) {
-                var list = nbt.getList(key, 8);
-                return list.getString(index);
-
-            }
-        }
-        return "";
+        return comp != null ? comp.getNbt().copy() : new NbtCompound();
     }
 
-    private List<String> getStringList(ItemStack stack, String key) {
-        NbtComponent comp = stack.get(DataComponentTypes.CUSTOM_DATA);
-        List<String> result = new ArrayList<>();
+    private void saveData(ItemStack stack, NbtCompound data) {
+        stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(data));
+    }
 
-        if (comp != null) {
-            var nbt = comp.copyNbt();
-            if (nbt.contains(key)) {
-                var list = nbt.getList(key, 8);
-                for (int i = 0; i < list.size(); i++) {
-                    result.add(list.getString(i));
-                }
-            }
+    public List<String> getStringList(ItemStack stack, String key) {
+        List<String> out = new ArrayList<>();
+        NbtCompound nbt = getOrCreateData(stack);
+
+        if (!nbt.contains(key, NbtElement.LIST_TYPE)) {
+            return out;
         }
 
-        return result;
+        NbtList list = nbt.getList(key, NbtElement.STRING_TYPE);
+        for (int i = 0; i < list.size(); i++) {
+            out.add(list.getString(i));
+        }
+        return out;
     }
 
+    public String getStringListEntry(ItemStack stack, String key, int index) {
+        NbtCompound nbt = getOrCreateData(stack);
+        if (!nbt.contains(key, NbtElement.LIST_TYPE)) return "";
 
-    private void setStringList(ItemStack stack, String key, List<String> data) {
-        var listTag = new net.minecraft.nbt.NbtList();
-        for (String s : data) listTag.add(net.minecraft.nbt.NbtString.of(s));
+        NbtList list = nbt.getList(key, NbtElement.STRING_TYPE);
+        if (index < 0 || index >= list.size()) return "";
 
-        var comp = Optional.ofNullable(stack.get(DataComponentTypes.CUSTOM_DATA))
-                .map(NbtComponent::copyNbt) // clone existing if any
-                .orElse(new NbtCompound());
-
-        var nbt = comp.copy();
-        nbt.put(key, listTag);
-        stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
+        return list.getString(index);
     }
 
-    private int getIndex(ItemStack stack) {
-        NbtComponent comp = stack.get(DataComponentTypes.CUSTOM_DATA);
-        if (comp == null) return 0;
-        return comp.copyNbt().getInt(CURRENT_INDEX_KEY);
+    public void setStringListEntry(ItemStack stack, String key, String value, int index) {
+        NbtCompound nbt = getOrCreateData(stack);
+
+        NbtList list = nbt.contains(key, NbtElement.LIST_TYPE)
+                ? nbt.getList(key, NbtElement.STRING_TYPE)
+                : new NbtList();
+
+        while (list.size() <= index) {
+            list.add(NbtString.of(""));
+        }
+
+        list.set(index, NbtString.of(value));
+        nbt.put(key, list);
+        saveData(stack, nbt);
     }
 
-    private void setIndex(ItemStack stack, int i) {
-        var comp = Optional.ofNullable(stack.get(DataComponentTypes.CUSTOM_DATA))
-                .map(NbtComponent::copyNbt)
-                .orElse(new NbtCompound());
-
-        NbtCompound nbt = comp.copy();
-        nbt.putInt(CURRENT_INDEX_KEY, i);
-        stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
+    public float getTemperature(ItemStack stack) {
+        NbtCompound nbt = getOrCreateData(stack);
+        return nbt.contains(TEMPERATURE_KEY, NbtElement.FLOAT_TYPE)
+                ? nbt.getFloat(TEMPERATURE_KEY)
+                : 300f;
     }
 
-
-    private float getTemperature(ItemStack stack) {
-        NbtComponent comp = stack.get(DataComponentTypes.CUSTOM_DATA);
-        if (comp == null) return 300F;
-        return comp.copyNbt().getFloat(TEMPERATURE_KEY);
-    }
-
-    private void setTemperature(ItemStack stack, float t) {
-        var comp = Optional.ofNullable(stack.get(DataComponentTypes.CUSTOM_DATA))
-                .map(NbtComponent::copyNbt)
-                .orElse(new NbtCompound());
-
-        NbtCompound nbt = comp.copy();
+    public void setTemperature(ItemStack stack, float t) {
+        NbtCompound nbt = getOrCreateData(stack);
         nbt.putFloat(TEMPERATURE_KEY, t);
-        stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
+        saveData(stack, nbt);
     }
 
-
-    private ItemStack getFinishedItem() {
-        return this.finishedItem;
+    public String getMaterial(ItemStack stack) {
+        NbtCompound nbt = getOrCreateData(stack);
+        return nbt.contains(MATERIAL_KEY, NbtElement.STRING_TYPE)
+                ? nbt.getString(MATERIAL_KEY)
+                : "";
     }
 
-
-    private void setFinishedItem(ItemStack stack) {
-        this.finishedItem = stack;
+    public int getIndex(ItemStack stack) {
+        NbtCompound nbt = getOrCreateData(stack);
+        return nbt.getInt(CURRENT_INDEX_KEY);
     }
 
-    public void createCompletedList() {
-        this.completedCommands = new ArrayList<>();
+    public void setIndex(ItemStack stack, int index) {
+        NbtCompound nbt = getOrCreateData(stack);
+        nbt.putInt(CURRENT_INDEX_KEY, index);
+        saveData(stack, nbt);
     }
 
-    public void validateCommand(String inputCommand, ItemStack stack) {
-        if (getStringList(stack, COMMANDS_KEY).get(getIndex(stack)).equals(inputCommand)) {
-            List<String> completedList = getStringList(stack, COMPLETED_KEY);
-
-            completedList.add(getStringListEntry(stack, COMMANDS_KEY, getIndex(stack)));
-            setIndex(stack, getIndex(stack) + 1);
-        }
-    }
-
-    public void addToCommands(String input) {
-        this.commands.add(input);
+    public boolean isTransformStateMet(ItemStack stack) {
+        return getTemperature(stack) <= 30 &&
+                getStringList(stack, COMPLETED_KEY).equals(getStringList(stack, COMMANDS_KEY));
     }
 
     @Override
@@ -148,46 +132,54 @@ public class UnfinishedSmithedItem extends Item {
         super.inventoryTick(stack, world, entity, slot, selected);
 
         if (!world.isClient && isTransformStateMet(stack)) {
-            ItemStack finishedStack = this.finishedItem;
-
+            ItemStack finishedStack = this.finishedItem.copy();
             if (entity instanceof PlayerEntity player) {
                 player.getInventory().setStack(slot, finishedStack);
             } else if (entity instanceof ItemEntity itemEntity) {
                 itemEntity.setStack(finishedStack);
             }
         }
-        else if (!world.isClient && this.temperature >= 30) {
+        else if (!world.isClient && getTemperature(stack) >= 30) {
             setTemperature(stack, getTemperature(stack) - 0.2f);
         }
     }
 
-    public boolean isTransformStateMet(ItemStack stack) {
-        return getTemperature(stack) <= 30 && getStringList(stack, COMPLETED_KEY).equals(getStringList(stack, COMMANDS_KEY));
-    }
-
-
-
-    public ItemStack createNewStack() {
+    public ItemStack createNewStack(String material) {
         ItemStack stack = new ItemStack(this);
 
         NbtCompound nbt = new NbtCompound();
 
-        var list = new net.minecraft.nbt.NbtList();
-        for (String command : this.commands) {
-            list.add(net.minecraft.nbt.NbtString.of(command));
+        NbtList cmds = new NbtList();
+        for (String cmd : this.commands) {
+            cmds.add(NbtString.of(cmd));
         }
-        nbt.put(COMMANDS_KEY, list);
+        nbt.put(COMMANDS_KEY, cmds);
 
-        // Start with an empty completed list
-        nbt.put(COMPLETED_KEY, new net.minecraft.nbt.NbtList());
-
-        // Set starting command index + temp
+        nbt.put(COMPLETED_KEY, new NbtList());
         nbt.putInt(CURRENT_INDEX_KEY, 0);
         nbt.putFloat(TEMPERATURE_KEY, this.temperature);
+        nbt.putString(MATERIAL_KEY, material);
 
-        // Attach to stack
-        stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
+        saveData(stack, nbt);
+
+        stack.set(
+                DataComponentTypes.CUSTOM_NAME,
+                Text.literal("Unfinished Hook [" + material + "]").setStyle(Style.EMPTY.withItalic(false))
+        );
 
         return stack;
+    }
+
+    @Override
+    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+        if (!user.getWorld().isClient && user instanceof ServerPlayerEntity sp) {
+
+            sp.sendMessage(Text.literal("Completed: " + getStringList(stack, COMPLETED_KEY)), false);
+            sp.sendMessage(Text.literal("Commands: " + getStringList(stack, COMMANDS_KEY)), false);
+            sp.sendMessage(Text.literal("Temperature: " + getTemperature(stack)), false);
+            sp.sendMessage(Text.literal("Material: " + getMaterial(stack)), false);
+        }
+
+        return ActionResult.SUCCESS_NO_ITEM_USED;
     }
 }

@@ -4,15 +4,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
 
+import java.util.List;
+
 public class SmithingManualRecipe {
     public String name;
-    public TagKey<Item> input;
+    public TagKey<Item> hasRecipe;
     public ItemStack unfinishedOutput;
     public ItemStack finalitem;
 
-    public SmithingManualRecipe(String name1, TagKey<Item> input1, ItemStack unfinishedOutput1, ItemStack finalItem1) {
+    public SmithingManualRecipe(String name1, ItemStack unfinishedOutput1, ItemStack finalItem1, TagKey<Item> hasRecipe) {
         this.name = name1;
-        this.input = input1;
+        this.hasRecipe = hasRecipe;
         this.unfinishedOutput = unfinishedOutput1;
         this.finalitem = finalItem1;
     }
@@ -26,7 +28,7 @@ public class SmithingManualRecipe {
     }
 
     public TagKey<Item> getInput() {
-        return input;
+        return hasRecipe;
     }
 
     public ItemStack getUnfinishedOutput() {

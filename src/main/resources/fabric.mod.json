@@ -11,13 +11,16 @@
   "environment": "*",
   "entrypoints": {
     "fabric-datagen": [
-      "com.dark.cmt.client.CMTDataGenerator"
+      "com.dark.cmt.CMTDataGenerator"
     ],
     "client": [
-      "com.dark.cmt.client.CMTClient"
+      "com.dark.cmt.CMTClient"
     ],
     "main": [
       "com.dark.cmt.CMT"
+    ],
+    "model_loading": [
+      "com.dark.cmt.registry.CMTModelLoadingPlugin"
     ]
   },
   "mixins": [

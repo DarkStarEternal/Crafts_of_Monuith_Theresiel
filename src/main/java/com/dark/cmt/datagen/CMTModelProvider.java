@@ -29,12 +29,10 @@ public class CMTModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        itemModelGenerator.register(CMTItems.CRUDEIRONAXE, Models.GENERATED);
         itemModelGenerator.register(CMTItems.SULFUR, Models.GENERATED);
         itemModelGenerator.register(CMTItems.SULFURICCOMPOUND, Models.GENERATED);
-        itemModelGenerator.register(CMTItems.SMITHINGMANUAL, Models.GENERATED);
-        itemModelGenerator.register(CMTItems.LEADHOOK, Models.GENERATED);
-        itemModelGenerator.register(CMTItems.STEELSWORDBLADE, Models.GENERATED);
+        itemModelGenerator.register(CMTItems.BASICMANUAL, Models.GENERATED);
+        itemModelGenerator.register(CMTItems.HEPHAISTONMANUAL, Models.GENERATED);
         itemModelGenerator.register(CMTItems.SILVERINGOT, Models.GENERATED);
         itemModelGenerator.register(CMTItems.RAWSILVER, Models.GENERATED);
     }

@@ -15,17 +15,6 @@ public class CMTItemGroups {
             .icon(() -> new ItemStack(CMTItems.SULFURICCOMPOUND))
             .displayName(Text.translatable("itemgroup.cmt.cmt"))
             .entries(((displayContext, entries) -> {
-                entries.add(Items.IRON_INGOT);
-                entries.add(Items.COPPER_INGOT);
-                entries.add(Items.GOLD_INGOT);
-                entries.add(Items.NETHERITE_INGOT);
-
-                entries.add(CMTItems.CRUDEIRONINGOT);
-                entries.add(CMTItems.CRUDEIRONAXE);
-                entries.add(CMTItems.CRUDEIRONPICKAXE);
-                entries.add(CMTItems.CRUDEIRONSWORD);
-                entries.add(CMTItems.CRUDEIRONSHOVEL);
-                entries.add(CMTItems.CRUDEIRONHOE);
 
                 entries.add(CMTBlocks.CASTSTONE);
                 entries.add(CMTBlocks.CASTSTONEBRICKS);
@@ -45,17 +34,25 @@ public class CMTItemGroups {
                 entries.add(CMTBlocks.SILVERDEEPSLATEORE);
                 entries.add(CMTBlocks.SILVERBLOCK);
 
-                entries.add(CMTItems.LEADINGOT);
-
                 entries.add(CMTItems.SULFUR);
                 entries.add(CMTItems.SULFURICCOMPOUND);
 
                 entries.add(CMTItems.TININGOT);
 
+                entries.add(CMTItems.LEADINGOT);
+
+                entries.add(CMTItems.STEELINGOT);
+
                 entries.add(CMTItems.SILVERINGOT);
                 entries.add(CMTItems.RAWSILVER);
 
-                entries.add(CMTItems.SMITHINGMANUAL);
+                entries.add(Items.IRON_INGOT);
+                entries.add(Items.COPPER_INGOT);
+                entries.add(Items.GOLD_INGOT);
+                entries.add(Items.NETHERITE_INGOT);
+
+                entries.add(CMTItems.BASICMANUAL);
+                entries.add(CMTItems.HEPHAISTONMANUAL);
             }))
             .build());
 

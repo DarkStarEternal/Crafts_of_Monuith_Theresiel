@@ -5,12 +5,15 @@ import com.dark.cmt.CMT;
 import com.dark.cmt.block.smithinganvil.SmithingAnvilBlockEntity;
 import com.dark.cmt.item.SmithingManual;
 import com.dark.cmt.item.smitheditems.UnfinishedSmithedItem;
-import com.dark.cmt.networking.C2SSmithingAnvilUpdatePayload;
+import com.dark.cmt.materials.SmithingMaterial;
+import com.dark.cmt.networking.C2SSmithingAnvilCraftStepValidationPayload;
+import com.dark.cmt.networking.C2SSmithingAnvilUnfinishedMutatePayload;
 import com.dark.cmt.recipe.SmithingManualRecipe;
+import com.dark.cmt.registry.CMTSmithingMaterials;
+import com.dark.cmt.registry.custom.MetalMaterialRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -19,7 +22,8 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -54,7 +58,7 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
                 ButtonWidget.builder(Text.literal("Bend"), button -> {
                     if (client != null && client.player != null) {
                         if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
-                            unfinishedSmithedItem.validateCommand("B", handler.getSlot(0).getStack());
+                            sendCommand("B");
                         }
                     }
                 }).dimensions(x + 25, y + 10, 60, 15).build()
@@ -83,21 +87,21 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 93, y + 35, () -> transformItem(1, page),
+                        x + 93, y + 35, () -> transformItemToUnfinished(1, page, getMaterialFromInput(handler.getSlot(0).getStack())),
                         () -> getFinalItemFromRecipeEntry(page, 1)
                 )
         );
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 117, y + 35, () -> transformItem(2, page),
+                        x + 117, y + 35, () -> transformItemToUnfinished(2, page, getMaterialFromInput(handler.getSlot(0).getStack())),
                         () -> getFinalItemFromRecipeEntry(page, 2)
                 )
         );
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 141, y + 35, () -> transformItem(3, page),
+                        x + 141, y + 35, () -> transformItemToUnfinished(3, page, getMaterialFromInput(handler.getSlot(0).getStack())),
                         () -> getFinalItemFromRecipeEntry(page, 3)
                 )
         );
@@ -119,15 +123,33 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
         updateButtons();
     }
 
-    public void transformItem(int RecipeID, int RecipePage) {
+    public void transformItemToUnfinished(int RecipeID, int RecipePage, String material) {
         if (handler.getBlockEntity() instanceof SmithingAnvilBlockEntity smithingBE) {
-            sendUpdatePacket(RecipeID, RecipePage, handler.getBlockPos());
+            sendUnfinishedMutationPacket(RecipeID, RecipePage, handler.getBlockPos(), material);
         }
-
     }
 
-    public void sendUpdatePacket(int RecipeID, int RecipePage, BlockPos pos) {
-        C2SSmithingAnvilUpdatePayload payload = new C2SSmithingAnvilUpdatePayload(RecipeID, RecipePage, pos.getX(), pos.getY(), pos.getZ());
+    public String getMaterialFromInput(ItemStack input) {
+        SmithingMaterial material = MetalMaterialRegistry.getMaterialFromInput(input);
+        if (material != null) {
+            return material.getMaterialIdentifier();
+        }
+        return "";
+    }
+
+    public void sendCommand(String inputCommand) {
+        if (handler.getBlockEntity() instanceof SmithingAnvilBlockEntity smithingBE) {
+            sendCraftStepValidationPacket(inputCommand, handler.getBlockPos());
+        }
+    }
+
+    public void sendUnfinishedMutationPacket(int RecipeID, int RecipePage, BlockPos pos, String material) {
+        C2SSmithingAnvilUnfinishedMutatePayload payload = new C2SSmithingAnvilUnfinishedMutatePayload(RecipeID, RecipePage, pos.getX(), pos.getY(), pos.getZ(), material);
+        ClientPlayNetworking.send(payload);
+    }
+
+    public void sendCraftStepValidationPacket(String inputCommand, BlockPos pos) {
+        C2SSmithingAnvilCraftStepValidationPayload payload = new C2SSmithingAnvilCraftStepValidationPayload(inputCommand, pos.getX(), pos.getY(), pos.getZ());
         ClientPlayNetworking.send(payload);
     }
 
@@ -146,52 +168,51 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
         return new ItemStack(Blocks.AIR.asItem());
     }
 
-    public ItemStack getUnfinishedItemFromRecipeEntry(int page, int entry, ItemStack input){
-        Item slot2 = handler.getSlot(2).getStack().getItem();
-        if (slot2 instanceof SmithingManual manual) {
-            if (getRecipeEntry(page, entry) != null) {
-                if (input.isIn(getRecipeEntry(page, entry).getInput())) {
-                    ItemStack stack = getRecipeEntry(page, entry).getUnfinishedOutput();
-                    return stack;
-                }
-            }
-            else {
-                ItemStack stack = new ItemStack(Blocks.BARRIER.asItem());
-                return stack;
-            }
-        }
-        return new ItemStack(Blocks.AIR.asItem());
-    }
-
     public SmithingManualRecipe getRecipeEntry(int page, int entry){
-        Item slot2 = handler.getSlot(2).getStack().getItem();
-        if (slot2 instanceof SmithingManual manual) {
-            if (getPageEntries(manual.getRecipeList(), page, 3).get(entry-1) != null) {
-                return getPageEntries(manual.getRecipeList(), page, 3).get(entry-1);
-            }
-            else {
-                return null;
-            }
-        }
+        Item slot0Item = handler.getSlot(0).getStack().getItem();
+        List<SmithingManualRecipe> filtered = getFilteredRecipes(slot0Item);
+        List<SmithingManualRecipe> pageEntries = getPageEntries(filtered, page, itemsPerPage);
+
+        int idx = entry - 1;
+        if (idx >= 0 && idx < pageEntries.size()) return pageEntries.get(idx);
         return null;
     }
 
     public List<SmithingManualRecipe> getPageEntries(List<SmithingManualRecipe> list, int page, int itemsPerPage) {
         int start = page * itemsPerPage;
-
-        // Prevent out of bounds
-        if (start >= list.size())
-            return Collections.emptyList();
-
-        int end = Math.min((start + itemsPerPage), list.size());
+        if (start >= list.size()) return Collections.emptyList();
+        int end = Math.min(start + itemsPerPage, list.size());
         return list.subList(start, end);
     }
 
-
     private void switchPage(int delta) {
         page += delta;
+        page = Math.max(0, Math.min(page, getMaxPageIndex()));
         updateButtons();
     }
+
+    private int getMaxPageIndex() {
+        Item slot0Item = handler.getSlot(0).getStack().getItem();
+        List<SmithingManualRecipe> filtered = getFilteredRecipes(slot0Item);
+        int totalRecipes = filtered.size();
+        return (totalRecipes - 1) / itemsPerPage; // zero-based index
+    }
+
+    private List<SmithingManualRecipe> getFilteredRecipes(Item inputItem) {
+        if (handler == null) return Collections.emptyList();
+        Item slot2Item = handler.getSlot(2).getStack().getItem();
+        if (!(slot2Item instanceof SmithingManual manual)) return Collections.emptyList();
+
+        return manual.getRecipeList().stream()
+                .filter(r -> {
+                    TagKey<Item> inputTag = r.getInput();
+                    return Registries.ITEM.getEntryList(inputTag).map(list -> list.stream()
+                            .anyMatch(entry -> entry.value() == inputItem)
+                    ).orElse(false);
+                })
+                .toList();
+    }
+
 
     private void updateButtons() {
         prevPageButton.active = page > 1;
