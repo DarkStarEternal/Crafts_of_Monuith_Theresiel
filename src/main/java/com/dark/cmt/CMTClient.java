@@ -28,7 +28,6 @@ public class CMTClient implements ClientModInitializer {
                 CMTItems.UNFINISHEDHOOK,
                 (stack, mode, matrices, vertexConsumers, light, overlay) -> {
                     new UnfinishedHookBuiltinRenderer().render(stack, matrices, vertexConsumers, light, overlay);
-                    System.out.println("RENDERING ITEM");
                 }
         );
 
