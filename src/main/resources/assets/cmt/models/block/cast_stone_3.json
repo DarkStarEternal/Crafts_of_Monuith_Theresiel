@@ -1,6 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "cmt:block/cast_stone_3"
-  }
-}

@@ -16,10 +16,8 @@ public class CMTItemGroups {
             .displayName(Text.translatable("itemgroup.cmt.cmt"))
             .entries(((displayContext, entries) -> {
 
-                entries.add(CMTBlocks.CASTSTONE);
-                entries.add(CMTBlocks.CASTSTONEBRICKS);
-                entries.add(CMTBlocks.CASTSTONETILES);
-                entries.add(CMTBlocks.CASTSTONETILESSTAIRS);
+                entries.add(CMTBlocks.BURNT_TERRACOTTA);
+                entries.add(CMTBlocks.ORNATE_BURNT_TERRACOTTA);
 
                 entries.add(CMTBlocks.BLACKSMITHFURNACEBASE);
 

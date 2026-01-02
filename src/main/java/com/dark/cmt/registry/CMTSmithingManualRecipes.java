@@ -10,6 +10,6 @@ import java.util.List;
 
 public class CMTSmithingManualRecipes {
 
-    public static final SmithingManualRecipe LEADHOOK = new SmithingManualRecipe("lead_hook",
+    public static final SmithingManualRecipe HOOK = new SmithingManualRecipe("hok_head",
             new ItemStack(CMTItems.UNFINISHEDHOOK),new ItemStack(CMTItems.HOOK) ,CMTItemTagProvider.INGOTS);
 }

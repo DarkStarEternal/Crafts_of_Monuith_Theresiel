@@ -35,14 +35,4 @@ public class MetalMaterialRegistry {
         }
         return list;
     }
-
-    public static List<Identifier> getLayersFromMaterial(String materialIdentifier) {
-        for (int i = 0; i < MATERIALS.size();) {
-            if (MATERIALS.get(i).getMaterialIdentifier().toLowerCase().equals(materialIdentifier.toLowerCase())) {
-                return MATERIALS.get(i).textureIdentifiers;
-            }
-            i++;
-        }
-        return List.of();
-    }
 }

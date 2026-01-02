@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "cmt:block/burnt_terracotta"
+      },
+      {
+        "model": "cmt:block/burnt_terracotta_1"
+      }
+    ]
+  }
+}

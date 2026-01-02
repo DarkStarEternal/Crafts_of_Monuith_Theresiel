@@ -2,10 +2,17 @@ package com.dark.cmt.datagen;
 
 import com.dark.cmt.registry.CMTBlocks;
 import com.dark.cmt.registry.CMTItems;
+import com.dark.cmt.registry.custom.MetalMaterialRegistry;
+import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.*;
 import net.minecraft.util.Identifier;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 public class CMTModelProvider extends FabricModelProvider {
     public CMTModelProvider(FabricDataOutput output) {
@@ -14,8 +21,6 @@ public class CMTModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        BlockStateModelGenerator.BlockTexturePool castStoneTilesPool = blockStateModelGenerator.registerCubeAllModelTexturePool(CMTBlocks.CASTSTONETILES);
-        castStoneTilesPool.stairs(CMTBlocks.CASTSTONETILESSTAIRS);
         blockStateModelGenerator.registerSimpleCubeAll(CMTBlocks.SULFURICORE);
         blockStateModelGenerator.registerSimpleCubeAll(CMTBlocks.SULFURICDEEPSLATEORE);
         blockStateModelGenerator.registerSimpleCubeAll(CMTBlocks.SULFURICNETHERORE);
@@ -24,7 +29,6 @@ public class CMTModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(CMTBlocks.SILVERORE);
         blockStateModelGenerator.registerSimpleCubeAll(CMTBlocks.SILVERDEEPSLATEORE);
         blockStateModelGenerator.registerSimpleCubeAll(CMTBlocks.SILVERBLOCK);
-
     }
 
     @Override

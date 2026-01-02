@@ -17,16 +17,11 @@ public class CMTBlockTagProvider extends FabricTagProvider.BlockTagProvider {
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
                 .add(CMTBlocks.BLACKSMITHFURNACEBASE)
-                .add(CMTBlocks.CASTSTONEBRICKS)
-                .add(CMTBlocks.CASTSTONETILES)
-                .add(CMTBlocks.CASTSTONETILESSTAIRS)
-                .add(CMTBlocks.CASTSTONE)
                 .add(CMTBlocks.SULFURICORE)
                 .add(CMTBlocks.SILVERBLOCK)
                 .add(CMTBlocks.SILVERDEEPSLATEORE)
                 .add(CMTBlocks.SILVERORE);
 
-        getOrCreateTagBuilder(BlockTags.STAIRS)
-                .add(CMTBlocks.CASTSTONETILESSTAIRS);
+        getOrCreateTagBuilder(BlockTags.STAIRS);
     }
 }

@@ -3,10 +3,6 @@ package com.dark.cmt.registry;
 import com.dark.cmt.CMT;
 
 import com.dark.cmt.block.blacksmithfurnace.BlacksmithFurnaceBase;
-import com.dark.cmt.block.caststone.CastStone;
-import com.dark.cmt.block.caststone.CastStoneBricks;
-import com.dark.cmt.block.caststone.tiles.CastStoneTiles;
-import com.dark.cmt.block.caststone.tiles.CastStoneTilesStairs;
 import com.dark.cmt.block.metal_blocks.SilverBlock;
 import com.dark.cmt.block.ore.LeadOre;
 import com.dark.cmt.block.ore.silver.SilverDeepslateOre;
@@ -16,18 +12,18 @@ import com.dark.cmt.block.ore.sulfur.SulfuricNetherOre;
 import com.dark.cmt.block.ore.sulfur.SulfuricOre;
 import com.dark.cmt.block.ore.TinOre;
 import com.dark.cmt.block.smithinganvil.SmithingAnvil;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Instrument;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class CMTBlocks {
-    public static final Block CASTSTONEBRICKS = registerBlockWithItem("cast_stone_bricks", new CastStoneBricks());
-    public static final Block CASTSTONE = registerBlockWithItem("cast_stone", new CastStone());
-    public static final Block CASTSTONETILES = registerBlockWithItem("cast_stone_tiles", new CastStoneTiles());
-    public static final Block CASTSTONETILESSTAIRS = registerBlockWithItem("cast_stone_tiles_stairs", new CastStoneTilesStairs());
+    public static final Block BURNT_TERRACOTTA = registerBlockWithItem("burnt_terracotta", new Block(AbstractBlock.Settings.create().requiresTool().hardness(2).resistance(2)));
+    public static final Block ORNATE_BURNT_TERRACOTTA = registerBlockWithItem("ornate_burnt_terracotta", new Block(AbstractBlock.Settings.create().requiresTool().hardness(2).resistance(2)));
 
     public static final Block LEADORE = registerBlockWithItem("lead_ore", new LeadOre());
 

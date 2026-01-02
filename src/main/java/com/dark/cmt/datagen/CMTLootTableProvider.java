@@ -27,10 +27,6 @@ public class CMTLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        addDrop(CMTBlocks.CASTSTONETILESSTAIRS);
-        addDrop(CMTBlocks.CASTSTONETILES);
-        addDrop(CMTBlocks.CASTSTONEBRICKS);
-        addDrop(CMTBlocks.CASTSTONE);
         addDrop(CMTBlocks.SULFURICORE, multipleOreDrops(CMTBlocks.SULFURICORE, CMTItems.SULFUR, 1,2));
         addDrop(CMTBlocks.SULFURICDEEPSLATEORE, multipleOreDrops(CMTBlocks.SULFURICDEEPSLATEORE, CMTItems.SULFUR, 2,4));
         addDrop(CMTBlocks.SULFURICNETHERORE, multipleOreDrops(CMTBlocks.SULFURICNETHERORE, CMTItems.SULFUR, 6,9));

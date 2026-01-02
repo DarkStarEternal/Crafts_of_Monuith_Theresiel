@@ -12,7 +12,7 @@ public class BasicManual extends SmithingManual{
 
     public BasicManual() {
         super(new Settings().maxCount(1).rarity(Rarity.UNCOMMON));
-        addToRecipeList(CMTSmithingManualRecipes.LEADHOOK);
+        addToRecipeList(CMTSmithingManualRecipes.HOOK);
     }
 
     public List<SmithingManualRecipe> getRecipeList() {
