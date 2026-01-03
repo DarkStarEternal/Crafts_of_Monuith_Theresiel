@@ -37,7 +37,6 @@ public class UnfinishedHookBuiltinRenderer implements BuiltinItemRenderer {
             if (nbt == null) {System.out.println("nbt is null");}
             if (nbt != null && nbt.contains("Material", NbtElement.STRING_TYPE)) {
                 material = nbt.getString("Material");
-                System.out.println(material);
             }
         }
 
@@ -47,28 +46,50 @@ public class UnfinishedHookBuiltinRenderer implements BuiltinItemRenderer {
                 "textures/item/smithing/rounded/hook/head/" + material + "_unfinished.png"
         );
 
-        // ---- Setup transforms ----
-        matrices.push();
-
-        Quaternionf xRot = new Quaternionf().rotateLocalX(0f);
-        Quaternionf yRot = new Quaternionf().rotateLocalY(30f);
-
         MinecraftClient.getInstance().getTextureManager().bindTexture(spriteId);
 
-        matrices.translate(0.5f, 0.75f, 0.5f);
+        matrices.push();
 
-        matrices.scale(0.75f, 0.75f, 0.75f); // adjust as needed
+        boolean isHandRendering = false;
+        boolean isGroundRendering = false;
 
-        matrices.multiply(xRot);
-        matrices.multiply(yRot);
+        MinecraftClient client = MinecraftClient.getInstance();
 
-        MatrixStack.Entry entry = matrices.peek();
+        if (client.player != null) {
+            ItemStack main = client.player.getMainHandStack();
+            ItemStack off = client.player.getOffHandStack();
+
+            // Only items actually in the player's hands are "hand rendering"
+            if (stack == main || stack == off) {
+                isHandRendering = true;
+            } else {
+                isGroundRendering = true;
+            }
+        } else {
+            // fallback if no player exists
+            isGroundRendering = true;
+        }
+
+
+
+        // ---- Apply transforms based on context ----
+        if (isHandRendering) {
+            // Hand: rotate and scale
+            matrices.translate(0.5f, 1f, 0.5f);
+            matrices.scale(0.75f, 0.75f, 0.75f);
+
+            matrices.multiply(new Quaternionf().rotateLocalX(0f));
+            matrices.multiply(new Quaternionf().rotateLocalY(30f));
+        } else if (isGroundRendering) {
+            // Ground/dropped item: scale smaller
+            matrices.translate(0.5f, 0.25f, 0.5f);
+            matrices.scale(0.5f, 0.5f, 0.5f);
+            matrices.multiply(new Quaternionf().rotateLocalX(190f));
+        }
 
         // ---- Vertex consumer ----
-        VertexConsumer consumer = vertexConsumers.getBuffer(
-                RenderLayer.getEntityTranslucent(spriteId)
-        );
-
+        VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(spriteId));
+        MatrixStack.Entry entry = matrices.peek();
 
         float z = 0.0f;
 
@@ -88,7 +109,7 @@ public class UnfinishedHookBuiltinRenderer implements BuiltinItemRenderer {
                                   int light, int overlay) {
 
         consumer.vertex(entry.getPositionMatrix(), x, y, z)
-                .color(1.0f, 1.0f, 1.0f, 1.0f)
+                .color(1f, 1f, 1f, 1f)
                 .texture(u, v)
                 .overlay(overlay)
                 .light(light)
