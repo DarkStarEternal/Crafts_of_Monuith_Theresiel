@@ -1,6 +1,7 @@
 package com.dark.cmt.registry.custom;
 
 import com.dark.cmt.materials.SmithingMaterial;
+import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
@@ -25,8 +26,8 @@ public class MetalMaterialRegistry {
         return null;
     }
 
-    public static List<Identifier> getAllLayers() {
-        List<Identifier> list = new ArrayList<Identifier>();
+    public static List<SpriteIdentifier> getAllLayers() {
+        List<SpriteIdentifier> list = new ArrayList<SpriteIdentifier>();
         for (int i = 0;
              i < MATERIALS.size();
              ) {

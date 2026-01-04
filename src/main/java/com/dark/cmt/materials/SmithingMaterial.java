@@ -1,5 +1,6 @@
 package com.dark.cmt.materials;
 
+import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -14,9 +15,9 @@ public class SmithingMaterial {
 
     public final String materialIdentifier;
 
-    public final List<Identifier> textureIdentifiers = new ArrayList<>();
+    public final List<SpriteIdentifier> textureIdentifiers = new ArrayList<>();
 
-    public SmithingMaterial(TagKey<Item> materialItems, String materialIdentifier, List<Identifier> identifierList) {
+    public SmithingMaterial(TagKey<Item> materialItems, String materialIdentifier, List<SpriteIdentifier> identifierList) {
         this.materialItems = materialItems;
         this.materialIdentifier = materialIdentifier;
         this.textureIdentifiers.addAll(identifierList);

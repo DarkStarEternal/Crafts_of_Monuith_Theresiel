@@ -14,7 +14,7 @@
       "com.dark.cmt.CMTDataGenerator"
     ],
     "client": [
-      "com.dark.cmt.CMTClient"
+      "com.dark.cmt.client.CMTClient"
     ],
     "main": [
       "com.dark.cmt.CMT"
