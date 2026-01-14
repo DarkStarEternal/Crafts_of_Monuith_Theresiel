@@ -1,6 +1,6 @@
 package com.dark.cmt.datagen;
 
-import com.dark.cmt.registry.CMTItems;
+import com.dark.cmt.init.CMTItems;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -35,6 +35,26 @@ public class CMTItemTagProvider extends FabricTagProvider.ItemTagProvider {
             net.minecraft.registry.RegistryKeys.ITEM,
             Identifier.of("c", "silver_ingots")
     );
+    public static final TagKey<Item> NETHERITE_INGOTS = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of("c", "netherite_ingots")
+    );
+    public static final TagKey<Item> GOLD_INGOTS = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of("c", "gold_ingots")
+    );
+    public static final TagKey<Item> IRON_INGOTS = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of("c", "iron_ingots")
+    );
+    public static final TagKey<Item> COPPER_INGOTS = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of("c", "copper_ingots")
+    );
+    public static final TagKey<Item> AURELIUM_INGOTS = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of("c", "aurelium_ingots")
+    );
 
     public static final TagKey<Item> INGOTS = TagKey.of(
             net.minecraft.registry.RegistryKeys.ITEM,
@@ -58,6 +78,14 @@ public class CMTItemTagProvider extends FabricTagProvider.ItemTagProvider {
                 .add(CMTItems.STEELINGOT);
         getOrCreateTagBuilder(SILVER_INGOTS)
                 .add(CMTItems.SILVERINGOT);
+        getOrCreateTagBuilder(NETHERITE_INGOTS)
+                .add(Items.NETHERITE_INGOT);
+        getOrCreateTagBuilder(GOLD_INGOTS)
+                .add(Items.GOLD_INGOT);
+        getOrCreateTagBuilder(IRON_INGOTS)
+                .add(Items.IRON_INGOT);
+        getOrCreateTagBuilder(COPPER_INGOTS)
+                .add(Items.COPPER_INGOT);
 
         getOrCreateTagBuilder(INGOTS)
                 .add(CMTItems.SILVERINGOT)

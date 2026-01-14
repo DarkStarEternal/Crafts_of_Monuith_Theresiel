@@ -1,16 +1,12 @@
 package com.dark.cmt.block.smithinganvil;
 
-import com.dark.cmt.registry.CMTBlockEntities;
-import com.dark.cmt.screen.smithinganvil.SmithingAnvilScreen;
+import com.dark.cmt.init.CMTBlockEntities;
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.state.StateManager;

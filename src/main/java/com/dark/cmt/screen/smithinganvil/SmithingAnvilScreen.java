@@ -9,8 +9,8 @@ import com.dark.cmt.materials.SmithingMaterial;
 import com.dark.cmt.networking.C2SSmithingAnvilCraftStepValidationPayload;
 import com.dark.cmt.networking.C2SSmithingAnvilUnfinishedMutatePayload;
 import com.dark.cmt.recipe.SmithingManualRecipe;
-import com.dark.cmt.registry.CMTSmithingMaterials;
-import com.dark.cmt.registry.custom.MetalMaterialRegistry;
+import com.dark.cmt.init.custom.MetalMaterialRegistry;
+import com.dark.cmt.init.custom.SmithingManualRecipes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Blocks;
@@ -22,12 +22,11 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,21 +65,27 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
         this.addDrawableChild(
                 ButtonWidget.builder(Text.literal("Shorten"), button -> {
                     if (client != null && client.player != null) {
-
+                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+                            sendCommand("S");
+                        }
                     }
                 }).dimensions(x + 25, y + 25, 60, 15).build()
         );
         this.addDrawableChild(
                 ButtonWidget.builder(Text.literal("Lenghten"), button -> {
                     if (client != null && client.player != null) {
-
+                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+                            sendCommand("L");
+                        }
                     }
                 }).dimensions(x + 25, y + 40, 60, 15).build()
         );
         this.addDrawableChild(
                 ButtonWidget.builder(Text.literal("Flatten"), button -> {
                     if (client != null && client.player != null) {
-
+                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+                            sendCommand("F");
+                        }
                     }
                 }).dimensions(x + 25, y + 55, 60, 15).build()
         );
@@ -203,14 +208,16 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
         Item slot2Item = handler.getSlot(2).getStack().getItem();
         if (!(slot2Item instanceof SmithingManual manual)) return Collections.emptyList();
 
-        return manual.getRecipeList().stream()
-                .filter(r -> {
-                    TagKey<Item> inputTag = r.getInput();
-                    return Registries.ITEM.getEntryList(inputTag).map(list -> list.stream()
-                            .anyMatch(entry -> entry.value() == inputItem)
-                    ).orElse(false);
-                })
-                .toList();
+        List<String> recipeNames = manual.getRecipeList(handler.getSlot(2).getStack());
+
+        List<SmithingManualRecipe> recipes = new ArrayList<>();
+
+        for (String name : recipeNames) {
+            SmithingManualRecipe recipe = SmithingManualRecipes.getRecipeFromName(name);
+            recipes.add(recipe);
+        }
+
+        return recipes;
     }
 
 

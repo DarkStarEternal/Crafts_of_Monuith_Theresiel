@@ -1,11 +1,9 @@
 package com.dark.cmt.block.blacksmithfurnace;
 
-import com.dark.cmt.registry.CMTBlockEntities;
-import com.dark.cmt.registry.CMTBlocks;
+import com.dark.cmt.init.CMTBlockEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -66,7 +64,9 @@ public class BlacksmithFurnaceBlockEntity extends BlockEntity {
         return inventory.get(Index);
     }
 
-    public void writeNbt(NbtCompound nbt) {
+    @Override
+    public void writeNbt(NbtCompound nbt , RegistryWrapper.WrapperLookup registryLookup) {
+        super.writeNbt(nbt, registryLookup);
         Inventories.writeNbt(nbt, inventory, registries);
         if (controllerPos != null) {
             nbt.putLong("Controller", controllerPos.asLong());
@@ -75,7 +75,9 @@ public class BlacksmithFurnaceBlockEntity extends BlockEntity {
         super.writeNbt(nbt,registries);
     }
 
-    public void readNbt(NbtCompound nbt) {
+    @Override
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
         Inventories.readNbt(nbt, inventory,registries);
         if (nbt.contains("Controller")) {
             controllerPos = BlockPos.fromLong(nbt.getLong("Controller"));
@@ -83,8 +85,6 @@ public class BlacksmithFurnaceBlockEntity extends BlockEntity {
 
         super.readNbt(nbt,registries);
     }
-
-
 
     public void setController(BlockPos controllerPos) {
         this.controllerPos = controllerPos;

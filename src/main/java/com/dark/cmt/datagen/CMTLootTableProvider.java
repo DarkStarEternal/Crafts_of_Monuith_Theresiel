@@ -1,7 +1,7 @@
 package com.dark.cmt.datagen;
 
-import com.dark.cmt.registry.CMTBlocks;
-import com.dark.cmt.registry.CMTItems;
+import com.dark.cmt.init.CMTBlocks;
+import com.dark.cmt.init.CMTItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
@@ -30,6 +30,15 @@ public class CMTLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(CMTBlocks.SULFURICORE, multipleOreDrops(CMTBlocks.SULFURICORE, CMTItems.SULFUR, 1,2));
         addDrop(CMTBlocks.SULFURICDEEPSLATEORE, multipleOreDrops(CMTBlocks.SULFURICDEEPSLATEORE, CMTItems.SULFUR, 2,4));
         addDrop(CMTBlocks.SULFURICNETHERORE, multipleOreDrops(CMTBlocks.SULFURICNETHERORE, CMTItems.SULFUR, 6,9));
+
+        addDrop(CMTBlocks.SILVERORE, multipleOreDrops(CMTBlocks.SILVERORE, CMTItems.RAWSILVER, 1,2));
+        addDrop(CMTBlocks.SILVERDEEPSLATEORE, multipleOreDrops(CMTBlocks.SILVERDEEPSLATEORE, CMTItems.RAWSILVER, 2,3));
+
+        addDrop(CMTBlocks.PHOSPHORICSTONE, multipleOreDrops(CMTBlocks.PHOSPHORICSTONE, CMTItems.PHOSPHORUS, 2,6));
+
+        addDrop(CMTBlocks.LEADORE, multipleOreDrops(CMTBlocks.LEADORE, CMTItems.RAWLEAD, 2,4));
+
+        addDrop(CMTBlocks.TINORE, multipleOreDrops(CMTBlocks.TINORE, CMTItems.RAWTIN, 1,2));
     }
 
     public LootTable.Builder multipleOreDrops(Block drop, Item item, float minDrops, float maxDrops) {

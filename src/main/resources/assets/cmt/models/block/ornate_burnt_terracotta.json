@@ -1,10 +1,8 @@
 {
-  "parent": "minecraft:block/cube_top_bottom",
+  "parent": "block/cube_bottom_top",
   "textures": {
     "side": "cmt:block/terracotta_carved",
     "top": "cmt:block/terracotta_carved_top",
-    "bottom": "cmt:block/terracotta_carved_top",
-    "particle": "cmt:block/burnt_terracotta",
-    "0": "cmt:block/burnt_terracotta"
+    "bottom": "cmt:block/terracotta_carved_top"
   }
 }

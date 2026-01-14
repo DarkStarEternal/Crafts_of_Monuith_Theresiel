@@ -14,12 +14,9 @@ public class SmithingMaterial {
 
     public final String materialIdentifier;
 
-    public final List<Identifier> textureIdentifiers = new ArrayList<>();
-
-    public SmithingMaterial(TagKey<Item> materialItems, String materialIdentifier, List<Identifier> identifierList) {
+    public SmithingMaterial(TagKey<Item> materialItems, String materialIdentifier) {
         this.materialItems = materialItems;
         this.materialIdentifier = materialIdentifier;
-        this.textureIdentifiers.addAll(identifierList);
     }
 
     public TagKey<Item> getMaterialItems() {

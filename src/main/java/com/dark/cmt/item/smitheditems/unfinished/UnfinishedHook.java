@@ -1,7 +1,7 @@
 package com.dark.cmt.item.smitheditems.unfinished;
 
 import com.dark.cmt.item.smitheditems.UnfinishedSmithedItem;
-import com.dark.cmt.registry.CMTItems;
+import com.dark.cmt.init.CMTItems;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.dark.cmt.world;
 
 import com.dark.cmt.CMT;
-import com.dark.cmt.registry.CMTBlocks;
+import com.dark.cmt.init.CMTBlocks;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -14,7 +14,6 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 
-import java.rmi.registry.Registry;
 import java.util.List;
 
 public class CMTConfiguredFeatures {

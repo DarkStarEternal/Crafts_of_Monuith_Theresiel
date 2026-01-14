@@ -1,7 +1,7 @@
 package com.dark.cmt.screen.smithinganvil;
 
 import com.dark.cmt.block.smithinganvil.SmithingAnvilBlockEntity;
-import com.dark.cmt.registry.CMTScreenHandlers;
+import com.dark.cmt.init.CMTScreenHandlers;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

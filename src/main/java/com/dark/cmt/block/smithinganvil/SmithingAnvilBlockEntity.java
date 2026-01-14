@@ -3,12 +3,11 @@ package com.dark.cmt.block.smithinganvil;
 import com.dark.cmt.item.SmithingManual;
 import com.dark.cmt.item.smitheditems.UnfinishedSmithedItem;
 import com.dark.cmt.recipe.SmithingManualRecipe;
-import com.dark.cmt.registry.CMTBlockEntities;
+import com.dark.cmt.init.CMTBlockEntities;
+import com.dark.cmt.init.custom.SmithingManualRecipes;
 import com.dark.cmt.screen.smithinganvil.SmithingAnvilScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,8 +20,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandler;
@@ -34,6 +31,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -244,7 +242,14 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
     public SmithingManualRecipe getRecipeEntry(int page, int entry){
         Item slot2 = inventory.get(2).getItem();
         if (slot2 instanceof SmithingManual manual) {
-            List<SmithingManualRecipe> pageEntries = getPageEntries(manual.getRecipeList(), page, 3);
+
+            List<SmithingManualRecipe> recipeList = new ArrayList<>();
+
+            for (String recipeName : manual.getRecipeList(inventory.get(2))) {
+                recipeList.add(SmithingManualRecipes.getRecipeFromName(recipeName));
+            }
+
+            List<SmithingManualRecipe> pageEntries = getPageEntries(recipeList, page, 3);
             int idx = entry - 1;
             if (idx >= 0 && idx < pageEntries.size()) {
                 return pageEntries.get(idx);

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "cmt:block/knowledge_stone"
+    },
+    "facing=east": {
+      "model": "cmt:block/knowledge_stone",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "cmt:block/knowledge_stone",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cmt:block/knowledge_stone",
+      "y": 270
+    }
+  }
+}
