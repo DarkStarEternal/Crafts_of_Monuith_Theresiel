@@ -1,0 +1,9 @@
+{
+  "parent": "cmt:custom/knowledge_stone",
+  "textures": {
+    "all": "cmt:block/knowledge_stone_terracotta",
+    "particle": "cmt:block/knowledge_stone_terracotta",
+    "0": "cmt:block/knowledge_stone_terracotta"
+  },
+  "render_type": "cutout"
+}

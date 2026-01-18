@@ -1,7 +1,6 @@
 package com.dark.cmt.world.gen;
 
-import com.dark.cmt.world.CMTPlaceFeatures;
-import net.fabricmc.fabric.api.biome.v1.BiomeModification;
+import com.dark.cmt.init.CMTPlaceFeatures;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.world.gen.GenerationStep;

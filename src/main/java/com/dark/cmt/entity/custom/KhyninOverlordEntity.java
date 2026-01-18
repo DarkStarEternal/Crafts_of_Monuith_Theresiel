@@ -67,6 +67,7 @@ public class KhyninOverlordEntity extends PathAwareEntity implements Monster {
     @Override
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
+        this.goalSelector.add(2, new LookAtEntityGoal(this, PlayerEntity.class, 5f));
     }
 
     @Override

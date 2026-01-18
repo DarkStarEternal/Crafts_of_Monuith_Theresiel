@@ -2,9 +2,10 @@ package com.dark.cmt;
 
 import com.dark.cmt.block.blacksmithfurnace.BlacksmithFurnaceRenderer;
 
+import com.dark.cmt.block.pedestal.PedestalBlockEntityRenderer;
 import com.dark.cmt.entity.client.KhyninOverlordModel;
 import com.dark.cmt.entity.client.KhyninOverlordRenderer;
-import com.dark.cmt.item.smitheditems.unfinished.UnfinishedHookBuiltinRenderer;
+import com.dark.cmt.item.smitheditems.unfinished.UnfinishedSicleHeadBuiltinRenderer;
 import com.dark.cmt.item.smitheditems.unfinished.UnfinishedShortHandleBuiltinRenderer;
 import com.dark.cmt.init.*;
 import com.dark.cmt.screen.smithinganvil.SmithingAnvilScreen;
@@ -27,9 +28,9 @@ public class CMTClient implements ClientModInitializer {
         CMTSmithingMaterials.register();
 
         BuiltinItemRendererRegistry.INSTANCE.register(
-                CMTItems.UNFINISHEDHOOK,
+                CMTItems.UNFINISHEDSICLEHEAD,
                 (stack, mode, matrices, vertexConsumers, light, overlay) -> {
-                    new UnfinishedHookBuiltinRenderer().render(stack, matrices, vertexConsumers, light, overlay);
+                    new UnfinishedSicleHeadBuiltinRenderer().render(stack, matrices, vertexConsumers, light, overlay);
                 }
         );
         BuiltinItemRendererRegistry.INSTANCE.register(
@@ -44,9 +45,12 @@ public class CMTClient implements ClientModInitializer {
 
         BlockEntityRendererFactories.register(CMTBlockEntities.BLACKSMITHFURNACEBLOCKENTITY, BlacksmithFurnaceRenderer::new);
 
+        BlockEntityRendererFactories.register(CMTBlockEntities.PEDESTALBLOCKENTITY, PedestalBlockEntityRenderer::new);
+
         HandledScreens.register(CMTScreenHandlers.SMITHING_ANVIL_SCREEN_HANDLER_TYPE, SmithingAnvilScreen::new);
 
         EntityModelLayerRegistry.registerModelLayer(KhyninOverlordModel.KHYNINOVERLORD, KhyninOverlordModel::getTexturedModelData);
+
         EntityRendererRegistry.register(CMTEntities.KHYNIN_OVERLORD, KhyninOverlordRenderer::new);
     }
 }

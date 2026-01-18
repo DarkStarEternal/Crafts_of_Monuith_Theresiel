@@ -1,8 +1,0 @@
-{
-  "parent": "cmt:custom/ingot",
-  "textures": {
-    "all": "cmt:item/tin_ingot",
-    "particle": "cmt:item/tin_ingot",
-    "0": "cmt:item/tin_ingot"
-  }
-}

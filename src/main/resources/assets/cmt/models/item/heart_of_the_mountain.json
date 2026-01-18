@@ -1,0 +1,6 @@
+{
+  "parent": "cmt:custom/heart_of_the_mountain",
+  "textures": {
+    "layer0": "cmt:item/heart_of_the_mountain"
+  }
+}

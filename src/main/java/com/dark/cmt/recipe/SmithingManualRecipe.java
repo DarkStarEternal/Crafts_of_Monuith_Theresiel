@@ -11,12 +11,12 @@ public class SmithingManualRecipe {
     public ItemStack unfinishedOutput;
     public ItemStack finalitem;
 
-    public SmithingManualRecipe(String name1, ItemStack unfinishedOutput1, ItemStack finalItem1, TagKey<Item> hasRecipe, boolean obtainedFromKnowledgeStones) {
+    public SmithingManualRecipe(String name1, ItemStack unfinishedOutput1, ItemStack finalItem1, TagKey<Item> hasRecipe, boolean canBeObtainedFromKnowledgeStones) {
         this.name = name1;
         this.hasRecipe = hasRecipe;
         this.unfinishedOutput = unfinishedOutput1;
         this.finalitem = finalItem1;
-        this.isKnowledgeStoneRecipe = obtainedFromKnowledgeStones;
+        this.isKnowledgeStoneRecipe = canBeObtainedFromKnowledgeStones;
     }
 
     public String getName() {

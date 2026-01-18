@@ -1,6 +1,0 @@
-{
-  "type": "cmt:smithing_anvil",
-  "ingredient": { "item": "cmt:tin_ingot" },
-  "commands": ["B", "L", "S"],
-  "result": { "item": "cmt:lead_ingot", "count": 1 }
-}

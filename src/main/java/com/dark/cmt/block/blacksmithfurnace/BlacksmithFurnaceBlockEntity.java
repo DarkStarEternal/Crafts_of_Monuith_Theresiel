@@ -1,5 +1,6 @@
 package com.dark.cmt.block.blacksmithfurnace;
 
+import com.dark.cmt.block.ImplementedInventory;
 import com.dark.cmt.init.CMTBlockEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -20,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class BlacksmithFurnaceBlockEntity extends BlockEntity {
+public class BlacksmithFurnaceBlockEntity extends BlockEntity implements ImplementedInventory {
 
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(2, ItemStack.EMPTY);
     private BlockPos controllerPos = null;
@@ -50,7 +51,6 @@ public class BlacksmithFurnaceBlockEntity extends BlockEntity {
 
         return false;
     }
-
 
     public DefaultedList<ItemStack> getInventory() {
         return inventory;
@@ -88,6 +88,11 @@ public class BlacksmithFurnaceBlockEntity extends BlockEntity {
 
     public void setController(BlockPos controllerPos) {
         this.controllerPos = controllerPos;
+    }
+
+    @Override
+    public DefaultedList<ItemStack> getItems() {
+        return inventory;
     }
 
     @Override

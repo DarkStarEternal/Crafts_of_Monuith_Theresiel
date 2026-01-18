@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "cmt:knowledge_stone",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 20,
+    "separation": 7,
+    "salt": 123456789
+  }
+}

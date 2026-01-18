@@ -6,6 +6,9 @@
       },
       {
         "model": "cmt:block/burnt_terracotta_1"
+      },
+      {
+        "model": "cmt:block/burnt_terracotta_2"
       }
     ]
   }

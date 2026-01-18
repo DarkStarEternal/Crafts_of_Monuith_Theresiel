@@ -1,0 +1,7 @@
+{
+  "parent": "cmt:custom/pedestal",
+  "textures": {
+    "0": "cmt:block/pedestal",
+    "all": "cmt:block/pedestal"
+  }
+}

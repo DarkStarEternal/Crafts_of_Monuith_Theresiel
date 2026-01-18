@@ -19,16 +19,36 @@ public class CMTBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(CMTBlocks.BLACKSMITHFURNACEBASE)
                 .add(CMTBlocks.SMITHINGANVIL)
 
+                .add(CMTBlocks.BURNT_TERRACOTTA)
+                .add(CMTBlocks.ORNATE_BURNT_TERRACOTTA)
+                .add(CMTBlocks.PEDESTAL)
+
                 .add(CMTBlocks.SULFURICORE)
                 .add(CMTBlocks.SULFURICNETHERORE)
                 .add(CMTBlocks.SULFURICDEEPSLATEORE)
 
                 .add(CMTBlocks.PHOSPHORICSTONE)
+
+                .add(CMTBlocks.BRONZEBLOCK)
+
+                .add(CMTBlocks.GOLDCOINSTACK)
+                .add(CMTBlocks.STEELCOINSTACK)
+                .add(CMTBlocks.MIXEDCOINSTACK)
+
+                .add(CMTBlocks.STEELBLOCK)
+
                 .add(CMTBlocks.LEADORE)
+                .add(CMTBlocks.DEEPSLATELEADORE)
+                .add(CMTBlocks.LEADBLOCK)
+
                 .add(CMTBlocks.TINORE)
+                .add(CMTBlocks.DEEPSLATETINORE)
+                .add(CMTBlocks.TINBLOCK)
+
+                .add(CMTBlocks.JADEBLOCK)
 
                 .add(CMTBlocks.SILVERBLOCK)
-                .add(CMTBlocks.SILVERDEEPSLATEORE)
+                .add(CMTBlocks.DEEPSLATESILVERORE)
                 .add(CMTBlocks.SILVERORE);
 
         getOrCreateTagBuilder(BlockTags.STAIRS);

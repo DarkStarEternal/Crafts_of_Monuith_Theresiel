@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "side": "cmt:block/mixed_coinstack_side",
+    "top": "cmt:block/mixed_coinstack_top",
+    "bottom": "cmt:block/mixed_coinstack_top"
+  }
+}

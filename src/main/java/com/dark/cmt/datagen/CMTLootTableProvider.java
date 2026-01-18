@@ -5,6 +5,7 @@ import com.dark.cmt.init.CMTItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
@@ -28,17 +29,27 @@ public class CMTLootTableProvider extends FabricBlockLootTableProvider {
     @Override
     public void generate() {
         addDrop(CMTBlocks.SULFURICORE, multipleOreDrops(CMTBlocks.SULFURICORE, CMTItems.SULFUR, 1,2));
+
+        addDrop(Blocks.LAPIS_ORE, multipleOreDrops(Blocks.LAPIS_ORE, CMTItems.PURELAPIS, 0,0.3f));
+        addDrop(Blocks.NETHER_QUARTZ_ORE, multipleOreDrops(Blocks.NETHER_QUARTZ_ORE, CMTItems.CLEARQUARTZ, 0,0.1f));
+        addDrop(Blocks.REDSTONE_ORE, multipleOreDrops(Blocks.REDSTONE_ORE, CMTItems.PUREREDSTONE, 0,0.3f));
+
+        addDrop(CMTBlocks.JADEBLOCK, multipleOreDrops(CMTBlocks.JADEBLOCK, CMTItems.JADECRUMBLES, 2,6));
+        addDrop(CMTBlocks.JADEBLOCK, multipleOreDrops(CMTBlocks.JADEBLOCK, CMTItems.JADEGEMSTONE, 0,0.07f));
+
         addDrop(CMTBlocks.SULFURICDEEPSLATEORE, multipleOreDrops(CMTBlocks.SULFURICDEEPSLATEORE, CMTItems.SULFUR, 2,4));
         addDrop(CMTBlocks.SULFURICNETHERORE, multipleOreDrops(CMTBlocks.SULFURICNETHERORE, CMTItems.SULFUR, 6,9));
 
         addDrop(CMTBlocks.SILVERORE, multipleOreDrops(CMTBlocks.SILVERORE, CMTItems.RAWSILVER, 1,2));
-        addDrop(CMTBlocks.SILVERDEEPSLATEORE, multipleOreDrops(CMTBlocks.SILVERDEEPSLATEORE, CMTItems.RAWSILVER, 2,3));
+        addDrop(CMTBlocks.DEEPSLATESILVERORE, multipleOreDrops(CMTBlocks.DEEPSLATESILVERORE, CMTItems.RAWSILVER, 2,3));
 
         addDrop(CMTBlocks.PHOSPHORICSTONE, multipleOreDrops(CMTBlocks.PHOSPHORICSTONE, CMTItems.PHOSPHORUS, 2,6));
 
         addDrop(CMTBlocks.LEADORE, multipleOreDrops(CMTBlocks.LEADORE, CMTItems.RAWLEAD, 2,4));
+        addDrop(CMTBlocks.DEEPSLATELEADORE, multipleOreDrops(CMTBlocks.DEEPSLATELEADORE, CMTItems.RAWLEAD, 3,7));
 
-        addDrop(CMTBlocks.TINORE, multipleOreDrops(CMTBlocks.TINORE, CMTItems.RAWTIN, 1,2));
+        addDrop(CMTBlocks.TINORE, multipleOreDrops(CMTBlocks.TINORE, CMTItems.RAWTIN, 2,4));
+        addDrop(CMTBlocks.DEEPSLATETINORE, multipleOreDrops(CMTBlocks.DEEPSLATETINORE, CMTItems.RAWTIN, 1,3));
     }
 
     public LootTable.Builder multipleOreDrops(Block drop, Item item, float minDrops, float maxDrops) {

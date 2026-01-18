@@ -1,8 +1,0 @@
-{
-  "parent": "cmt:custom/ingot",
-  "textures": {
-    "all": "cmt:item/crude_iron_ingot",
-    "particle": "cmt:item/crude_iron_ingot",
-    "0": "cmt:item/crude_iron_ingot"
-  }
-}

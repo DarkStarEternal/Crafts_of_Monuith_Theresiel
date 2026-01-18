@@ -1,8 +1,0 @@
-{
-  "parent": "cmt:custom/ingot",
-  "textures": {
-    "all": "cmt:item/lead_ingot",
-    "particle": "cmt:item/lead_ingot",
-    "0": "cmt:item/lead_ingot"
-  }
-}

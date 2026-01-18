@@ -26,6 +26,7 @@ public class CMT implements ModInitializer {
         CMTSmithingManualRecipes.register();
         CMTNetwork.register();
         CMTSmithingMaterials.register();
+        CMTStructures.init();
 
         FabricDefaultAttributeRegistry.register(CMTEntities.KHYNIN_OVERLORD, KhyninOverlordEntity.createAttributes());
         LOGGER.info("Diggy diggy hole!");

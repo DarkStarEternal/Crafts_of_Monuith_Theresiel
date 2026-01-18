@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "cmt:block/steel_coinstack"
+      }
+    ]
+  }
+}

@@ -1,6 +1,8 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "cmt:block/burnt_terracotta"
+    "all": "cmt:block/burnt_terracotta",
+    "particle": "cmt:block/burnt_terracotta",
+    "0": "cmt:block/burnt_terracotta"
   }
 }

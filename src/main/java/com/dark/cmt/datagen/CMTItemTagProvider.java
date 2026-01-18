@@ -1,9 +1,12 @@
 package com.dark.cmt.datagen;
 
+import com.dark.cmt.CMT;
+import com.dark.cmt.init.CMTBlocks;
 import com.dark.cmt.init.CMTItems;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
@@ -15,9 +18,18 @@ import java.util.concurrent.CompletableFuture;
 
 public class CMTItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
+    public static final TagKey<Item> AMBER_HEART_BASE = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "amber_heart_base")
+    );
+
     public static final TagKey<Item> TIN_INGOTS = TagKey.of(
             net.minecraft.registry.RegistryKeys.ITEM,
             Identifier.of("c", "tin_ingots")
+    );
+    public static final TagKey<Item> DWARF_GOLD_INGOTS = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "dwarf_gold_ingots")
     );
     public static final TagKey<Item> BRONZE_INGOTS = TagKey.of(
             net.minecraft.registry.RegistryKeys.ITEM,
@@ -51,14 +63,59 @@ public class CMTItemTagProvider extends FabricTagProvider.ItemTagProvider {
             net.minecraft.registry.RegistryKeys.ITEM,
             Identifier.of("c", "copper_ingots")
     );
-    public static final TagKey<Item> AURELIUM_INGOTS = TagKey.of(
+
+    public static final TagKey<Item> TIN_MATERIAL = TagKey.of(
             net.minecraft.registry.RegistryKeys.ITEM,
-            Identifier.of("c", "aurelium_ingots")
+            Identifier.of(CMT.MODID, "tin_material")
+    );
+    public static final TagKey<Item> SILVER_MATERIAL = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "silver_material")
+    );
+    public static final TagKey<Item> LEAD_MATERIAL = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "lead_material")
+    );
+    public static final TagKey<Item> STEEL_MATERIAL = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "steel_material")
+    );
+    public static final TagKey<Item> BRONZE_MATERIAL = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "bronze_material")
+    );
+    public static final TagKey<Item> GOLD_MATERIAL = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "gold_material")
+    );
+    public static final TagKey<Item> IRON_MATERIAL = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "iron_material")
+    );
+    public static final TagKey<Item> COPPER_MATERIAL = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "copper_material")
+    );
+    public static final TagKey<Item> NETHERITE_MATERIAL = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "netherite_material")
+    );
+    public static final TagKey<Item> DWARF_GOLD_MATERIAL = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "dwarf_gold_material")
     );
 
     public static final TagKey<Item> INGOTS = TagKey.of(
             net.minecraft.registry.RegistryKeys.ITEM,
             Identifier.of("c", "ingots")
+    );
+    public static final TagKey<Item> NUGGETS = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of("c", "nuggets")
+    );
+    public static final TagKey<Item> BLOCKS = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "blocks")
     );
 
     public CMTItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
@@ -67,7 +124,6 @@ public class CMTItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup lookup) {
-        // Add your mod’s items to common tag c:iron_ingots
         getOrCreateTagBuilder(TIN_INGOTS)
                 .add(CMTItems.TININGOT);
         getOrCreateTagBuilder(BRONZE_INGOTS)
@@ -86,16 +142,85 @@ public class CMTItemTagProvider extends FabricTagProvider.ItemTagProvider {
                 .add(Items.IRON_INGOT);
         getOrCreateTagBuilder(COPPER_INGOTS)
                 .add(Items.COPPER_INGOT);
+        getOrCreateTagBuilder(DWARF_GOLD_INGOTS)
+                .add(CMTItems.DWARFGOLDINGOT);
+
+        getOrCreateTagBuilder(AMBER_HEART_BASE)
+                .add(Blocks.MAGMA_BLOCK.asItem());
+
+        getOrCreateTagBuilder(COPPER_MATERIAL)
+                .add(Items.COPPER_INGOT)
+                .add(Items.COPPER_BLOCK)
+                .add(CMTItems.COPPERNUGGET);
+        getOrCreateTagBuilder(NETHERITE_MATERIAL)
+                .add(Items.NETHERITE_INGOT)
+                .add(Items.NETHERITE_BLOCK)
+                .add(CMTItems.NETHERITENUGGET);
+        getOrCreateTagBuilder(IRON_MATERIAL)
+                .add(Items.IRON_INGOT)
+                .add(Items.IRON_BLOCK)
+                .add(Items.IRON_NUGGET);
+        getOrCreateTagBuilder(GOLD_MATERIAL)
+                .add(Items.GOLD_INGOT)
+                .add(Items.GOLD_BLOCK)
+                .add(Items.GOLD_NUGGET);
+        getOrCreateTagBuilder(STEEL_MATERIAL)
+                .add(CMTItems.STEELINGOT)
+                .add(CMTBlocks.STEELBLOCK.asItem())
+                .add(CMTItems.STEELNUGGET);
+        getOrCreateTagBuilder(TIN_MATERIAL)
+                .add(CMTItems.TININGOT)
+                .add(CMTBlocks.TINBLOCK.asItem())
+                .add(CMTItems.TINNUGGET);
+        getOrCreateTagBuilder(SILVER_MATERIAL)
+                .add(CMTItems.SILVERINGOT)
+                .add(CMTBlocks.SILVERBLOCK.asItem())
+                .add(CMTItems.SILVERNUGGET);
+        getOrCreateTagBuilder(LEAD_MATERIAL)
+                .add(CMTItems.LEADINGOT)
+                .add(CMTBlocks.LEADBLOCK.asItem())
+                .add(CMTItems.LEADNUGGET);
+        getOrCreateTagBuilder(BRONZE_MATERIAL)
+                .add(CMTItems.BRONZEINGOT)
+                .add(CMTBlocks.BRONZEBLOCK.asItem())
+                .add(CMTItems.BRONZENUGGET);
+        getOrCreateTagBuilder(DWARF_GOLD_MATERIAL)
+                .add(CMTItems.DWARFGOLDINGOT)
+                .add(CMTItems.DWARFGOLDNUGGET);
 
         getOrCreateTagBuilder(INGOTS)
                 .add(CMTItems.SILVERINGOT)
                 .add(CMTItems.TININGOT)
                 .add(CMTItems.BRONZEINGOT)
+                .add(CMTItems.DWARFGOLDINGOT)
                 .add(CMTItems.STEELINGOT)
                 .add(Items.COPPER_INGOT)
                 .add(Items.IRON_INGOT)
                 .add(Items.GOLD_INGOT)
                 .add(Items.NETHERITE_INGOT)
                 .add(CMTItems.LEADINGOT);
+
+        getOrCreateTagBuilder(NUGGETS)
+                .add(Items.GOLD_NUGGET)
+                .add(CMTItems.LEADNUGGET)
+                .add(CMTItems.BRONZENUGGET)
+                .add(CMTItems.DWARFGOLDNUGGET)
+                .add(CMTItems.SILVERNUGGET)
+                .add(CMTItems.TINNUGGET)
+                .add(CMTItems.STEELNUGGET)
+                .add(CMTItems.NETHERITENUGGET)
+                .add(CMTItems.COPPERNUGGET)
+                .add(Items.IRON_NUGGET);
+
+        getOrCreateTagBuilder(BLOCKS)
+                .add(Items.GOLD_BLOCK)
+                .add(CMTBlocks.LEADBLOCK.asItem())
+                .add(CMTBlocks.BRONZEBLOCK.asItem())
+                .add(CMTBlocks.SILVERBLOCK.asItem())
+                .add(CMTBlocks.TINBLOCK.asItem())
+                .add(CMTBlocks.STEELBLOCK.asItem())
+                .add(Items.COPPER_BLOCK)
+                .add(Items.NETHERITE_BLOCK)
+                .add(Items.IRON_BLOCK);
     }
 }

@@ -17,6 +17,7 @@ public class CMTItemGroups {
             .entries(((displayContext, entries) -> {
 
                 entries.add(CMTBlocks.BURNT_TERRACOTTA);
+                entries.add(CMTBlocks.PEDESTAL);
                 entries.add(CMTBlocks.ORNATE_BURNT_TERRACOTTA);
 
                 entries.add(CMTBlocks.BLACKSMITHFURNACEBASE);
@@ -24,6 +25,7 @@ public class CMTItemGroups {
                 entries.add(CMTBlocks.SMITHINGANVIL);
 
                 entries.add(CMTBlocks.LEADORE);
+                entries.add(CMTBlocks.DEEPSLATELEADORE);
 
                 entries.add(CMTBlocks.PHOSPHORICSTONE);
 
@@ -32,11 +34,20 @@ public class CMTItemGroups {
                 entries.add(CMTBlocks.SULFURICNETHERORE);
 
                 entries.add(CMTBlocks.TINORE);
+                entries.add(CMTBlocks.DEEPSLATETINORE);
 
                 entries.add(CMTBlocks.SILVERORE);
-                entries.add(CMTBlocks.SILVERDEEPSLATEORE);
+                entries.add(CMTBlocks.DEEPSLATESILVERORE);
 
                 entries.add(CMTBlocks.SILVERBLOCK);
+                entries.add(CMTBlocks.STEELBLOCK);
+                entries.add(CMTBlocks.BRONZEBLOCK);
+                entries.add(CMTBlocks.LEADBLOCK);
+                entries.add(CMTBlocks.TINBLOCK);
+
+                entries.add(CMTBlocks.STEELCOINSTACK);
+                entries.add(CMTBlocks.GOLDCOINSTACK);
+                entries.add(CMTBlocks.MIXEDCOINSTACK);
 
                 entries.add(CMTItems.SULFUR);
                 entries.add(CMTItems.SULFURICCOMPOUND);

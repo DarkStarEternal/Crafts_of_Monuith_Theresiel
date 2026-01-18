@@ -103,9 +103,7 @@ public class BlacksmithFurnaceBase extends BlockWithEntity implements BlockEntit
 
                     furnace.getInventory().set(i, ItemStack.EMPTY); // clear slot
                     furnace.markDirty();
-                    if (world != null) {
-                        world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
-                    }
+                    world.updateListeners(pos, state, state, 0);
 
                     return ItemActionResult.CONSUME;
                 }

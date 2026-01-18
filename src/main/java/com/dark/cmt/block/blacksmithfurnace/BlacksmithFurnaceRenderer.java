@@ -29,23 +29,22 @@ public class BlacksmithFurnaceRenderer implements BlockEntityRenderer<Blacksmith
         ItemRenderer renderer = MinecraftClient.getInstance().getItemRenderer();
 
         for (int i = 0; i < entity.getInventory().size(); i++) {
-            ItemStack stack = entity.getInventory().get(i);
-            if (stack.isEmpty()) continue;
+            ItemStack stack = entity.getItems().get(i);
 
             matrices.push();
-            matrices.translate(0.25f + i * 0.5f, 1.15f, 0.5f); // position items left/right
+            matrices.translate(0f + i * 0.5f, 1.15f, 0f); // position items left/right
             matrices.scale(0.5f, 0.5f, 0.5f);
 
-            int packedLight = LightmapTextureManager.pack(
-                    world.getLightLevel(LightType.BLOCK, entity.getPos()),
-                    world.getLightLevel(LightType.SKY, entity.getPos())
-            );
-
-            renderer.renderItem(stack, ModelTransformationMode.FIXED, packedLight, OverlayTexture.DEFAULT_UV,
-                    matrices, vertexConsumers, world, 0);
-
+            renderer.renderItem(stack, ModelTransformationMode.GUI, getLightLevel(entity.getWorld(),
+                    entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
             matrices.pop();
         }
+    }
+
+    private int getLightLevel(World world, BlockPos pos) {
+        int bLight = world.getLightLevel(LightType.BLOCK, pos);
+        int sLight = world.getLightLevel(LightType.SKY, pos);
+        return LightmapTextureManager.pack(bLight, sLight);
     }
 
 }

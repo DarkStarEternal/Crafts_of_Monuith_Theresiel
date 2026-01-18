@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,design=normal": {
       "model": "cmt:block/knowledge_stone"
     },
-    "facing=east": {
+    "facing=east,design=normal": {
       "model": "cmt:block/knowledge_stone",
       "y": 90
     },
-    "facing=south": {
+    "facing=south,design=normal": {
       "model": "cmt:block/knowledge_stone",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,design=normal": {
       "model": "cmt:block/knowledge_stone",
+      "y": 270
+    },
+    "facing=north,design=burnt_terracotta": {
+      "model": "cmt:block/knowledge_stone_burnt_terracotta"
+    },
+    "facing=east,design=burnt_terracotta": {
+      "model": "cmt:block/knowledge_stone_burnt_terracotta",
+      "y": 90
+    },
+    "facing=south,design=burnt_terracotta": {
+      "model": "cmt:block/knowledge_stone_burnt_terracotta",
+      "y": 180
+    },
+    "facing=west,design=burnt_terracotta": {
+      "model": "cmt:block/knowledge_stone_burnt_terracotta",
       "y": 270
     }
   }

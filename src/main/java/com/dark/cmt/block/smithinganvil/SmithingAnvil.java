@@ -29,6 +29,7 @@ public class SmithingAnvil extends BlockWithEntity implements BlockEntityProvide
                 .resistance(3f)
                 .strength(3f)
                 .requiresTool()
+                .nonOpaque()
         );
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
