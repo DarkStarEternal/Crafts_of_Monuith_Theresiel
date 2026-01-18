@@ -1,3 +1,34 @@
 {
-  "itemgroup.cmt.cmt": "CMT"
+  "itemgroup.cmt.cmt": "CMT",
+
+  "item.cmt.sulfuric_compound": "Sulfuric Compound",
+  "item.cmt.sulfur": "Sulfur",
+  "item.cmt.phosphorus": "Phosphorus",
+  "item.cmt.basic_manual": "Basic Manual",
+  "item.cmt.hephaiston_manual": "Hephaiston Manual",
+  "item.cmt.creative_manual": "Creative Manual",
+  "item.cmt.lead_ingot": "Lead Ingot",
+  "item.cmt.tin_ingot": "Tin Ingot",
+  "item.cmt.silver_ingot": "Silver Ingot",
+  "item.cmt.bronze_ingot": "Bronze Ingot",
+  "item.cmt.steel_ingot": "Steel Ingot",
+  "item.cmt.raw_lead": "Raw Lead",
+  "item.cmt.raw_silver": "Raw Silver",
+  "item.cmt.raw_tin": "Raw Tin",
+
+  "block.cmt.phosphoric_stone": "Phosphoric Stone",
+  "block.cmt.sulfuric_ore": "Sulfuric Stone",
+  "block.cmt.sulfuric_nether_ore": "Sulfuric Netherrack",
+  "block.cmt.sulfuric_deepslate_ore": "Sulfuric Deepslate",
+  "block.cmt.silver_ore": "Silver Ore",
+  "block.cmt.silver_deepslate_ore": "Deepslate Silver Ore",
+  "block.cmt.lead_ore": "Lead Ore",
+  "block.cmt.lead_deepslate_ore": "Deepslate Lead Ore",
+  "block.cmt.tin_ore": "Tin Ore",
+  "block.cmt.tin_deepslate_ore": "Deepslate Tin Ore",
+  "block.cmt.burnt_terracotta": "Burnt Terracotta",
+  "block.cmt.ornate_burnt_terracotta": "Ornate Burnt Terracotta",
+
+  "block.cmt.smithing_anvil": "Smithing Anvil",
+  "block.cmt.blacksmith_furnace": "Blacksmith Furnace"
 }
