@@ -3,6 +3,7 @@ package com.dark.cmt.recipe;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
 
 public class SmithingManualRecipe {
     public String name;

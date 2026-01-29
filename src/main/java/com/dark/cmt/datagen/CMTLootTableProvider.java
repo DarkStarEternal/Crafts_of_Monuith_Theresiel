@@ -50,6 +50,20 @@ public class CMTLootTableProvider extends FabricBlockLootTableProvider {
 
         addDrop(CMTBlocks.TINORE, multipleOreDrops(CMTBlocks.TINORE, CMTItems.RAWTIN, 2,4));
         addDrop(CMTBlocks.DEEPSLATETINORE, multipleOreDrops(CMTBlocks.DEEPSLATETINORE, CMTItems.RAWTIN, 1,3));
+
+        addDrop(CMTBlocks.STEELCOINSTACK, drops(CMTBlocks.STEELCOINSTACK));
+        addDrop(CMTBlocks.MIXEDCOINSTACK, drops(CMTBlocks.MIXEDCOINSTACK));
+        addDrop(CMTBlocks.GOLDCOINSTACK, drops(CMTBlocks.GOLDCOINSTACK));
+
+        addDrop(CMTBlocks.SILVERBLOCK, drops(CMTBlocks.SILVERBLOCK));
+        addDrop(CMTBlocks.BRONZEBLOCK, drops(CMTBlocks.BRONZEBLOCK));
+        addDrop(CMTBlocks.STEELBLOCK, drops(CMTBlocks.STEELBLOCK));
+        addDrop(CMTBlocks.LEADBLOCK, drops(CMTBlocks.LEADBLOCK));
+        addDrop(CMTBlocks.TINBLOCK, drops(CMTBlocks.TINBLOCK));
+
+        addDrop(CMTBlocks.PEDESTAL, drops(CMTBlocks.PEDESTAL));
+        addDrop(CMTBlocks.BURNT_TERRACOTTA, drops(CMTBlocks.BURNT_TERRACOTTA));
+        addDrop(CMTBlocks.ORNATE_BURNT_TERRACOTTA, drops(CMTBlocks.ORNATE_BURNT_TERRACOTTA));
     }
 
     public LootTable.Builder multipleOreDrops(Block drop, Item item, float minDrops, float maxDrops) {

@@ -13,7 +13,9 @@ public class UnfinishedPickaxeHead extends UnfinishedSmithedItem {
 
                 List.of("L", "B", "L"),
 
-                CMTItems.PICKAXEHEAD.asItem()
+                CMTItems.PICKAXEHEAD.asItem(),
+
+                "Pickaxe Head"
         );
     }
 }

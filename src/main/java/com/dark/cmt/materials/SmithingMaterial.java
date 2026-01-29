@@ -14,9 +14,15 @@ public class SmithingMaterial {
 
     public final String materialIdentifier;
 
-    public SmithingMaterial(TagKey<Item> materialItems, String materialIdentifier) {
+    public float glowHeat;
+    public float meltHeat;
+
+    public SmithingMaterial(TagKey<Item> materialItems, String materialIdentifier, float glowHeat, float meltHeat) {
         this.materialItems = materialItems;
         this.materialIdentifier = materialIdentifier;
+
+        this.glowHeat = glowHeat;
+        this.meltHeat = meltHeat;
     }
 
     public TagKey<Item> getMaterialItems() {

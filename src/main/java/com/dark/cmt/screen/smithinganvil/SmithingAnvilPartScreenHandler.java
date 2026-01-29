@@ -11,68 +11,47 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
+public class SmithingAnvilPartScreenHandler extends ScreenHandler {
 
-
-public class SmithingAnvilScreenHandler extends ScreenHandler {
-
-    private Inventory inventory;
+    private final Inventory inventory;
     private BlockPos blockPos;
     private BlockEntity blockEntity;
 
-
-
-    public SmithingAnvilScreenHandler(int syncId, PlayerInventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(pos));
+    public SmithingAnvilPartScreenHandler(int syncId, PlayerInventory playerInv, BlockPos pos) {
+        this(syncId, playerInv,
+                (SmithingAnvilBlockEntity) playerInv.player.getWorld().getBlockEntity(pos));
+        this.blockEntity = playerInv.player.getWorld().getBlockEntity(pos);
+        this.blockPos = pos;
     }
 
-    public SmithingAnvilScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity) {
-        super(CMTScreenHandlers.SMITHING_ANVIL_SCREEN_HANDLER_TYPE, syncId);
-        if (!(blockEntity instanceof SmithingAnvilBlockEntity smithingBE))
-            throw new IllegalStateException("BlockEntity is not a SmithingAnvilBlockEntity!");
+    public SmithingAnvilPartScreenHandler(int syncId, PlayerInventory playerInv,
+                                          SmithingAnvilBlockEntity be) {
+        super(CMTScreenHandlers.SMITHINGANVILPARTSCREENHANDLER, syncId);
 
-        this.inventory = smithingBE;
-        this.blockPos = blockEntity.getPos();
-        this.blockEntity = blockEntity;
+        this.inventory = be.getPartInventory();
 
-        this.addSlot(new Slot(inventory, 0, 7, 35) {
-            @Override
-            public int getMaxItemCount() {
-                return 1;
-            }
-        });
-        this.addSlot(new Slot(inventory, 1, 7, 13) {
-            @Override
-            public int getMaxItemCount() {
-                return 1;
-            }
-        });
+        addSlot(new Slot(inventory, 0, 7, 35) { public int getMaxItemCount() { return 1; }});
+        addSlot(new Slot(inventory, 1, 7, 13) { public int getMaxItemCount() { return 1; }});
+        addSlot(new Slot(inventory, 2, 96, 13){ public int getMaxItemCount() { return 1; }});
 
-        this.addSlot(new Slot(inventory, 2, 96, 13) {
-            @Override
-            public int getMaxItemCount() {
-                return 1;
-            }
-        });
-
-
-        this.
-
-        addPlayerInventory(playerInventory);
-        addPlayerHotbar(playerInventory);
+        addPlayerInventory(playerInv);
+        addPlayerHotbar(playerInv);
     }
+
 
     public BlockPos getBlockPos() {
-        return blockPos;
+        return this.blockPos;
     }
 
     public BlockEntity getBlockEntity() {
-        return blockEntity;
+        return this.blockEntity;
     }
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
+
         if (slot != null && slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();

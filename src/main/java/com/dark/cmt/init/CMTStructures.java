@@ -1,6 +1,8 @@
 package com.dark.cmt.init;
 
 import com.dark.cmt.CMT;
+import com.dark.cmt.world.KhyninCavePiece;
+import com.dark.cmt.world.KhyninCaveStructure;
 import com.dark.cmt.world.KnowledgeStonePiece;
 import com.dark.cmt.world.KnowledgeStoneStructure;
 import net.minecraft.registry.Registries;
@@ -22,6 +24,20 @@ public class CMTStructures {
                     Registries.STRUCTURE_PIECE,
                     Identifier.of(CMT.MODID, "knowledge_stone"),
                     KnowledgeStonePiece::new
+            );
+
+    public static final StructureType<KhyninCaveStructure> KHYNIN_CAVE_STRUCTURE =
+            Registry.register(
+                    Registries.STRUCTURE_TYPE,
+                    Identifier.of(CMT.MODID, "khynin_cave"),
+                    () -> KhyninCaveStructure.CODEC
+            );
+
+    public static final StructurePieceType KHYNIN_CAVE_PIECE =
+            Registry.register(
+                    Registries.STRUCTURE_PIECE,
+                    Identifier.of(CMT.MODID, "khynin_cave"),
+                    KhyninCavePiece::new
             );
 
     public static void init() {}

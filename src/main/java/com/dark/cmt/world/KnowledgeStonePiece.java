@@ -3,6 +3,7 @@ package com.dark.cmt.world;
 import com.dark.cmt.init.CMTStructures;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.structure.*;
+import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockBox;
@@ -35,14 +36,14 @@ public class KnowledgeStonePiece extends StructurePiece {
 
     public KnowledgeStonePiece(StructureContext context, NbtCompound nbt) {
         super(CMTStructures.KNOWLEDGE_STONE_PIECE, nbt);
-        this.templateId = Identifier.of(nbt.getString("Template"));
-        this.rotation = BlockRotation.valueOf(nbt.getString("Rot"));
+        this.templateId = Identifier.of(nbt.getString("StoneTemplate"));
+        this.rotation = BlockRotation.valueOf(nbt.getString("StoneRot"));
     }
 
     @Override
     protected void writeNbt(StructureContext context, NbtCompound nbt) {
-        nbt.putString("Template", this.templateId.toString());
-        nbt.putString("Rot", this.rotation.name());
+        nbt.putString("StoneTemplate", this.templateId.toString());
+        nbt.putString("StoneRot", this.rotation.name());
     }
 
     @Override
@@ -55,7 +56,8 @@ public class KnowledgeStonePiece extends StructurePiece {
         }
 
         StructurePlacementData placementData = new StructurePlacementData()
-                .setRotation(this.rotation)
+                .setRotation(rotation)   // must not be null
+                .setMirror(BlockMirror.NONE)
                 .setIgnoreEntities(false);
 
         template.place(

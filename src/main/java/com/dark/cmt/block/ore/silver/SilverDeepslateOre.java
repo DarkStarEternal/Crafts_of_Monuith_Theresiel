@@ -5,6 +5,6 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 
 public class SilverDeepslateOre extends ExperienceDroppingBlock {
     public SilverDeepslateOre() {
-        super(UniformIntProvider.create(6,19), Settings.create().requiresTool());
+        super(UniformIntProvider.create(6,19), Settings.create().requiresTool().hardness(2f).resistance(3f).resistance(2f));
     }
 }

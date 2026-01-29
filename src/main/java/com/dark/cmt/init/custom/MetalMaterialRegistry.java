@@ -21,4 +21,13 @@ public class MetalMaterialRegistry {
         }
         return null;
     }
+
+    public static final SmithingMaterial getMaterialFromString(String string) {
+        for (SmithingMaterial material : MATERIALS) {
+            if (material.materialIdentifier.equals(string)) {
+                return material;
+            }
+        }
+        return null;
+    }
 }

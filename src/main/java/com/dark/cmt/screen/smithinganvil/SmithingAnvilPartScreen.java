@@ -7,6 +7,7 @@ import com.dark.cmt.item.SmithingManual;
 import com.dark.cmt.item.smitheditems.UnfinishedSmithedItem;
 import com.dark.cmt.materials.SmithingMaterial;
 import com.dark.cmt.networking.C2SSmithingAnvilCraftStepValidationPayload;
+import com.dark.cmt.networking.C2SSmithingAnvilUIChangePayload;
 import com.dark.cmt.networking.C2SSmithingAnvilUnfinishedMutatePayload;
 import com.dark.cmt.recipe.SmithingManualRecipe;
 import com.dark.cmt.init.custom.MetalMaterialRegistry;
@@ -32,9 +33,9 @@ import java.util.List;
 
 
 
-public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandler> {
+public class SmithingAnvilPartScreen extends HandledScreen<SmithingAnvilPartScreenHandler> {
     public static final Identifier GUI_TEXTURE =
-            Identifier.of(CMT.MODID, "textures/gui/smithing_anvil/smithing_anvil_gui.png");
+            Identifier.of(CMT.MODID, "textures/gui/smithing_anvil/smithing_anvil_gui_part.png");
 
     PageTurnWidget prevPageButton;
     PageTurnWidget nextPageButton;
@@ -42,7 +43,7 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
     private final int maxPages = 5;
     int itemsPerPage = 3;
 
-    public SmithingAnvilScreen(SmithingAnvilScreenHandler handler, PlayerInventory inventory, Text title) {
+    public SmithingAnvilPartScreen(SmithingAnvilPartScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
     }
 
@@ -125,7 +126,18 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
                 true
         ));
 
+
+        this.addDrawableChild(
+                new TypeChangeButtonWidget(
+                        x + 5, y - 17, this::changeScreen, TypeChangeButtonWidget.buttonType.COMBINER
+                )
+        );
+
         updateButtons();
+    }
+
+    public void changeScreen(){
+        sendUIChangePacket(true, handler.getBlockPos());
     }
 
     public void transformItemToUnfinished(int RecipeID, int RecipePage, String material) {
@@ -155,6 +167,11 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
 
     public void sendCraftStepValidationPacket(String inputCommand, BlockPos pos) {
         C2SSmithingAnvilCraftStepValidationPayload payload = new C2SSmithingAnvilCraftStepValidationPayload(inputCommand, pos.getX(), pos.getY(), pos.getZ());
+        ClientPlayNetworking.send(payload);
+    }
+
+    public void sendUIChangePacket(boolean toCombiner, BlockPos pos) {
+        C2SSmithingAnvilUIChangePayload payload = new C2SSmithingAnvilUIChangePayload(toCombiner, pos.getX(), pos.getY(), pos.getZ());
         ClientPlayNetworking.send(payload);
     }
 
@@ -213,13 +230,12 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
         List<SmithingManualRecipe> recipes = new ArrayList<>();
 
         for (String name : recipeNames) {
-            SmithingManualRecipe recipe = SmithingManualRecipes.getRecipeFromName(name);
+            SmithingManualRecipe recipe = SmithingManualRecipes.getRecipeFromID(name);
             recipes.add(recipe);
         }
 
         return recipes;
     }
-
 
     private void updateButtons() {
         prevPageButton.active = page > 1;
@@ -242,7 +258,6 @@ public class SmithingAnvilScreen extends HandledScreen<SmithingAnvilScreenHandle
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         return super.mouseClicked(mouseX, mouseY, button);
     }
-
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {

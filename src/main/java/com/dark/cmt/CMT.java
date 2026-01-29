@@ -18,6 +18,7 @@ public class CMT implements ModInitializer {
     public void onInitialize() {
         CMTItems.registerModItems();
         CMTEntities.register();
+        CMTDataComponents.register();
         CMTBlocks.registerModBlocks();
         CMTBlockEntities.registerModBlockEntities();
         CMTWorldGeneration.generateCMTWorldGen();

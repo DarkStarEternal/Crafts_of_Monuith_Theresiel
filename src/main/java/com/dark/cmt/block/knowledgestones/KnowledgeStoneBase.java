@@ -2,15 +2,19 @@ package com.dark.cmt.block.knowledgestones;
 
 import com.dark.cmt.block.blacksmithfurnace.BlacksmithFurnaceBase;
 import com.dark.cmt.block.pedestal.PedestalBlock;
+import com.dark.cmt.init.CMTBlockEntities;
 import com.dark.cmt.item.SmithingManual;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.featuretoggle.FeatureSet;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
@@ -22,6 +26,7 @@ import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -73,6 +78,10 @@ public class KnowledgeStoneBase extends BlockWithEntity implements BlockEntityPr
             return ItemActionResult.FAIL;
         }
 
+        if (!stone.isInitialized()) {
+            stone.initIfNeeded();
+        }
+
         ItemStack held = player.getStackInHand(hand);
 
         if (held.getItem() instanceof SmithingManual manual) {
@@ -83,7 +92,6 @@ public class KnowledgeStoneBase extends BlockWithEntity implements BlockEntityPr
             }
             else {
                 manual.addAndReturn(held, preset);
-                System.out.println("ADDING");
                 return ItemActionResult.SUCCESS;
             }
         }
@@ -91,10 +99,12 @@ public class KnowledgeStoneBase extends BlockWithEntity implements BlockEntityPr
         return ItemActionResult.FAIL;
     }
 
-
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, placer.getMovementDirection()));
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        if (!world.isClient && type == CMTBlockEntities.KNOWLEDGESTONEBLOCKENTITY) {
+            return (w, pos, s, be) -> KnowledgeStoneBlockEntity.tick(w, pos, s, (KnowledgeStoneBlockEntity) be);
+        }
+        return null;
     }
 
     @Override

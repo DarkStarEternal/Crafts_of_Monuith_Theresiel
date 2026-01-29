@@ -13,7 +13,9 @@ public class UnfinishedZweihanderBlade extends UnfinishedSmithedItem {
 
                 List.of("L", "L", "F", "B", "L", "L"),
 
-                CMTItems.ZWEIHANDERBLADE.asItem()
+                CMTItems.ZWEIHANDERBLADE.asItem(),
+
+                "Zweihander Blade"
         );
     }
 }

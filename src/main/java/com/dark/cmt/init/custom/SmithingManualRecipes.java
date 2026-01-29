@@ -1,6 +1,7 @@
 package com.dark.cmt.init.custom;
 
 import com.dark.cmt.recipe.SmithingManualRecipe;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class SmithingManualRecipes {
         RECIPES.add(recipe);
     }
 
-    public static SmithingManualRecipe getRecipeFromName(String name) {
+    public static SmithingManualRecipe getRecipeFromID(String name) {
         for (SmithingManualRecipe recipe : RECIPES) {
             if (Objects.equals(recipe.getName(), name)) {
                 return recipe;

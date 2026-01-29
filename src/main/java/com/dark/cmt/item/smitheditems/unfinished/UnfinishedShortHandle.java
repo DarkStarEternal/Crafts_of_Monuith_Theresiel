@@ -13,7 +13,9 @@ public class UnfinishedShortHandle extends UnfinishedSmithedItem {
 
                 List.of("L", "L", "F"),
 
-                CMTItems.SHORTHANDLE.asItem()
+                CMTItems.SHORTHANDLE.asItem(),
+
+                "Short Handle"
         );
     }
 }

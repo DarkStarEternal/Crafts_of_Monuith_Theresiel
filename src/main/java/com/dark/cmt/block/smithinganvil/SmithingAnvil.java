@@ -1,5 +1,6 @@
 package com.dark.cmt.block.smithinganvil;
 
+import com.dark.cmt.block.pedestal.PedestalBlock;
 import com.dark.cmt.init.CMTBlockEntities;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -21,22 +22,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class SmithingAnvil extends BlockWithEntity implements BlockEntityProvider {
     public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    public static final MapCodec<SmithingAnvil> CODEC = SmithingAnvil.createCodec(SmithingAnvil::new);
 
-    public SmithingAnvil() {
-        super(FabricBlockSettings
-                .copyShallow(Blocks.IRON_BLOCK)
-                .hardness(3f)
-                .resistance(3f)
-                .strength(3f)
-                .requiresTool()
-                .nonOpaque()
-        );
+    public SmithingAnvil(Settings settings) {
+        super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
     }
 
     @Override
     protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return null;
+        return CODEC;
     }
 
     @Override

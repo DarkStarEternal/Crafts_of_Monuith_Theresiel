@@ -19,6 +19,7 @@ public class CMTConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEAD_ORE_KEY = registerKey("lead_ore");
     public static final RegistryKey<ConfiguredFeature<?, ?>> TIN_ORE_KEY = registerKey("tin_ore");
     public static final RegistryKey<ConfiguredFeature<?, ?>> SILVER_ORE_KEY = registerKey("silver_ore");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> PHOSPHORIC_STONE_KEY = registerKey("phosphoric_stone");
 
     public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> context) {
         RuleTest stoneReplaceables = new TagMatchRuleTest(BlockTags.STONE_ORE_REPLACEABLES);
@@ -34,17 +35,21 @@ public class CMTConfiguredFeatures {
         List<OreFeatureConfig.Target> overworldLeadOres =
                 List.of(OreFeatureConfig.createTarget(stoneReplaceables, CMTBlocks.LEADORE.getDefaultState()),
                         OreFeatureConfig.createTarget(deepslateReplaceables, CMTBlocks.DEEPSLATELEADORE.getDefaultState()));
-
         List<OreFeatureConfig.Target> overworldTinOres =
                 List.of(OreFeatureConfig.createTarget(stoneReplaceables, CMTBlocks.TINORE.getDefaultState()),
                         OreFeatureConfig.createTarget(deepslateReplaceables, CMTBlocks.DEEPSLATETINORE.getDefaultState()));
         List<OreFeatureConfig.Target> netherSulfuricOres =
                 List.of(OreFeatureConfig.createTarget(netherReplaceables, CMTBlocks.SULFURICNETHERORE.getDefaultState()));
 
+        List<OreFeatureConfig.Target> overworldPhosphoricStone =
+                List.of(OreFeatureConfig.createTarget(stoneReplaceables, CMTBlocks.PHOSPHORICSTONE.getDefaultState()),
+                        OreFeatureConfig.createTarget(deepslateReplaceables, CMTBlocks.PHOSPHORICSTONE.getDefaultState()));
+
         register(context, SULFURIC_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldSulfuricOres, 7));
         register(context, SILVER_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldSilverOres, 8));
         register(context, LEAD_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldLeadOres, 7));
         register(context, TIN_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldTinOres, 10));
+        register(context, PHOSPHORIC_STONE_KEY, Feature.ORE, new OreFeatureConfig(overworldPhosphoricStone, 40));
         register(context, SULFURIC_NETHER_ORE_KEY, Feature.ORE, new OreFeatureConfig(netherSulfuricOres, 10));
     }
 

@@ -1,5 +1,7 @@
 package com.dark.cmt.item.smitheditems;
 
+import com.dark.cmt.init.CMTDataComponents;
+import com.dark.cmt.item.CurrentHeatComponent;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.Entity;
@@ -22,12 +24,15 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UnfinishedSmithedItem extends Item {
 
     public List<String> commands;
     public ItemStack finishedItem;
-    public float temperature = 300;
+    public float temperature = 29f;
+
+    private String itemType = "";
 
     public static final String COMMANDS_KEY = "Commands";
     public static final String COMPLETED_KEY = "CompletedCommands";
@@ -35,10 +40,11 @@ public class UnfinishedSmithedItem extends Item {
     public static final String TEMPERATURE_KEY = "Temperature";
     public static final String MATERIAL_KEY = "Material";
 
-    public UnfinishedSmithedItem(Settings settings, List<String> givenCommands, Item finishedItem) {
+    public UnfinishedSmithedItem(Settings settings, List<String> givenCommands, Item finishedItem, String name) {
         super(settings);
         this.commands = givenCommands;
         this.finishedItem = new ItemStack(finishedItem);
+        this.itemType = name;
     }
 
     private NbtCompound getOrCreateData(ItemStack stack) {
@@ -92,16 +98,14 @@ public class UnfinishedSmithedItem extends Item {
     }
 
     public float getTemperature(ItemStack stack) {
-        NbtCompound nbt = getOrCreateData(stack);
-        return nbt.contains(TEMPERATURE_KEY, NbtElement.FLOAT_TYPE)
-                ? nbt.getFloat(TEMPERATURE_KEY)
-                : 300f;
+        if (stack.contains(CMTDataComponents.CURRENTHEAT)) {
+            return (stack.get(CMTDataComponents.CURRENTHEAT)).temperature();
+        }
+        return 29f;
     }
 
     public void setTemperature(ItemStack stack, float t) {
-        NbtCompound nbt = getOrCreateData(stack);
-        nbt.putFloat(TEMPERATURE_KEY, t);
-        saveData(stack, nbt);
+        stack.set(CMTDataComponents.CURRENTHEAT, new CurrentHeatComponent(t));
     }
 
     public String getMaterial(ItemStack stack) {
@@ -123,7 +127,7 @@ public class UnfinishedSmithedItem extends Item {
     }
 
     public boolean isTransformStateMet(ItemStack stack) {
-        return getTemperature(stack) <= 30 &&
+        return getTemperature(stack) <= 29 &&
                 getStringList(stack, COMPLETED_KEY).equals(getStringList(stack, COMMANDS_KEY));
     }
 
@@ -139,12 +143,12 @@ public class UnfinishedSmithedItem extends Item {
                 itemEntity.setStack(finishedStack);
             }
         }
-        else if (!world.isClient && getTemperature(stack) >= 30) {
+        else if (!world.isClient && getTemperature(stack) >= 29) {
             setTemperature(stack, getTemperature(stack) - 0.2f);
         }
     }
 
-    public ItemStack createNewStack(String material) {
+    public ItemStack createNewStack(String material, float temp) {
         ItemStack stack = new ItemStack(this);
 
         NbtCompound nbt = new NbtCompound();
@@ -157,14 +161,17 @@ public class UnfinishedSmithedItem extends Item {
 
         nbt.put(COMPLETED_KEY, new NbtList());
         nbt.putInt(CURRENT_INDEX_KEY, 0);
-        nbt.putFloat(TEMPERATURE_KEY, this.temperature);
         nbt.putString(MATERIAL_KEY, material);
 
         saveData(stack, nbt);
 
         stack.set(
                 DataComponentTypes.CUSTOM_NAME,
-                Text.literal("Unfinished Hook [" + material + "]").setStyle(Style.EMPTY.withItalic(false))
+                Text.literal("Unfinished " + this.itemType + " [" + material + "]").setStyle(Style.EMPTY.withItalic(false))
+        );
+        stack.set(
+                CMTDataComponents.CURRENTHEAT,
+                new CurrentHeatComponent(temp)
         );
 
         return stack;

@@ -72,7 +72,6 @@ public class SmithingManual extends Item {
         }
 
         list.add(NbtString.of(value));
-        System.out.println("added");
         nbt.put("UnlockedPresets", list);
 
         stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));

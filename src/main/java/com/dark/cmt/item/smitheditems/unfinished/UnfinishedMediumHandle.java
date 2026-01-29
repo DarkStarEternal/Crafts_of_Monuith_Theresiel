@@ -13,7 +13,9 @@ public class UnfinishedMediumHandle extends UnfinishedSmithedItem {
 
                 List.of("L", "L", "F", "L"),
 
-                CMTItems.MEDIUMHANDLE.asItem()
+                CMTItems.MEDIUMHANDLE.asItem(),
+
+                "Medium Handle"
         );
     }
 }

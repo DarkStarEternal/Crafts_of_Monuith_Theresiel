@@ -5,10 +5,13 @@ import com.dark.cmt.init.custom.SmithingManualRecipes;
 import com.dark.cmt.recipe.SmithingManualRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.Random;
 
@@ -19,6 +22,10 @@ public class KnowledgeStoneBlockEntity extends BlockEntity {
 
     public KnowledgeStoneBlockEntity(BlockPos pos, BlockState state) {
         super(CMTBlockEntities.KNOWLEDGESTONEBLOCKENTITY, pos, state);
+    }
+
+    public boolean isInitialized() {
+        return initialized;
     }
 
     public void initIfNeeded() {
@@ -35,6 +42,9 @@ public class KnowledgeStoneBlockEntity extends BlockEntity {
             initialized = false;
         }
         markDirty();
+    }
+
+    public static void tick(World world, BlockPos pos, BlockState state, KnowledgeStoneBlockEntity be) {
     }
 
     public Identifier getPresetId() {
@@ -54,11 +64,6 @@ public class KnowledgeStoneBlockEntity extends BlockEntity {
 
         if (nbt.contains("Preset")) {
             presetId = Identifier.of(nbt.getString("Preset"));
-        }
-
-        // FIRST LOAD: structure or fresh placement
-        if (!initialized && world != null && !world.isClient) {
-            initIfNeeded();
         }
     }
 

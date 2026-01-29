@@ -23,6 +23,23 @@ public class CMTItemTagProvider extends FabricTagProvider.ItemTagProvider {
             Identifier.of(CMT.MODID, "amber_heart_base")
     );
 
+    public static final TagKey<Item> BLACKSMITH_FURNACE_FUEL = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "blacksmith_furnace_fuel")
+    );
+    public static final TagKey<Item> BF_FUEL_LOW = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "blacksmith_furnace_fuel_low_quality")
+    );
+    public static final TagKey<Item> BF_FUEL_MEDIUM = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "blacksmith_furnace_fuel_medium_quality")
+    );
+    public static final TagKey<Item> BF_FUEL_HIGH = TagKey.of(
+            net.minecraft.registry.RegistryKeys.ITEM,
+            Identifier.of(CMT.MODID, "blacksmith_furnace_fuel_high_quality")
+    );
+
     public static final TagKey<Item> TIN_INGOTS = TagKey.of(
             net.minecraft.registry.RegistryKeys.ITEM,
             Identifier.of("c", "tin_ingots")
@@ -147,6 +164,48 @@ public class CMTItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
         getOrCreateTagBuilder(AMBER_HEART_BASE)
                 .add(Blocks.MAGMA_BLOCK.asItem());
+
+        getOrCreateTagBuilder(BLACKSMITH_FURNACE_FUEL)
+                .add(Items.COAL)
+                .add(Items.BLAZE_ROD)
+                .add(Items.COAL_BLOCK)
+                .add(Items.BIRCH_LOG)
+                .add(Items.CHERRY_LOG)
+                .add(Items.OAK_LOG)
+                .add(Items.DARK_OAK_LOG)
+                .add(Items.JUNGLE_LOG)
+                .add(Items.MANGROVE_LOG)
+                .add(Items.ACACIA_LOG)
+                .add(Items.BIRCH_WOOD)
+                .add(Items.CHERRY_WOOD)
+                .add(Items.OAK_WOOD)
+                .add(Items.DARK_OAK_WOOD)
+                .add(Items.JUNGLE_WOOD)
+                .add(Items.MANGROVE_WOOD)
+                .add(Items.ACACIA_WOOD);
+
+        getOrCreateTagBuilder(BF_FUEL_LOW)
+                .add(Items.BIRCH_LOG)
+                .add(Items.CHERRY_LOG)
+                .add(Items.OAK_LOG)
+                .add(Items.DARK_OAK_LOG)
+                .add(Items.JUNGLE_LOG)
+                .add(Items.MANGROVE_LOG)
+                .add(Items.ACACIA_LOG)
+                .add(Items.BIRCH_WOOD)
+                .add(Items.CHERRY_WOOD)
+                .add(Items.OAK_WOOD)
+                .add(Items.DARK_OAK_WOOD)
+                .add(Items.JUNGLE_WOOD)
+                .add(Items.MANGROVE_WOOD)
+                .add(Items.ACACIA_WOOD);
+
+        getOrCreateTagBuilder(BF_FUEL_MEDIUM)
+                .add(Items.COAL)
+                .add(Items.COAL_BLOCK);
+
+        getOrCreateTagBuilder(BF_FUEL_HIGH)
+                .add(Items.BLAZE_ROD);
 
         getOrCreateTagBuilder(COPPER_MATERIAL)
                 .add(Items.COPPER_INGOT)

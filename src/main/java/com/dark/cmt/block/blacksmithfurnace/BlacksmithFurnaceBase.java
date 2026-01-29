@@ -1,9 +1,14 @@
 package com.dark.cmt.block.blacksmithfurnace;
 
+import com.dark.cmt.block.knowledgestones.KnowledgeStoneBlockEntity;
+import com.dark.cmt.datagen.CMTItemTagProvider;
+import com.dark.cmt.init.CMTBlockEntities;
 import com.mojang.serialization.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -25,6 +30,7 @@ public class BlacksmithFurnaceBase extends BlockWithEntity implements BlockEntit
 
     public static final EnumProperty<MultiblockPart> MULTIBLOCKPART = EnumProperty.of("part", MultiblockPart.class);
     public static final BooleanProperty FILLED = BooleanProperty.of("filled");
+    public static final BooleanProperty CONTROLLER = BooleanProperty.of("controller");
 
 
     public BlacksmithFurnaceBase() {
@@ -36,12 +42,12 @@ public class BlacksmithFurnaceBase extends BlockWithEntity implements BlockEntit
                 .requiresTool()
         );
         this.setDefaultState(this.stateManager.getDefaultState()
-                .with(MULTIBLOCKPART, MultiblockPart.INDIVIDUAL_BLOCK).with(FILLED, false));
+                .with(MULTIBLOCKPART, MultiblockPart.INDIVIDUAL_BLOCK).with(FILLED, false).with(CONTROLLER, false));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(MULTIBLOCKPART, FILLED);
+        builder.add(MULTIBLOCKPART, FILLED, CONTROLLER);
     }
 
     @Override
@@ -85,41 +91,19 @@ public class BlacksmithFurnaceBase extends BlockWithEntity implements BlockEntit
         if (!(be instanceof BlacksmithFurnaceBlockEntity furnace)) return ItemActionResult.FAIL;
 
         ItemStack held = player.getStackInHand(hand);
-
-        // Sneak-right-click: remove item from furnace
-        if (player.isSneaking()) {
-            for (int i = 0; i < furnace.getInventory().size(); i++) {
-                ItemStack slotStack = furnace.getInventory().get(i);
-                if (!slotStack.isEmpty()) {
-                    // Give the item to the player
-                    if (held.isEmpty()) {
-                        player.setStackInHand(hand, slotStack.copy());
-                    } else {
-                        // Try to add to inventory, otherwise drop
-                        if (!player.getInventory().insertStack(slotStack.copy())) {
-                            player.dropItem(slotStack.copy(), false);
-                        }
-                    }
-
-                    furnace.getInventory().set(i, ItemStack.EMPTY); // clear slot
-                    furnace.markDirty();
-                    world.updateListeners(pos, state, state, 0);
-
-                    return ItemActionResult.CONSUME;
-                }
+        if (!held.isIn(CMTItemTagProvider.BLACKSMITH_FURNACE_FUEL)) {
+            if (player.isSneaking() && held.isEmpty()) {
+                player.setStackInHand(hand, furnace.getItemToController());
+                return ItemActionResult.SUCCESS;
+            } else if (!held.isEmpty()){
+                furnace.sendItemToController(held);
+                player.getMainHandStack().decrement(1);
+                return ItemActionResult.SUCCESS;
             }
-            return ItemActionResult.FAIL; // nothing to remove
+        } else if (held.isIn(CMTItemTagProvider.BLACKSMITH_FURNACE_FUEL)) {
+            furnace.sendItemToControllerFuel(held);
+            player.getMainHandStack().decrement(1);
         }
-
-        // Normal right-click: insert item
-        for (int i = 0; i < furnace.getInventory().size(); i++) {
-            if (furnace.getInventory().get(i).isEmpty() && !held.isEmpty()) {
-                furnace.addItem(held, i);
-                held.decrement(1);
-                return ItemActionResult.CONSUME;
-            }
-        }
-
         return ItemActionResult.FAIL;
     }
 
@@ -161,6 +145,11 @@ public class BlacksmithFurnaceBase extends BlockWithEntity implements BlockEntit
         return true;
     }
 
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return (w, pos, s, be) -> BlacksmithFurnaceBlockEntity.tick(w, pos, s, (BlacksmithFurnaceBlockEntity) be);
+    }
+
     private void formMultiblock(World world, BlockPos origin) {
         // Assign parts for 2x2
         BlockPos[][] positions = new BlockPos[][]{
@@ -186,6 +175,8 @@ public class BlacksmithFurnaceBase extends BlockWithEntity implements BlockEntit
                 }
             }
         }
+        BlockState controllerState = world.getBlockState(origin).with(CONTROLLER, true);
+        world.setBlockState(origin, controllerState, 3);
     }
 
     public enum MultiblockPart implements StringIdentifiable {

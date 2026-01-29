@@ -1,14 +1,25 @@
 {
   "variants": {
-    "part=top_left,filled=false":   { "model": "cmt:block/blacksmith_furnace_top_left" },
-    "part=top_right,filled=false":  { "model": "cmt:block/blacksmith_furnace_top_right" },
-    "part=bottom_left,filled=false": { "model": "cmt:block/blacksmith_furnace_bottom_left" },
-    "part=bottom_right,filled=false": { "model": "cmt:block/blacksmith_furnace_bottom_right" },
-    "part=individual,filled=false": { "model": "cmt:block/blacksmith_furnace_base" },
-    "part=individual,filled=true": { "model": "cmt:block/blacksmith_furnace_base" },
-    "part=top_left,filled=true":   { "model": "cmt:block/blacksmith_furnace_top_left_filled" },
-    "part=top_right,filled=true":  { "model": "cmt:block/blacksmith_furnace_top_right_filled" },
-    "part=bottom_left,filled=true": { "model": "cmt:block/blacksmith_furnace_bottom_left_filled" },
-    "part=bottom_right,filled=true": { "model": "cmt:block/blacksmith_furnace_bottom_right_filled" }
+    "part=top_left,filled=false,controller=false":   { "model": "cmt:block/blacksmith_furnace_top_left" },
+    "part=top_right,filled=false,controller=false":  { "model": "cmt:block/blacksmith_furnace_top_right" },
+    "part=bottom_left,filled=false,controller=false": { "model": "cmt:block/blacksmith_furnace_bottom_left" },
+    "part=bottom_right,filled=false,controller=false": { "model": "cmt:block/blacksmith_furnace_bottom_right" },
+    "part=individual,filled=false,controller=false": { "model": "cmt:block/blacksmith_furnace_base" },
+    "part=individual,filled=true,controller=false": { "model": "cmt:block/blacksmith_furnace_base" },
+    "part=top_left,filled=true,controller=false":   { "model": "cmt:block/blacksmith_furnace_top_left_filled" },
+    "part=top_right,filled=true,controller=false":  { "model": "cmt:block/blacksmith_furnace_top_right_filled" },
+    "part=bottom_left,filled=true,controller=false": { "model": "cmt:block/blacksmith_furnace_bottom_left_filled" },
+    "part=bottom_right,filled=true,controller=false": { "model": "cmt:block/blacksmith_furnace_bottom_right_filled" },
+
+    "part=top_left,filled=false,controller=true":   { "model": "cmt:block/blacksmith_furnace_top_left_controller" },
+    "part=top_right,filled=false,controller=true":  { "model": "cmt:block/blacksmith_furnace_top_right_controller" },
+    "part=bottom_left,filled=false,controller=true": { "model": "cmt:block/blacksmith_furnace_bottom_left_controller" },
+    "part=bottom_right,filled=false,controller=true": { "model": "cmt:block/blacksmith_furnace_bottom_right_controller" },
+    "part=individual,filled=false,controller=true": { "model": "cmt:block/blacksmith_furnace_base_controller" },
+    "part=individual,filled=true,controller=true": { "model": "cmt:block/blacksmith_furnace_base_controller" },
+    "part=top_left,filled=true,controller=true":   { "model": "cmt:block/blacksmith_furnace_top_left_controller_filled" },
+    "part=top_right,filled=true,controller=true":  { "model": "cmt:block/blacksmith_furnace_top_right_controller_filled" },
+    "part=bottom_left,filled=true,controller=true": { "model": "cmt:block/blacksmith_furnace_bottom_left_controller_filled" },
+    "part=bottom_right,filled=true,controller=true": { "model": "cmt:block/blacksmith_furnace_bottom_right_controller_filled" }
   }
 }

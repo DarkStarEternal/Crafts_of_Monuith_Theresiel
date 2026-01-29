@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
+import org.joml.Quaternionf;
 
 public class BlacksmithFurnaceRenderer implements BlockEntityRenderer<BlacksmithFurnaceBlockEntity> {
     public BlacksmithFurnaceRenderer(BlockEntityRendererFactory.Context ctx) {}
@@ -28,17 +29,27 @@ public class BlacksmithFurnaceRenderer implements BlockEntityRenderer<Blacksmith
 
         ItemRenderer renderer = MinecraftClient.getInstance().getItemRenderer();
 
-        for (int i = 0; i < entity.getInventory().size(); i++) {
-            ItemStack stack = entity.getItems().get(i);
+        ItemStack stack = entity.getItems().get(0);
 
-            matrices.push();
-            matrices.translate(0f + i * 0.5f, 1.15f, 0f); // position items left/right
-            matrices.scale(0.5f, 0.5f, 0.5f);
+        matrices.push();
+        matrices.translate(1f, 1.25f, 0.5f);
+        matrices.scale(0.5f, 0.5f, 0.5f);
+        matrices.multiply(new Quaternionf(0f, 1f, 0f, 0f));
 
-            renderer.renderItem(stack, ModelTransformationMode.GUI, getLightLevel(entity.getWorld(),
-                    entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
-            matrices.pop();
-        }
+        renderer.renderItem(stack, ModelTransformationMode.GUI, getLightLevel(entity.getWorld(),
+                entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
+        matrices.pop();
+
+        ItemStack stack2 = entity.getItems().get(1);
+
+        matrices.push();
+        matrices.translate(1f, 1.25f, 1.5f);
+        matrices.scale(0.5f, 0.5f, 0.5f);
+        matrices.multiply(new Quaternionf(0f, 1f, 0f, 0f));
+
+        renderer.renderItem(stack2, ModelTransformationMode.GUI, getLightLevel(entity.getWorld(),
+                entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
+        matrices.pop();
     }
 
     private int getLightLevel(World world, BlockPos pos) {

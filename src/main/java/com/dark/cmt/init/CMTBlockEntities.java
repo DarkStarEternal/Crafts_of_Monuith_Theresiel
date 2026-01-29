@@ -19,7 +19,7 @@ public class CMTBlockEntities {
     public static final BlockEntityType SMITHINGANVILBLOCKENTITY = Registry.register
             (Registries.BLOCK_ENTITY_TYPE, Identifier.of(CMT.MODID, "smithing_anvil"), FabricBlockEntityTypeBuilder.create(SmithingAnvilBlockEntity::new, CMTBlocks.SMITHINGANVIL).build());
     public static final BlockEntityType PEDESTALBLOCKENTITY = Registry.register
-            (Registries.BLOCK_ENTITY_TYPE, Identifier.of(CMT.MODID, "smithing_anvil"), FabricBlockEntityTypeBuilder.create(PedestalBlockEntity::new, CMTBlocks.PEDESTAL).build());
+            (Registries.BLOCK_ENTITY_TYPE, Identifier.of(CMT.MODID, "pedestal"), FabricBlockEntityTypeBuilder.create(PedestalBlockEntity::new, CMTBlocks.PEDESTAL).build());
 
     public static void registerModBlockEntities() {
 

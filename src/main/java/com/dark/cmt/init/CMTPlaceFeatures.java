@@ -24,6 +24,7 @@ public class CMTPlaceFeatures {
     public static final RegistryKey<PlacedFeature> LEAD_ORE_PLACED_KEY = registerKey("lead_ore_placed");
     public static final RegistryKey<PlacedFeature> TIN_ORE_PLACED_KEY = registerKey("tin_ore_placed");
     public static final RegistryKey<PlacedFeature> SILVER_ORE_PLACED_KEY = registerKey("silver_ore_placed");
+    public static final RegistryKey<PlacedFeature> PHOSPHORIC_STONE_PLACED_KEY = registerKey("phosphoric_stone_placed");
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
         var configuredFeatures = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -32,6 +33,13 @@ public class CMTPlaceFeatures {
                 SULFURIC_ORE_PLACED_KEY,
                 configuredFeatures.getOrThrow(CMTConfiguredFeatures.SULFURIC_ORE_KEY),
                 CMTOrePlacement.modifiersWithCount(12,
+                        HeightRangePlacementModifier.trapezoid(
+                                YOffset.fixed(-154),
+                                YOffset.fixed(312))));
+        register(context,
+                PHOSPHORIC_STONE_PLACED_KEY,
+                configuredFeatures.getOrThrow(CMTConfiguredFeatures.PHOSPHORIC_STONE_KEY),
+                CMTOrePlacement.modifiersWithCount(22,
                         HeightRangePlacementModifier.trapezoid(
                                 YOffset.fixed(-154),
                                 YOffset.fixed(312))));

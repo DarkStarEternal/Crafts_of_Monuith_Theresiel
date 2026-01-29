@@ -1,17 +1,10 @@
 {
   "type": "cmt:knowledge_stone",
-
   "step": "surface_structures",
-
   "start_height": {
-    "absolute": 0
+    "heightmap": "WORLD_SURFACE_WG"
   },
-
-  "project_start_to_heightmap": "WORLD_SURFACE_WG",
-
   "biomes": "#minecraft:is_overworld",
-
   "terrain_adaptation": "beard_thin",
-
   "spawn_overrides": {}
 }

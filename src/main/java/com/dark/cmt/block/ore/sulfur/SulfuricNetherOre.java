@@ -5,6 +5,6 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 
 public class SulfuricNetherOre extends ExperienceDroppingBlock {
     public SulfuricNetherOre() {
-        super(UniformIntProvider.create(11,29), Settings.create().requiresTool());
+        super(UniformIntProvider.create(11,29), Settings.create().requiresTool().hardness(1.6f).resistance(2f));
     }
 }

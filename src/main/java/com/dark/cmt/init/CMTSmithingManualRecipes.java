@@ -1,10 +1,12 @@
 package com.dark.cmt.init;
 
+import com.dark.cmt.CMT;
 import com.dark.cmt.datagen.CMTItemTagProvider;
 import com.dark.cmt.recipe.SmithingManualRecipe;
 import com.dark.cmt.init.custom.SmithingManualRecipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.Identifier;
 
 public class CMTSmithingManualRecipes {
     public static final SmithingManualRecipe SICLEHEAD = new SmithingManualRecipe("sicle_head",

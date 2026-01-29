@@ -13,9 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureType;
 
@@ -50,8 +47,6 @@ public class KnowledgeStoneStructure extends Structure {
                 ),
                 context.chunkPos().getStartZ()
         );
-
-        System.out.println("Adding KnowledgeStonePiece at " + pos);
 
         collector.addPiece(
                 new KnowledgeStonePiece(

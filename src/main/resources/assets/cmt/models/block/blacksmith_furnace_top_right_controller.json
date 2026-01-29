@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "side": "cmt:block/blacksmith_furnace_controller",
+    "top": "cmt:block/cast_heater_top_right_empty",
+    "bottom": "block/deepslate_bricks"
+  }
+}

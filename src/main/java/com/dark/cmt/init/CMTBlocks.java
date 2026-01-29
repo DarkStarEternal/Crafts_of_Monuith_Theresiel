@@ -55,13 +55,20 @@ public class CMTBlocks {
     public static final Block BRONZEBLOCK = registerBlockWithItem("bronze_block", new Block(AbstractBlock.Settings.create().hardness(3.1f).resistance(4f).strength(2.5f).requiresTool()));
 
     public static final Block BLACKSMITHFURNACEBASE = registerBlockWithItem("blacksmith_furnace_base", new BlacksmithFurnaceBase());
-    public static final Block KNOWLEDGESTONE = registerBlockWithItem("knowledge_stone", new KnowledgeStoneBase(FabricBlockSettings
-            .copyShallow(Blocks.BEDROCK)
-            .hardness(3f)
-            .resistance(3f)
-            .strength(3f)
-            .nonOpaque()));
-    public static final Block SMITHINGANVIL = registerBlockWithItem("smithing_anvil", new SmithingAnvil());
+    public static final Block KNOWLEDGESTONE = registerBlockWithItem("knowledge_stone", new KnowledgeStoneBase(
+            AbstractBlock.Settings.copy(Blocks.BEDROCK)
+                    .hardness(3f)
+                    .resistance(3f)
+                    .strength(3f)
+                    .nonOpaque()));
+    public static final Block SMITHINGANVIL = registerBlockWithItem("smithing_anvil", new SmithingAnvil(
+            AbstractBlock.Settings
+                    .copy(Blocks.IRON_BLOCK)
+                    .hardness(3f)
+                    .resistance(3f)
+                    .strength(3f)
+                    .requiresTool()
+                    .nonOpaque()));
     public static final Block PEDESTAL = registerBlockWithItem("pedestal", new PedestalBlock(AbstractBlock.Settings.create().nonOpaque()));
 
     public static final Block STEELCOINSTACK = registerBlockWithItem("steel_coinstack", new Block(AbstractBlock.Settings.create().hardness(1f).resistance(2f).strength(1.1f).requiresTool()));
@@ -69,10 +76,8 @@ public class CMTBlocks {
     public static final Block GOLDCOINSTACK = registerBlockWithItem("gold_coinstack", new Block(AbstractBlock.Settings.create().hardness(1f).resistance(2f).strength(1.1f).requiresTool()));
 
     private static Block registerBlockWithItem(String name, Block block) {
-        // Register the block
         Registry.register(Registries.BLOCK, Identifier.of(CMT.MODID, name), block);
 
-        // Register the block item
         Registry.register(Registries.ITEM, Identifier.of(CMT.MODID, name),
                 new BlockItem(block, new Item.Settings()));
 

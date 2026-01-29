@@ -13,7 +13,9 @@ public class UnfinishedSicle extends UnfinishedSmithedItem {
 
                 List.of("B", "B", "F"),
 
-                CMTItems.SICLEHEAD.asItem()
+                CMTItems.SICLEHEAD.asItem(),
+
+                "Sicle Blade"
         );
     }
 }
