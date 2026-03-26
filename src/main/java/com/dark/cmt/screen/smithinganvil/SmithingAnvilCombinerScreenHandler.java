@@ -30,25 +30,9 @@ public class SmithingAnvilCombinerScreenHandler extends ScreenHandler {
 
         this.inventory = be.getCombinerInventory();
 
-        addSlot(new Slot(inventory, 0, 7, 7) { public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 1, 25, 7) { public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 2, 43, 7){ public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 3, 61, 7){ public int getMaxItemCount() { return 1; }});
-
-        addSlot(new Slot(inventory, 4, 7, 25) { public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 5, 25, 25) { public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 6, 43, 25){ public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 7, 61, 25){ public int getMaxItemCount() { return 1; }});
-
-        addSlot(new Slot(inventory, 8, 7, 43) { public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 9, 25, 43) { public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 10, 43, 43){ public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 11, 61, 43){ public int getMaxItemCount() { return 1; }});
-
-        addSlot(new Slot(inventory, 12, 7, 61) { public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 13, 25, 61) { public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 14, 43, 61){ public int getMaxItemCount() { return 1; }});
-        addSlot(new Slot(inventory, 15, 61, 61){ public int getMaxItemCount() { return 1; }});
+        addSlot(new Slot(inventory, 0, 7, 35) { public int getMaxItemCount() { return 1; }});
+        addSlot(new Slot(inventory, 1, 7, 13) { public int getMaxItemCount() { return 1; }});
+        addSlot(new Slot(inventory, 2, 96, 13){ public int getMaxItemCount() { return 1; }});
 
         addPlayerInventory(playerInv);
         addPlayerHotbar(playerInv);

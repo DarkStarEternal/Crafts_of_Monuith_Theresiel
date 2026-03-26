@@ -34,7 +34,7 @@ import java.util.List;
 
 public class SmithingAnvilCombinerScreen extends HandledScreen<SmithingAnvilCombinerScreenHandler> {
     public static final Identifier GUI_TEXTURE =
-            Identifier.of(CMT.MODID, "textures/gui/smithing_anvil/smithing_anvil_gui_combiner.png");
+            Identifier.of(CMT.MODID, "textures/gui/smithing_anvil/smithing_anvil_gui_part.png");
 
 
     public SmithingAnvilCombinerScreen(SmithingAnvilCombinerScreenHandler handler, PlayerInventory inventory, Text title) {

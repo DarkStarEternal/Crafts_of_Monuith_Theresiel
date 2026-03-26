@@ -26,7 +26,6 @@ public class KnowledgeStonePiece extends StructurePiece {
             BlockPos pos,
             BlockRotation rotation
     ) {
-        // Initially set a valid bounding box (can be any small box)
         super(CMTStructures.KNOWLEDGE_STONE_PIECE, 0, new BlockBox(pos.getX(), pos.getY(), pos.getZ(),
                 pos.getX(), pos.getY(), pos.getZ()));
         this.pos = pos;

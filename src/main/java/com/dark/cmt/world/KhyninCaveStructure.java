@@ -44,11 +44,11 @@ public class KhyninCaveStructure extends Structure {
         );
 
         collector.addPiece(
-                new KnowledgeStonePiece(
+                new KhyninCavePiece(
                         context.structureTemplateManager(),
                         Identifier.of(CMT.MODID, "khynin_cave"),
                         pos,
-                        BlockRotation.NONE
+                        BlockRotation.CLOCKWISE_180
                 )
         );
     }

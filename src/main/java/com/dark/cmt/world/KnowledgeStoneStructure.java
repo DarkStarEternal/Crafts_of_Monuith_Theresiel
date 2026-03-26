@@ -53,7 +53,7 @@ public class KnowledgeStoneStructure extends Structure {
                         context.structureTemplateManager(),
                         Identifier.of(CMT.MODID, "knowledge_stone"),
                         pos,
-                        BlockRotation.NONE
+                        BlockRotation.COUNTERCLOCKWISE_90
                 )
         );
     }
