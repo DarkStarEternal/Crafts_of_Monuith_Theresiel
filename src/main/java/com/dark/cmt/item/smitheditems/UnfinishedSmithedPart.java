@@ -13,26 +13,27 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Style;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ActionResult;
 import net.minecraft.text.Text;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class UnfinishedSmithedItem extends Item {
+public class UnfinishedSmithedPart extends Item {
 
     public List<String> commands;
-    public ItemStack finishedItem;
+    public Identifier finishedItemId;
     public float temperature = 29f;
 
     private String itemType = "";
+    private String path = "";
 
     public static final String COMMANDS_KEY = "Commands";
     public static final String COMPLETED_KEY = "CompletedCommands";
@@ -40,10 +41,10 @@ public class UnfinishedSmithedItem extends Item {
     public static final String TEMPERATURE_KEY = "Temperature";
     public static final String MATERIAL_KEY = "Material";
 
-    public UnfinishedSmithedItem(Settings settings, List<String> givenCommands, Item finishedItem, String name) {
+    public UnfinishedSmithedPart(Settings settings, String path, Identifier finishedItemID, String name) {
         super(settings);
-        this.commands = givenCommands;
-        this.finishedItem = new ItemStack(finishedItem);
+        this.path = path;
+        this.finishedItemId = finishedItemID;
         this.itemType = name;
     }
 
@@ -136,7 +137,7 @@ public class UnfinishedSmithedItem extends Item {
         super.inventoryTick(stack, world, entity, slot, selected);
 
         if (!world.isClient && isTransformStateMet(stack)) {
-            ItemStack finishedStack = this.finishedItem.copy();
+            ItemStack finishedStack = new ItemStack(Registries.ITEM.get(finishedItemId));
             if (entity instanceof PlayerEntity player) {
                 player.getInventory().setStack(slot, finishedStack);
             } else if (entity instanceof ItemEntity itemEntity) {

@@ -14,7 +14,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.Identifier;
 import org.joml.Quaternionf;
 
-public class UnfinishedPickaxeHeadBuiltinRenderer implements BuiltinItemRenderer {
+public class UnfinishedPartBuiltinRenderer implements BuiltinItemRenderer {
 
     // Thickness slices for depth
     private static final int DEPTH_SLICES = 4;
@@ -25,6 +25,13 @@ public class UnfinishedPickaxeHeadBuiltinRenderer implements BuiltinItemRenderer
 
         // --- Read material from NBT ---
         String material = "default";
+        String path = "fallback";
+        if (stack.contains(DataComponentTypes.CUSTOM_DATA)) {
+            NbtCompound nbt = stack.get(DataComponentTypes.CUSTOM_DATA).copyNbt();
+            if (nbt != null && nbt.contains("Material", NbtElement.STRING_TYPE)) {
+                material = nbt.getString("Material");
+            }
+        }
         if (stack.contains(DataComponentTypes.CUSTOM_DATA)) {
             NbtCompound nbt = stack.get(DataComponentTypes.CUSTOM_DATA).copyNbt();
             if (nbt != null && nbt.contains("Material", NbtElement.STRING_TYPE)) {
@@ -34,22 +41,19 @@ public class UnfinishedPickaxeHeadBuiltinRenderer implements BuiltinItemRenderer
 
         // --- Resolve texture ---
         Identifier texture = Identifier.of(CMT.MODID,
-                "textures/item/smithing/digging/pickaxe/head/" + material + "_unfinished.png");
+                "textures/item/smithing/"+ path + material + "_unfinished.png");
 
         MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
 
         matrices.push();
 
-        // --- Determine render context ---
         RenderContextType type = detectRenderContext(stack);
 
         applyTransforms(type, matrices);
 
-        // --- Vertex consumer ---
         VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(texture));
         MatrixStack.Entry entry = matrices.peek();
 
-        // --- Render quads with depth ---
         float zStep = 0.005f; // depth spacing
         for (int i = 0; i < DEPTH_SLICES; i++) {
             float z = i * zStep;

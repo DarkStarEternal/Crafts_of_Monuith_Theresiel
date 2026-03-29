@@ -4,7 +4,7 @@ package com.dark.cmt.screen.smithinganvil;
 import com.dark.cmt.CMT;
 import com.dark.cmt.block.smithinganvil.SmithingAnvilBlockEntity;
 import com.dark.cmt.item.SmithingManual;
-import com.dark.cmt.item.smitheditems.UnfinishedSmithedItem;
+import com.dark.cmt.item.smitheditems.UnfinishedSmithedPart;
 import com.dark.cmt.materials.SmithingMaterial;
 import com.dark.cmt.networking.C2SSmithingAnvilCraftStepValidationPayload;
 import com.dark.cmt.networking.C2SSmithingAnvilUIChangePayload;
@@ -57,7 +57,7 @@ public class SmithingAnvilPartScreen extends HandledScreen<SmithingAnvilPartScre
         this.addDrawableChild(
                 ButtonWidget.builder(Text.literal("Bend"), button -> {
                     if (client != null && client.player != null) {
-                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedPart unfinishedSmithedItem) {
                             sendCommand("B");
                         }
                     }
@@ -66,7 +66,7 @@ public class SmithingAnvilPartScreen extends HandledScreen<SmithingAnvilPartScre
         this.addDrawableChild(
                 ButtonWidget.builder(Text.literal("Shorten"), button -> {
                     if (client != null && client.player != null) {
-                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedPart unfinishedSmithedItem) {
                             sendCommand("S");
                         }
                     }
@@ -75,7 +75,7 @@ public class SmithingAnvilPartScreen extends HandledScreen<SmithingAnvilPartScre
         this.addDrawableChild(
                 ButtonWidget.builder(Text.literal("Lenghten"), button -> {
                     if (client != null && client.player != null) {
-                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedPart unfinishedSmithedItem) {
                             sendCommand("L");
                         }
                     }
@@ -84,7 +84,7 @@ public class SmithingAnvilPartScreen extends HandledScreen<SmithingAnvilPartScre
         this.addDrawableChild(
                 ButtonWidget.builder(Text.literal("Flatten"), button -> {
                     if (client != null && client.player != null) {
-                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+                        if (handler.getSlot(0).getStack().getItem() instanceof UnfinishedSmithedPart unfinishedSmithedItem) {
                             sendCommand("F");
                         }
                     }

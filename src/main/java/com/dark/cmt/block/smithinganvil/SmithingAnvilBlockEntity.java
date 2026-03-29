@@ -5,7 +5,7 @@ import com.dark.cmt.init.CMTDataComponents;
 import com.dark.cmt.init.custom.MetalMaterialRegistry;
 import com.dark.cmt.item.CurrentHeatComponent;
 import com.dark.cmt.item.SmithingManual;
-import com.dark.cmt.item.smitheditems.UnfinishedSmithedItem;
+import com.dark.cmt.item.smitheditems.UnfinishedSmithedPart;
 import com.dark.cmt.materials.SmithingMaterial;
 import com.dark.cmt.recipe.SmithingManualRecipe;
 import com.dark.cmt.init.CMTBlockEntities;
@@ -143,7 +143,7 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
         if (recipeStack.isEmpty()) return;
 
         if (recipeStack.get(DataComponentTypes.CUSTOM_DATA) == null) {
-            if (recipeStack.getItem() instanceof UnfinishedSmithedItem u) {
+            if (recipeStack.getItem() instanceof UnfinishedSmithedPart u) {
                 recipeStack = u.createNewStack(material,currentTemp);
             }
         }
@@ -162,7 +162,7 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
         ItemStack originalStack = partInventory.get(0);
 
         if (!originalStack.isEmpty() && validateCraftStep(craftStep, originalStack)) {
-            if (originalStack.getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+            if (originalStack.getItem() instanceof UnfinishedSmithedPart unfinishedSmithedItem) {
                 int idx = unfinishedSmithedItem.getIndex(originalStack);
                 unfinishedSmithedItem.setStringListEntry(originalStack, "CompletedCommands", craftStep, idx);
                 unfinishedSmithedItem.setTemperature(originalStack, unfinishedSmithedItem.getTemperature(originalStack) - unfinishedSmithedItem.getTemperature(originalStack) / 10);
@@ -184,7 +184,7 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
         if (world.isClient) return;
 
         ItemStack stack = be.partInventory.get(0);
-        if (stack.getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem && unfinishedSmithedItem.isTransformStateMet(stack)) {
+        if (stack.getItem() instanceof UnfinishedSmithedPart unfinishedSmithedItem && unfinishedSmithedItem.isTransformStateMet(stack)) {
             be.partInventory.set(0, unfinishedSmithedItem.finishedItem.copy());
         }
 
@@ -204,7 +204,7 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
 
         if (stack.get(DataComponentTypes.CUSTOM_DATA) == null) {
             Item item = stack.getItem();
-            if (item instanceof UnfinishedSmithedItem unfinished) {
+            if (item instanceof UnfinishedSmithedPart unfinished) {
                 return unfinished.createNewStack(material, t);
             }
         }
@@ -213,7 +213,7 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
     }
 
     public boolean validateCraftStep(String craftStep, ItemStack input) {
-        if (input.getItem() instanceof UnfinishedSmithedItem unfinishedSmithedItem) {
+        if (input.getItem() instanceof UnfinishedSmithedPart unfinishedSmithedItem) {
             if (unfinishedSmithedItem.getStringListEntry(input, "Commands",
                     unfinishedSmithedItem.getIndex(input)).equals(craftStep)) {
                 SmithingMaterial material = MetalMaterialRegistry.getMaterialFromString(unfinishedSmithedItem.getMaterial(input));

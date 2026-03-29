@@ -53,16 +53,9 @@ public class CMTItems {
     public static final Item AMBERHEART = registerItem("amber_heart", new HeartOfTheMountain());
     public static final Item PUREREDSTONE = registerItem("pure_redstone", new HeartOfTheMountain());
 
-    public static final Item SICLEHEAD = registerItem("sicle_head", new SicleHead());
-    public static final Item UNFINISHEDSICLEHEAD = registerItem("unfinished_sicle_head", new UnfinishedSicle());
-    public static final Item ZWEIHANDERBLADE = registerItem("zweihanderblade", new ZweihanderBlade());
-    public static final Item UNFINISHEDZWEIHANDERBLADE = registerItem("unfinished_zweihanderblade", new UnfinishedZweihanderBlade());
-    public static final Item MEDIUMHANDLE = registerItem("mediumhandle", new MediumHandle());
-    public static final Item UNFINISHEDMEDIUMHANDLE = registerItem("unfinished_mediumhandle", new UnfinishedMediumHandle());
-    public static final Item PICKAXEHEAD = registerItem("pickaxehead", new PickaxeHead());
-    public static final Item UNFINISHEDPICKAXEHEAD = registerItem("unfinished_pickaxehead", new UnfinishedPickaxeHead());
-    public static final Item SHORTHANDLE = registerItem("short_handle", new ShortHandle());
-    public static final Item UNFINISHEDSHORTHANDLE = registerItem("unfinished_short_handle", new UnfinishedShortHandle());
+    public static final Item PART = registerItem("part", new FinishedPart("", ""));
+    public static final Item UNFINISHEDPART = registerItem("unfinished_part", new UnfinishedPart("", ""));
+
 
     public static final Item CREATIVEMANUAL = registerItem("creative_smithing_manual", new CreativeManual());
     public static final Item HEPHAISTONMANUAL = registerItem("hephaiston_smithing_manual", new HephaistonManual());

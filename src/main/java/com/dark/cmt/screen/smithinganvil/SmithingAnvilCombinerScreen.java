@@ -2,34 +2,16 @@ package com.dark.cmt.screen.smithinganvil;
 
 
 import com.dark.cmt.CMT;
-import com.dark.cmt.block.smithinganvil.SmithingAnvilBlockEntity;
-import com.dark.cmt.init.custom.MetalMaterialRegistry;
-import com.dark.cmt.init.custom.SmithingManualRecipes;
-import com.dark.cmt.item.SmithingManual;
-import com.dark.cmt.item.smitheditems.UnfinishedSmithedItem;
-import com.dark.cmt.materials.SmithingMaterial;
-import com.dark.cmt.networking.C2SSmithingAnvilCraftStepValidationPayload;
 import com.dark.cmt.networking.C2SSmithingAnvilUIChangePayload;
-import com.dark.cmt.networking.C2SSmithingAnvilUnfinishedMutatePayload;
-import com.dark.cmt.recipe.SmithingManualRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.PageTurnWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 
 public class SmithingAnvilCombinerScreen extends HandledScreen<SmithingAnvilCombinerScreenHandler> {

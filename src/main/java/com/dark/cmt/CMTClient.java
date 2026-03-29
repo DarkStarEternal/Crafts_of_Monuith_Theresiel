@@ -5,6 +5,7 @@ import com.dark.cmt.block.blacksmithfurnace.BlacksmithFurnaceRenderer;
 import com.dark.cmt.block.pedestal.PedestalBlockEntityRenderer;
 import com.dark.cmt.entity.client.KhyninOverlordModel;
 import com.dark.cmt.entity.client.KhyninOverlordRenderer;
+import com.dark.cmt.item.smitheditems.unfinished.UnfinishedPartBuiltinRenderer;
 import com.dark.cmt.item.smitheditems.unfinished.UnfinishedSicleHeadBuiltinRenderer;
 import com.dark.cmt.item.smitheditems.unfinished.UnfinishedShortHandleBuiltinRenderer;
 import com.dark.cmt.init.*;
@@ -29,17 +30,12 @@ public class CMTClient implements ClientModInitializer {
         CMTSmithingMaterials.register();
 
         BuiltinItemRendererRegistry.INSTANCE.register(
-                CMTItems.UNFINISHEDSICLEHEAD,
+                CMTItems.UNFINISHEDPART,
                 (stack, mode, matrices, vertexConsumers, light, overlay) -> {
-                    new UnfinishedSicleHeadBuiltinRenderer().render(stack, matrices, vertexConsumers, light, overlay);
+                    new UnfinishedPartBuiltinRenderer().render(stack, matrices, vertexConsumers, light, overlay);
                 }
         );
-        BuiltinItemRendererRegistry.INSTANCE.register(
-                CMTItems.UNFINISHEDSHORTHANDLE,
-                (stack, mode, matrices, vertexConsumers, light, overlay) -> {
-                    new UnfinishedShortHandleBuiltinRenderer().render(stack, matrices, vertexConsumers, light, overlay);
-                }
-        );
+
 
         BlockRenderLayerMap.INSTANCE.putBlock(CMTBlocks.BLACKSMITHFURNACEBASE, RenderLayer.getSolid());
         BlockRenderLayerMap.INSTANCE.putBlock(CMTBlocks.SMITHINGANVIL, RenderLayer.getCutout());
