@@ -38,8 +38,9 @@ public class UnfinishedSmithedPart extends Item {
     public static final String COMMANDS_KEY = "Commands";
     public static final String COMPLETED_KEY = "CompletedCommands";
     public static final String CURRENT_INDEX_KEY = "CurrentIndex";
-    public static final String TEMPERATURE_KEY = "Temperature";
     public static final String MATERIAL_KEY = "Material";
+    public static final String TYPE_KEY = "Type";
+    public static final String PATH_KEY = "Path";
 
     public UnfinishedSmithedPart(Settings settings, String path, Identifier finishedItemID, String name) {
         super(settings);
@@ -116,6 +117,26 @@ public class UnfinishedSmithedPart extends Item {
                 : "";
     }
 
+    public void setMaterial(ItemStack stack, String material) {
+        NbtCompound nbt = getOrCreateData(stack);
+        nbt.putString(MATERIAL_KEY, material);
+        saveData(stack, nbt);
+    }
+
+    public String getPath(ItemStack stack) {
+        NbtCompound nbt = getOrCreateData(stack);
+        return nbt.contains(PATH_KEY, NbtElement.STRING_TYPE)
+                ? nbt.getString(PATH_KEY)
+                : "";
+    }
+
+    public String getType(ItemStack stack) {
+        NbtCompound nbt = getOrCreateData(stack);
+        return nbt.contains(TYPE_KEY, NbtElement.STRING_TYPE)
+                ? nbt.getString(TYPE_KEY)
+                : "";
+    }
+
     public int getIndex(ItemStack stack) {
         NbtCompound nbt = getOrCreateData(stack);
         return nbt.getInt(CURRENT_INDEX_KEY);
@@ -149,13 +170,13 @@ public class UnfinishedSmithedPart extends Item {
         }
     }
 
-    public ItemStack createNewStack(String material, float temp) {
+    public ItemStack createNewStack(String material, float temp, String type, String path, List<String> commands) {
         ItemStack stack = new ItemStack(this);
 
         NbtCompound nbt = new NbtCompound();
 
         NbtList cmds = new NbtList();
-        for (String cmd : this.commands) {
+        for (String cmd : commands) {
             cmds.add(NbtString.of(cmd));
         }
         nbt.put(COMMANDS_KEY, cmds);
@@ -163,6 +184,8 @@ public class UnfinishedSmithedPart extends Item {
         nbt.put(COMPLETED_KEY, new NbtList());
         nbt.putInt(CURRENT_INDEX_KEY, 0);
         nbt.putString(MATERIAL_KEY, material);
+        nbt.putString(PATH_KEY, path);
+        nbt.putString(TYPE_KEY, type);
 
         saveData(stack, nbt);
 

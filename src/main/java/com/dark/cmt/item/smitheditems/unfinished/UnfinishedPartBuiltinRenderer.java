@@ -34,8 +34,8 @@ public class UnfinishedPartBuiltinRenderer implements BuiltinItemRenderer {
         }
         if (stack.contains(DataComponentTypes.CUSTOM_DATA)) {
             NbtCompound nbt = stack.get(DataComponentTypes.CUSTOM_DATA).copyNbt();
-            if (nbt != null && nbt.contains("Material", NbtElement.STRING_TYPE)) {
-                material = nbt.getString("Material");
+            if (nbt != null && nbt.contains("Path", NbtElement.STRING_TYPE)) {
+                path = nbt.getString("Path");
             }
         }
 

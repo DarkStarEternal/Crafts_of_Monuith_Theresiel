@@ -2,20 +2,32 @@ package com.dark.cmt.init;
 
 import com.dark.cmt.CMT;
 import com.dark.cmt.datagen.CMTItemTagProvider;
+import com.dark.cmt.item.smitheditems.SmithedPart;
+import com.dark.cmt.item.smitheditems.UnfinishedSmithedPart;
 import com.dark.cmt.recipe.SmithingManualRecipe;
 import com.dark.cmt.init.custom.SmithingManualRecipes;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CMTSmithingManualRecipes {
+
+    static UnfinishedSmithedPart uPart = new UnfinishedSmithedPart(new Item.Settings().maxCount(1), "", Identifier.of(""), "");
+    static SmithedPart part = new SmithedPart(new Item.Settings().maxCount(1), "","");
+
     public static final SmithingManualRecipe SICLEHEAD = new SmithingManualRecipe("sicle_head",
-            new ItemStack(CMTItems.UNFINISHEDSICLEHEAD),new ItemStack(CMTItems.SICLEHEAD) ,CMTItemTagProvider.INGOTS, true);
-    public static final SmithingManualRecipe HOEHEAD = new SmithingManualRecipe("hoe_handle",
+            uPart.createNewStack("default", 29, "Sicle_Head", "rounded/sicle/head/", List.of("L", "B", "B")),
+            part.createNewStack("default", 29, "Sicle_Head", "rounded/sicle/head/"),
+            CMTItemTagProvider.INGOTS, true);
+    /*public static final SmithingManualRecipe HOEHEAD = new SmithingManualRecipe("hoe_handle",
             new ItemStack(Items.AIR),new ItemStack(Items.AIR) ,CMTItemTagProvider.INGOTS, true);
 
     public static final SmithingManualRecipe SHORTHANDLE = new SmithingManualRecipe("short_handle",
-            new ItemStack(CMTItems.UNFINISHEDSHORTHANDLE),new ItemStack(CMTItems.SHORTHANDLE) ,CMTItemTagProvider.INGOTS, true);
+            ,new ItemStack(CMTItems.SHORTHANDLE) ,CMTItemTagProvider.INGOTS, true);
     public static final SmithingManualRecipe MEDIUMHANDLE = new SmithingManualRecipe("medium_handle",
             new ItemStack(CMTItems.UNFINISHEDMEDIUMHANDLE),new ItemStack(CMTItems.MEDIUMHANDLE) ,CMTItemTagProvider.INGOTS, true);
     public static final SmithingManualRecipe LONGHANDLE = new SmithingManualRecipe("long_handle",
@@ -74,11 +86,11 @@ public class CMTSmithingManualRecipes {
             new ItemStack(Items.AIR),new ItemStack(Items.AIR) ,CMTItemTagProvider.AMBER_HEART_BASE, false);
 
     public static final SmithingManualRecipe DECORATIVEELEMENT = new SmithingManualRecipe("decorative_element",
-            new ItemStack(Items.AIR),new ItemStack(Items.AIR) ,CMTItemTagProvider.NUGGETS, true);
+            new ItemStack(Items.AIR),new ItemStack(Items.AIR) ,CMTItemTagProvider.NUGGETS, true);*/
 
     public static void register() {
         SmithingManualRecipes.register(SICLEHEAD);
-        SmithingManualRecipes.register(HOEHEAD);
+        /*SmithingManualRecipes.register(HOEHEAD);
 
         SmithingManualRecipes.register(PICKAXEHEAD);
         SmithingManualRecipes.register(SHOVELHEAD);
@@ -111,6 +123,6 @@ public class CMTSmithingManualRecipes {
 
         SmithingManualRecipes.register(DECORATIVEELEMENT);
 
-        SmithingManualRecipes.register(DICTATORSCROWN);
+        SmithingManualRecipes.register(DICTATORSCROWN);*/
     }
 }

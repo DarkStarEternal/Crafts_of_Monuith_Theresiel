@@ -30,6 +30,6 @@ public class CMT implements ModInitializer {
         CMTStructures.init();
 
         FabricDefaultAttributeRegistry.register(CMTEntities.KHYNIN_OVERLORD, KhyninOverlordEntity.createAttributes());
-        LOGGER.info("Diggy diggy hole!");
+        LOGGER.info("Diggy diggy hole! CMT initialized.");
     }
 }

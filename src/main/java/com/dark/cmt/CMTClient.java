@@ -6,8 +6,6 @@ import com.dark.cmt.block.pedestal.PedestalBlockEntityRenderer;
 import com.dark.cmt.entity.client.KhyninOverlordModel;
 import com.dark.cmt.entity.client.KhyninOverlordRenderer;
 import com.dark.cmt.item.smitheditems.unfinished.UnfinishedPartBuiltinRenderer;
-import com.dark.cmt.item.smitheditems.unfinished.UnfinishedSicleHeadBuiltinRenderer;
-import com.dark.cmt.item.smitheditems.unfinished.UnfinishedShortHandleBuiltinRenderer;
 import com.dark.cmt.init.*;
 import com.dark.cmt.screen.smithinganvil.SmithingAnvilCombinerScreen;
 import com.dark.cmt.screen.smithinganvil.SmithingAnvilPartScreen;

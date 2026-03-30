@@ -5,6 +5,7 @@ import com.dark.cmt.item.BasicManual;
 import com.dark.cmt.item.CreativeManual;
 import com.dark.cmt.item.HephaistonManual;
 import com.dark.cmt.item.gemstones.HeartOfTheMountain;
+import com.dark.cmt.item.smitheditems.UnfinishedSmithedPart;
 import com.dark.cmt.item.smitheditems.finished.*;
 
 import com.dark.cmt.item.smitheditems.unfinished.*;
@@ -53,8 +54,10 @@ public class CMTItems {
     public static final Item AMBERHEART = registerItem("amber_heart", new HeartOfTheMountain());
     public static final Item PUREREDSTONE = registerItem("pure_redstone", new HeartOfTheMountain());
 
-    public static final Item PART = registerItem("part", new FinishedPart("", ""));
-    public static final Item UNFINISHEDPART = registerItem("unfinished_part", new UnfinishedPart("", ""));
+    public static final Item PART = registerItem("part",
+            new FinishedPart("", ""));
+    public static final Item UNFINISHEDPART = registerItem("unfinished_part",
+            new UnfinishedSmithedPart(new Item.Settings().maxCount(1), "", Identifier.of(""), ""));
 
 
     public static final Item CREATIVEMANUAL = registerItem("creative_smithing_manual", new CreativeManual());

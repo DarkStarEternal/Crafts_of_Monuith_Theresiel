@@ -26,6 +26,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandler;
@@ -137,16 +138,10 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
     public void transformCraftItem(int recipeID, int recipePage, ServerPlayerEntity player, String material) {
         if (!isCorrectInput(recipePage, recipeID, partInventory.get(0))) return;
 
+        SmithingManualRecipe recipe = getRecipeEntry(recipePage, recipeID);
         ItemStack originalStack = partInventory.get(0);
         float currentTemp =  originalStack.get(CMTDataComponents.CURRENTHEAT).temperature();
         ItemStack recipeStack = getUnfinishedItemFromRecipeEntry(recipePage, recipeID, material, currentTemp);
-        if (recipeStack.isEmpty()) return;
-
-        if (recipeStack.get(DataComponentTypes.CUSTOM_DATA) == null) {
-            if (recipeStack.getItem() instanceof UnfinishedSmithedPart u) {
-                recipeStack = u.createNewStack(material,currentTemp);
-            }
-        }
 
         partInventory.set(0, recipeStack.copy());
         markDirty();
@@ -185,7 +180,7 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
 
         ItemStack stack = be.partInventory.get(0);
         if (stack.getItem() instanceof UnfinishedSmithedPart unfinishedSmithedItem && unfinishedSmithedItem.isTransformStateMet(stack)) {
-            be.partInventory.set(0, unfinishedSmithedItem.finishedItem.copy());
+            be.partInventory.set(0, new ItemStack(Registries.ITEM.get(unfinishedSmithedItem.finishedItemId)));
         }
 
         if (stack.contains(CMTDataComponents.CURRENTHEAT)) {
@@ -202,14 +197,13 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
         ItemStack stack = recipe.getUnfinishedOutput();
         if (stack.isEmpty()) return ItemStack.EMPTY;
 
-        if (stack.get(DataComponentTypes.CUSTOM_DATA) == null) {
-            Item item = stack.getItem();
-            if (item instanceof UnfinishedSmithedPart unfinished) {
-                return unfinished.createNewStack(material, t);
-            }
+        if (stack.getItem() instanceof UnfinishedSmithedPart uPart) {
+            uPart.setTemperature(stack, t);
+            uPart.setMaterial(stack, material);
         }
 
         return stack;
+
     }
 
     public boolean validateCraftStep(String craftStep, ItemStack input) {
