@@ -16,8 +16,8 @@ import java.util.List;
 
 public class CMTSmithingManualRecipes {
 
-    static UnfinishedSmithedPart uPart = new UnfinishedSmithedPart(new Item.Settings().maxCount(1), "", Identifier.of(""), "");
-    static SmithedPart part = new SmithedPart(new Item.Settings().maxCount(1), "","");
+    static UnfinishedSmithedPart uPart = (UnfinishedSmithedPart) CMTItems.UNFINISHEDPART;
+    static SmithedPart part = (SmithedPart) CMTItems.PART;
 
     public static final SmithingManualRecipe SICLEHEAD = new SmithingManualRecipe("sicle_head",
             uPart.createNewStack("default", 29, "Sicle_Head", "rounded/sicle/head/", List.of("L", "B", "B")),
