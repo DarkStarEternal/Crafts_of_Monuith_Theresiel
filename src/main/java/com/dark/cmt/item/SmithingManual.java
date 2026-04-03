@@ -15,6 +15,7 @@ import net.minecraft.util.Identifier;
 
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,21 +32,26 @@ public class SmithingManual extends Item {
         return super.useOnBlock(context);
     }
 
-    public List<String> getRecipeList(ItemStack stack) {
-        List<String> result = new ArrayList<>();
+    public List<Identifier> getRecipeList(ItemStack stack) {
+        List<Identifier> result = new ArrayList<>();
 
         NbtComponent component = stack.get(DataComponentTypes.CUSTOM_DATA);
         NbtCompound nbt = component != null ? component.copyNbt() : new NbtCompound();
         NbtList list;
-        if (nbt.contains("UnlockedPresets", NbtElement.LIST_TYPE)) {
-            list = nbt.getList("UnlockedPresets", NbtElement.STRING_TYPE);
+        if (nbt.contains("Recipes", NbtElement.LIST_TYPE)) {
+            list = nbt.getList("Recipes", NbtElement.STRING_TYPE);
         } else {
             list = new NbtList();
         }
 
-
         for (int i = 0; i < list.size(); i++) {
-            result.add(list.getString(i));
+
+            String base = list.getString(i);
+            String[] split = base.split(":");
+            List<String> lSplit = Arrays.stream(split).toList();
+
+            Identifier id = Identifier.of(lSplit.get(0), lSplit.get(1));
+            result.add(id);
         }
 
         return result;
@@ -56,13 +62,13 @@ public class SmithingManual extends Item {
         NbtCompound nbt = component != null ? component.copyNbt() : new NbtCompound();
 
         NbtList list;
-        if (nbt.contains("UnlockedPresets", NbtElement.LIST_TYPE)) {
-            list = nbt.getList("UnlockedPresets", NbtElement.STRING_TYPE);
+        if (nbt.contains("Recipes", NbtElement.LIST_TYPE)) {
+            list = nbt.getList("Recipes", NbtElement.STRING_TYPE);
         } else {
             list = new NbtList();
         }
 
-        String value = preset.getPath();
+        String value = preset.toString();
         System.out.println(value);
         // Prevent duplicates
         for (int i = 0; i < list.size(); i++) {
@@ -72,7 +78,7 @@ public class SmithingManual extends Item {
         }
 
         list.add(NbtString.of(value));
-        nbt.put("UnlockedPresets", list);
+        nbt.put("Recipes", list);
 
         stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
     }

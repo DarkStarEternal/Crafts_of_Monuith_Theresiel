@@ -5,7 +5,8 @@ import com.dark.cmt.init.CMTDataComponents;
 import com.dark.cmt.init.custom.MetalMaterialRegistry;
 import com.dark.cmt.item.CurrentHeatComponent;
 import com.dark.cmt.item.SmithingManual;
-import com.dark.cmt.item.smitheditems.UnfinishedSmithedPart;
+import com.dark.cmt.item.smitheditems.finished.SmithedPart;
+import com.dark.cmt.item.smitheditems.unfinished.UnfinishedSmithedPart;
 import com.dark.cmt.materials.SmithingMaterial;
 import com.dark.cmt.recipe.SmithingManualRecipe;
 import com.dark.cmt.init.CMTBlockEntities;
@@ -15,7 +16,6 @@ import com.dark.cmt.screen.smithinganvil.SmithingAnvilPartScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -33,6 +33,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -45,7 +46,6 @@ import java.util.Objects;
 
 public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos> {
     private final DefaultedList<ItemStack> partInventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
-    private final DefaultedList<ItemStack> combinerInventory = DefaultedList.ofSize(16, ItemStack.EMPTY);
 
     private AnvilMode mode = AnvilMode.PARTS;
 
@@ -78,11 +78,6 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
     public Inventory getPartInventory() {
         return new SimpleInventoryWrapper(partInventory, this);
     }
-
-    public Inventory getCombinerInventory() {
-        return new SimpleInventoryWrapper(combinerInventory, this);
-    }
-
 
     public void sync() {
         if (world instanceof ServerWorld serverWorld) {
@@ -125,14 +120,12 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
     public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         Inventories.writeNbt(nbt, partInventory, registryLookup);
-        Inventories.writeNbt(nbt, combinerInventory, registryLookup);
     }
 
     @Override
     public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
         Inventories.readNbt(nbt, partInventory, registryLookup);
-        Inventories.readNbt(nbt, combinerInventory, registryLookup);
     }
 
     public void transformCraftItem(int recipeID, int recipePage, ServerPlayerEntity player, String material) {
@@ -179,15 +172,32 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
         if (world.isClient) return;
 
         ItemStack stack = be.partInventory.get(0);
-        if (stack.getItem() instanceof UnfinishedSmithedPart unfinishedSmithedItem && unfinishedSmithedItem.isTransformStateMet(stack)) {
-            be.partInventory.set(0, new ItemStack(Registries.ITEM.get(unfinishedSmithedItem.finishedItemId)));
+        if (stack.isEmpty()) return;
+
+        if (stack.getItem() instanceof UnfinishedSmithedPart uPart && uPart.isTransformStateMet(stack)) {
+            Identifier recipeId = uPart.getRecipeID(stack);
+            SmithingManualRecipe recipe = SmithingManualRecipes.getRecipeFromID(recipeId);
+            if (recipe == null) return;
+
+            ItemStack rStack = recipe.getFinalitem();
+            if (rStack.isEmpty()) return;
+
+            if (rStack.getItem() instanceof SmithedPart sPart) {
+                sPart.setTemperature(rStack, uPart.getTemperature(stack));
+                sPart.setMaterial(rStack, uPart.getMaterial(stack));
+                rStack = new ItemStack(sPart, rStack.getCount());
+            }
+
+            be.partInventory.set(0, rStack);
+            be.markDirty();
         }
 
         if (stack.contains(CMTDataComponents.CURRENTHEAT)) {
-            float temp = Objects.requireNonNull(stack.get(CMTDataComponents.CURRENTHEAT)).temperature();
-            stack.set(CMTDataComponents.CURRENTHEAT, new CurrentHeatComponent(temp - 0.5f));
+            CurrentHeatComponent heat = stack.get(CMTDataComponents.CURRENTHEAT);
+            if (heat != null) {
+                stack.set(CMTDataComponents.CURRENTHEAT, new CurrentHeatComponent(heat.temperature() - 0.5f));
+            }
         }
-
     }
 
     public ItemStack getUnfinishedItemFromRecipeEntry(int page, int entry, String material, float t){
@@ -200,6 +210,7 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
         if (stack.getItem() instanceof UnfinishedSmithedPart uPart) {
             uPart.setTemperature(stack, t);
             uPart.setMaterial(stack, material);
+            stack = new ItemStack(uPart, stack.getCount());
         }
 
         return stack;
@@ -211,8 +222,6 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
             if (unfinishedSmithedItem.getStringListEntry(input, "Commands",
                     unfinishedSmithedItem.getIndex(input)).equals(craftStep)) {
                 SmithingMaterial material = MetalMaterialRegistry.getMaterialFromString(unfinishedSmithedItem.getMaterial(input));
-                System.out.println(unfinishedSmithedItem.getMaterial(input));
-                System.out.println(material.glowHeat);
                 if (material.glowHeat < unfinishedSmithedItem.getTemperature(input)) {
                     return true;
                 }
@@ -235,12 +244,12 @@ public class SmithingAnvilBlockEntity extends BlockEntity implements ExtendedScr
 
             List<SmithingManualRecipe> recipeList = new ArrayList<>();
 
-            for (String recipeName : manual.getRecipeList(partInventory.get(2))) {
+            for (Identifier recipeName : manual.getRecipeList(partInventory.get(2))) {
                 recipeList.add(SmithingManualRecipes.getRecipeFromID(recipeName));
             }
 
             List<SmithingManualRecipe> pageEntries = getPageEntries(recipeList, page, 3);
-            int idx = entry - 1;
+            int idx = entry;
             if (idx >= 0 && idx < pageEntries.size()) {
                 return pageEntries.get(idx);
             }

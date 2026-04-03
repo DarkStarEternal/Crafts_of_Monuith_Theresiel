@@ -4,7 +4,7 @@ package com.dark.cmt.screen.smithinganvil;
 import com.dark.cmt.CMT;
 import com.dark.cmt.block.smithinganvil.SmithingAnvilBlockEntity;
 import com.dark.cmt.item.SmithingManual;
-import com.dark.cmt.item.smitheditems.UnfinishedSmithedPart;
+import com.dark.cmt.item.smitheditems.unfinished.UnfinishedSmithedPart;
 import com.dark.cmt.materials.SmithingMaterial;
 import com.dark.cmt.networking.C2SSmithingAnvilCraftStepValidationPayload;
 import com.dark.cmt.networking.C2SSmithingAnvilUIChangePayload;
@@ -93,21 +93,21 @@ public class SmithingAnvilPartScreen extends HandledScreen<SmithingAnvilPartScre
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 93, y + 35, () -> transformItemToUnfinished(1, page, getMaterialFromInput(handler.getSlot(0).getStack())),
+                        x + 93, y + 35, () -> transformItemToUnfinished(0, page, getMaterialFromInput(handler.getSlot(0).getStack())),
                         () -> getFinalItemFromRecipeEntry(page, 1)
                 )
         );
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 117, y + 35, () -> transformItemToUnfinished(2, page, getMaterialFromInput(handler.getSlot(0).getStack())),
+                        x + 117, y + 35, () -> transformItemToUnfinished(1, page, getMaterialFromInput(handler.getSlot(0).getStack())),
                         () -> getFinalItemFromRecipeEntry(page, 2)
                 )
         );
 
         this.addDrawableChild(
                 new ItemDisplayButtonWidget(
-                        x + 141, y + 35, () -> transformItemToUnfinished(3, page, getMaterialFromInput(handler.getSlot(0).getStack())),
+                        x + 141, y + 35, () -> transformItemToUnfinished(2, page, getMaterialFromInput(handler.getSlot(0).getStack())),
                         () -> getFinalItemFromRecipeEntry(page, 3)
                 )
         );
@@ -225,11 +225,11 @@ public class SmithingAnvilPartScreen extends HandledScreen<SmithingAnvilPartScre
         Item slot2Item = handler.getSlot(2).getStack().getItem();
         if (!(slot2Item instanceof SmithingManual manual)) return Collections.emptyList();
 
-        List<String> recipeNames = manual.getRecipeList(handler.getSlot(2).getStack());
+        List<Identifier> recipeNames = manual.getRecipeList(handler.getSlot(2).getStack());
 
         List<SmithingManualRecipe> recipes = new ArrayList<>();
 
-        for (String name : recipeNames) {
+        for (Identifier name : recipeNames) {
             SmithingManualRecipe recipe = SmithingManualRecipes.getRecipeFromID(name);
             recipes.add(recipe);
         }

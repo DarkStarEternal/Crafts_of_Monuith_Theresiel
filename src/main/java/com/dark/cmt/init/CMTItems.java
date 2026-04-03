@@ -5,14 +5,14 @@ import com.dark.cmt.item.BasicManual;
 import com.dark.cmt.item.CreativeManual;
 import com.dark.cmt.item.HephaistonManual;
 import com.dark.cmt.item.gemstones.HeartOfTheMountain;
-import com.dark.cmt.item.smitheditems.UnfinishedSmithedPart;
+import com.dark.cmt.item.smitheditems.unfinished.UnfinishedSmithedPart;
 import com.dark.cmt.item.smitheditems.finished.*;
 
-import com.dark.cmt.item.smitheditems.unfinished.*;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 
 public class CMTItems {
 
@@ -55,9 +55,10 @@ public class CMTItems {
     public static final Item PUREREDSTONE = registerItem("pure_redstone", new HeartOfTheMountain());
 
     public static final Item PART = registerItem("part",
-            new FinishedPart("", ""));
+            new SmithedPart(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON),
+                    "", ""));
     public static final Item UNFINISHEDPART = registerItem("unfinished_part",
-            new UnfinishedSmithedPart(new Item.Settings().maxCount(1), "", Identifier.of(""), ""));
+            new UnfinishedSmithedPart(new Item.Settings().maxCount(1)));
 
 
     public static final Item CREATIVEMANUAL = registerItem("creative_smithing_manual", new CreativeManual());

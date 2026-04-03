@@ -1,18 +1,14 @@
-package com.dark.cmt.item.smitheditems;
+package com.dark.cmt.item.smitheditems.finished;
 
 import com.dark.cmt.init.CMTDataComponents;
 import com.dark.cmt.item.CurrentHeatComponent;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
-import net.minecraft.registry.Registries;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -31,12 +27,12 @@ public class SmithedPart extends Item {
         this.itemType = itemType;
     }
 
-    public ItemStack createNewStack(String material, float temp, String type, String path) {
+    public ItemStack createNewStack(String type, String path) {
         ItemStack stack = new ItemStack(this);
 
         NbtCompound nbt = new NbtCompound();
 
-        nbt.putString(MATERIAL_KEY, material);
+        String material = nbt.getString(MATERIAL_KEY);
         nbt.putString(PATH_KEY, path);
         nbt.putString(TYPE_KEY, type);
 
@@ -45,10 +41,6 @@ public class SmithedPart extends Item {
         stack.set(
                 DataComponentTypes.CUSTOM_NAME,
                 Text.literal(this.itemType + " [" + material + "]").setStyle(Style.EMPTY.withItalic(false))
-        );
-        stack.set(
-                CMTDataComponents.CURRENTHEAT,
-                new CurrentHeatComponent(temp)
         );
 
         return stack;
@@ -71,6 +63,24 @@ public class SmithedPart extends Item {
 
     public void setTemperature(ItemStack stack, float t) {
         stack.set(CMTDataComponents.CURRENTHEAT, new CurrentHeatComponent(t));
+    }
+
+    public String getMaterial(ItemStack stack) {
+        NbtCompound nbt = getOrCreateData(stack);
+        return nbt.contains(MATERIAL_KEY, NbtElement.STRING_TYPE)
+                ? nbt.getString(MATERIAL_KEY)
+                : "";
+    }
+
+    public void setMaterial(ItemStack stack, String material) {
+        NbtCompound nbt = getOrCreateData(stack);
+        nbt.putString(MATERIAL_KEY, material);
+        saveData(stack, nbt);
+    }
+
+    private NbtCompound getOrCreateData(ItemStack stack) {
+        NbtComponent comp = stack.get(DataComponentTypes.CUSTOM_DATA);
+        return comp != null ? comp.getNbt().copy() : new NbtCompound();
     }
 
     private void saveData(ItemStack stack, NbtCompound data) {

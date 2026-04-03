@@ -6,13 +6,13 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 
 public class SmithingManualRecipe {
-    public String name;
+    public Identifier name;
     public boolean isKnowledgeStoneRecipe;
     public TagKey<Item> hasRecipe;
     public ItemStack unfinishedOutput;
     public ItemStack finalitem;
 
-    public SmithingManualRecipe(String name1,
+    public SmithingManualRecipe(Identifier name1,
                                 ItemStack unfinishedOutput1,
                                 ItemStack finalItem1,
                                 TagKey<Item> hasRecipe,
@@ -24,7 +24,7 @@ public class SmithingManualRecipe {
         this.isKnowledgeStoneRecipe = canBeObtainedFromKnowledgeStones;
     }
 
-    public String getName() {
+    public Identifier getName() {
         return name;
     }
 

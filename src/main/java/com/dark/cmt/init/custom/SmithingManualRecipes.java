@@ -14,7 +14,7 @@ public class SmithingManualRecipes {
         RECIPES.add(recipe);
     }
 
-    public static SmithingManualRecipe getRecipeFromID(String name) {
+    public static SmithingManualRecipe getRecipeFromID(Identifier name) {
         for (SmithingManualRecipe recipe : RECIPES) {
             if (Objects.equals(recipe.getName(), name)) {
                 return recipe;

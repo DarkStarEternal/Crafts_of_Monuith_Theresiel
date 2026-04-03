@@ -2,16 +2,12 @@ package com.dark.cmt.init;
 
 import com.dark.cmt.CMT;
 import com.dark.cmt.datagen.CMTItemTagProvider;
-import com.dark.cmt.item.smitheditems.SmithedPart;
-import com.dark.cmt.item.smitheditems.UnfinishedSmithedPart;
+import com.dark.cmt.item.smitheditems.finished.SmithedPart;
+import com.dark.cmt.item.smitheditems.unfinished.UnfinishedSmithedPart;
 import com.dark.cmt.recipe.SmithingManualRecipe;
 import com.dark.cmt.init.custom.SmithingManualRecipes;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CMTSmithingManualRecipes {
@@ -19,9 +15,11 @@ public class CMTSmithingManualRecipes {
     static UnfinishedSmithedPart uPart = (UnfinishedSmithedPart) CMTItems.UNFINISHEDPART;
     static SmithedPart part = (SmithedPart) CMTItems.PART;
 
-    public static final SmithingManualRecipe SICLEHEAD = new SmithingManualRecipe("sicle_head",
-            uPart.createNewStack("default", 29, "Sicle_Head", "rounded/sicle/head/", List.of("L", "B", "B")),
-            part.createNewStack("default", 29, "Sicle_Head", "rounded/sicle/head/"),
+    public static final SmithingManualRecipe SICLEHEAD = new SmithingManualRecipe(Identifier.of(CMT.MODID, "sicle_head"),
+            uPart.createNewStack( "Sicle_Head", "rounded/sicle/head/",
+                    List.of("L", "B", "B"),
+                    Identifier.of(CMT.MODID, "sicle_head")),
+            part.createNewStack( "Sicle_Head", "rounded/sicle/head/"),
             CMTItemTagProvider.INGOTS, true);
     /*public static final SmithingManualRecipe HOEHEAD = new SmithingManualRecipe("hoe_handle",
             new ItemStack(Items.AIR),new ItemStack(Items.AIR) ,CMTItemTagProvider.INGOTS, true);

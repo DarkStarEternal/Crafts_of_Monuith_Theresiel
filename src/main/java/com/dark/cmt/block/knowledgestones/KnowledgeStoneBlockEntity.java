@@ -36,7 +36,7 @@ public class KnowledgeStoneBlockEntity extends BlockEntity {
         int randomID = rand.nextInt(SmithingManualRecipes.RECIPES.size());
         SmithingManualRecipe recipe = SmithingManualRecipes.RECIPES.get(randomID);
         if (recipe.isKnowledgeStoneRecipe) {
-            presetId = Identifier.of(recipe.getName());
+            presetId = recipe.getName();
             initialized = true;
         } else {
             initialized = false;

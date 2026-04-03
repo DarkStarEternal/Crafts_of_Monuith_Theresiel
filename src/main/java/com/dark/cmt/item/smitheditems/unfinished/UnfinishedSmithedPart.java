@@ -1,4 +1,4 @@
-package com.dark.cmt.item.smitheditems;
+package com.dark.cmt.item.smitheditems.unfinished;
 
 import com.dark.cmt.init.CMTDataComponents;
 import com.dark.cmt.item.CurrentHeatComponent;
@@ -24,16 +24,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
 
 public class UnfinishedSmithedPart extends Item {
 
-    public List<String> commands;
-    public Identifier finishedItemId;
-    public float temperature = 29f;
-
-    private String itemType = "";
-    private String path = "";
+    public Identifier recipeID;
 
     public static final String COMMANDS_KEY = "Commands";
     public static final String COMPLETED_KEY = "CompletedCommands";
@@ -41,12 +37,11 @@ public class UnfinishedSmithedPart extends Item {
     public static final String MATERIAL_KEY = "Material";
     public static final String TYPE_KEY = "Type";
     public static final String PATH_KEY = "Path";
+    public static final String RECIPE_PATH_KEY = "RecipePath";
+    public static final String RECIPE_NAMESPACE_KEY = "RecipeNamespace";
 
-    public UnfinishedSmithedPart(Settings settings, String path, Identifier finishedItemID, String name) {
+    public UnfinishedSmithedPart(Settings settings) {
         super(settings);
-        this.path = path;
-        this.finishedItemId = finishedItemID;
-        this.itemType = name;
     }
 
     private NbtCompound getOrCreateData(ItemStack stack) {
@@ -123,6 +118,26 @@ public class UnfinishedSmithedPart extends Item {
         saveData(stack, nbt);
     }
 
+    public Identifier getRecipeID(ItemStack stack) {
+        NbtCompound nbt = getOrCreateData(stack);
+        String path = nbt.contains(RECIPE_PATH_KEY, NbtElement.STRING_TYPE)
+                ? nbt.getString(RECIPE_PATH_KEY)
+                : "";
+        String namespace = nbt.contains(RECIPE_NAMESPACE_KEY, NbtElement.STRING_TYPE)
+                ? nbt.getString(RECIPE_NAMESPACE_KEY)
+                : "";
+        return Identifier.of(namespace, path);
+    }
+
+    public void setRecipeID(ItemStack stack, Identifier ID) {
+        NbtCompound nbt = getOrCreateData(stack);
+        String path = ID.getPath();
+        String namespace = ID.getNamespace();
+        nbt.putString(RECIPE_PATH_KEY, path);
+        nbt.putString(RECIPE_NAMESPACE_KEY, namespace);
+        saveData(stack, nbt);
+    }
+
     public String getPath(ItemStack stack) {
         NbtCompound nbt = getOrCreateData(stack);
         return nbt.contains(PATH_KEY, NbtElement.STRING_TYPE)
@@ -156,21 +171,15 @@ public class UnfinishedSmithedPart extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
-
-        if (!world.isClient && isTransformStateMet(stack)) {
-            ItemStack finishedStack = new ItemStack(Registries.ITEM.get(finishedItemId));
-            if (entity instanceof PlayerEntity player) {
-                player.getInventory().setStack(slot, finishedStack);
-            } else if (entity instanceof ItemEntity itemEntity) {
-                itemEntity.setStack(finishedStack);
-            }
-        }
-        else if (!world.isClient && getTemperature(stack) >= 29) {
+        if (!world.isClient && getTemperature(stack) >= 29) {
             setTemperature(stack, getTemperature(stack) - 0.2f);
         }
     }
 
-    public ItemStack createNewStack(String material, float temp, String type, String path, List<String> commands) {
+    public ItemStack createNewStack(String type,
+                                    String texPath,
+                                    List<String> commands,
+                                    Identifier recipeID) {
         ItemStack stack = new ItemStack(this);
 
         NbtCompound nbt = new NbtCompound();
@@ -183,19 +192,15 @@ public class UnfinishedSmithedPart extends Item {
 
         nbt.put(COMPLETED_KEY, new NbtList());
         nbt.putInt(CURRENT_INDEX_KEY, 0);
-        nbt.putString(MATERIAL_KEY, material);
-        nbt.putString(PATH_KEY, path);
+        String material = nbt.getString(MATERIAL_KEY);
+        nbt.putString(PATH_KEY, texPath);
         nbt.putString(TYPE_KEY, type);
 
         saveData(stack, nbt);
 
         stack.set(
                 DataComponentTypes.CUSTOM_NAME,
-                Text.literal("Unfinished " + this.itemType + " [" + material + "]").setStyle(Style.EMPTY.withItalic(false))
-        );
-        stack.set(
-                CMTDataComponents.CURRENTHEAT,
-                new CurrentHeatComponent(temp)
+                Text.literal("Unfinished " + type + " [" + material + "]").setStyle(Style.EMPTY.withItalic(false))
         );
 
         return stack;

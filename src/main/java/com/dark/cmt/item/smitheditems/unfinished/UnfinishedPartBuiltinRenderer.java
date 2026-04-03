@@ -24,18 +24,18 @@ public class UnfinishedPartBuiltinRenderer implements BuiltinItemRenderer {
                        VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
         // --- Read material from NBT ---
-        String material = "default";
-        String path = "fallback";
+        String material = "";
+        String path = "";
         if (stack.contains(DataComponentTypes.CUSTOM_DATA)) {
             NbtCompound nbt = stack.get(DataComponentTypes.CUSTOM_DATA).copyNbt();
-            if (nbt != null && nbt.contains("Material", NbtElement.STRING_TYPE)) {
-                material = nbt.getString("Material");
+            if (nbt != null && nbt.contains(UnfinishedSmithedPart.MATERIAL_KEY, NbtElement.STRING_TYPE)) {
+                material = nbt.getString(UnfinishedSmithedPart.MATERIAL_KEY);
             }
         }
         if (stack.contains(DataComponentTypes.CUSTOM_DATA)) {
             NbtCompound nbt = stack.get(DataComponentTypes.CUSTOM_DATA).copyNbt();
-            if (nbt != null && nbt.contains("Path", NbtElement.STRING_TYPE)) {
-                path = nbt.getString("Path");
+            if (nbt != null && nbt.contains(UnfinishedSmithedPart.PATH_KEY, NbtElement.STRING_TYPE)) {
+                path = nbt.getString(UnfinishedSmithedPart.PATH_KEY);
             }
         }
 

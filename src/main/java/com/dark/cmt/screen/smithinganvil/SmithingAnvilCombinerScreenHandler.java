@@ -28,7 +28,7 @@ public class SmithingAnvilCombinerScreenHandler extends ScreenHandler {
                                               SmithingAnvilBlockEntity be) {
         super(CMTScreenHandlers.SMITHINGANVILCOMBINERSCREENHANDLER, syncId);
 
-        this.inventory = be.getCombinerInventory();
+        this.inventory = be.getPartInventory();
 
         addSlot(new Slot(inventory, 0, 7, 35) { public int getMaxItemCount() { return 1; }});
         addSlot(new Slot(inventory, 1, 7, 13) { public int getMaxItemCount() { return 1; }});
